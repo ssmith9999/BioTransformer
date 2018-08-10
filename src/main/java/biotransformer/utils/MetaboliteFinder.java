@@ -100,33 +100,17 @@ public class MetaboliteFinder{
 			currentCompounds.removeAllAtomContainers();
 			currentCompounds.add(extractedCompounds);
 			
-//			for(IAtomContainer a : currentCompounds.atomContainers()){
-//				inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
-//			}
-	
 			for(IAtomContainer a : currentCompounds.atomContainers()){
 				inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
-//				String precursorInChIKey = (String) a.getProperty("Precursor InChIKey");
-//				System.out.println("precursorInChIKey: " + precursorInChIKey);
-//				System.out.println(a.getProperties());
-//				if(compoundToParents.containsKey((String) a.getProperty("InChIKey"))){
-//					compoundToParents.get((String) a.getProperty("InChIKey")).addAtomContainer(inchikeyToContainers.get(precursorInChIKey));
-//				}
-//				else {
-//					IAtomContainerSet s = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-//					s.addAtomContainer(inchikeyToContainers.get(precursorInChIKey));
-//					compoundToParents.put((String) a.getProperty("InChIKey"), s);
-//					
-//				}
 			}
 			
 			for(IAtomContainer a : currentCompounds.atomContainers()){
 //				inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
 				String precursorInChIKey = (String) a.getProperty("Precursor InChIKey");
 //				System.out.println("precursorInChIKey: " + precursorInChIKey);
-				System.out.print((String) a.getProperty("InChIKey"));
-				System.out.println(" >> " + (String)a.getProperty("Precursor InChIKey"));
-				System.out.println(inchikeyToContainers.containsKey(precursorInChIKey));
+//				System.out.print((String) a.getProperty("InChIKey"));
+//				System.out.println(" >> " + (String)a.getProperty("Precursor InChIKey"));
+//				System.out.println(inchikeyToContainers.containsKey(precursorInChIKey));
 				
 //				if(inchikeyToContainers.containsKey(precursorInChIKey)){
 					if(compoundToParents.containsKey((String) a.getProperty("InChIKey"))){
@@ -141,7 +125,7 @@ public class MetaboliteFinder{
 						compoundToParents.put((String) a.getProperty("InChIKey"), s);
 					}
 //				}
-				System.out.println(compoundToParents.get((String) a.getProperty("InChIKey")) == null);
+//				System.out.println(compoundToParents.get((String) a.getProperty("InChIKey")) == null);
 			}			
 			
 			
@@ -219,7 +203,7 @@ public class MetaboliteFinder{
 		}
 		
 		for(IAtomContainer a : filteredCompounds.atomContainers()){
-			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
+//			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
 			pathways.addAtomContainer(findPathway(startingCompoundStandardized, a, compoundToParents, inchikeyToContainers, annotate));
 		}		
 				
@@ -255,7 +239,7 @@ public class MetaboliteFinder{
 		inchikeyToContainers.put((String) startingCompoundStandardized.getProperty("InChIKey"), startingCompoundStandardized);
 		
 		
-		System.out.println("STARTING COMPOUND INCHIKEY: " + startingCompoundStandardized.getProperty("InChIKey"));
+//		System.out.println("STARTING COMPOUND INCHIKEY: " + startingCompoundStandardized.getProperty("InChIKey"));
 		
 		allBiotransformations = this.hsbt.simulateHumanAndGutMicrobialMetabolism(startingCompoundStandardized);
 		IAtomContainerSet extractedCompounds = this.hsbt.extractAtomContainerWithTransformationData(allBiotransformations, annotate);
@@ -280,9 +264,9 @@ public class MetaboliteFinder{
 //			inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
 			String precursorInChIKey = (String) a.getProperty("Precursor InChIKey");
 //			System.out.println("precursorInChIKey: " + precursorInChIKey);
-			System.out.print((String) a.getProperty("InChIKey"));
-			System.out.println(" >> " + (String)a.getProperty("Precursor InChIKey"));
-			System.out.println(inchikeyToContainers.containsKey(precursorInChIKey));
+//			System.out.print((String) a.getProperty("InChIKey"));
+//			System.out.println(" >> " + (String)a.getProperty("Precursor InChIKey"));
+//			System.out.println(inchikeyToContainers.containsKey(precursorInChIKey));
 			
 //			if(inchikeyToContainers.containsKey(precursorInChIKey)){
 				if(compoundToParents.containsKey((String) a.getProperty("InChIKey"))){
@@ -297,7 +281,7 @@ public class MetaboliteFinder{
 					compoundToParents.put((String) a.getProperty("InChIKey"), s);
 				}
 //			}
-			System.out.println(compoundToParents.get((String) a.getProperty("InChIKey")) == null);
+//			System.out.println(compoundToParents.get((String) a.getProperty("InChIKey")) == null);
 		}
 
 		for(int k=0; k < mass_formulas.size(); k++){
@@ -306,7 +290,7 @@ public class MetaboliteFinder{
 				IMolecularFormula formula1 = MolecularFormulaManipulator.getMolecularFormula(mass_formulas.get(k), this.builder);
 				for(IAtomContainer a : extractedCompounds.atomContainers()){ 
 					if(MolecularFormulaManipulator.getString(formula1).contentEquals(a.getProperty("Molecular formula").toString().trim())){
-						System.out.println(a.getProperty("Molecular formula").toString().trim());
+//						System.out.println(a.getProperty("Molecular formula").toString().trim());
 						massFormulaToMolecules.get(mass_formulas.get(k)).addAtomContainer(a);
 						filteredCompounds.addAtomContainer(a);
 //						break;
@@ -469,9 +453,9 @@ public class MetaboliteFinder{
 //				inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
 				String precursorInChIKey = (String) a.getProperty("Precursor InChIKey");
 //				System.out.println("precursorInChIKey: " + precursorInChIKey);
-				System.out.print((String) a.getProperty("InChIKey"));
-				System.out.println(" >> " + (String)a.getProperty("Precursor InChIKey"));
-				System.out.println(inchikeyToContainers.containsKey(precursorInChIKey));
+//				System.out.print((String) a.getProperty("InChIKey"));
+//				System.out.println(" >> " + (String)a.getProperty("Precursor InChIKey"));
+//				System.out.println(inchikeyToContainers.containsKey(precursorInChIKey));
 				
 //				if(inchikeyToContainers.containsKey(precursorInChIKey)){
 					if(compoundToParents.containsKey((String) a.getProperty("InChIKey"))){
@@ -486,7 +470,7 @@ public class MetaboliteFinder{
 						compoundToParents.put((String) a.getProperty("InChIKey"), s);
 					}
 //				}
-				System.out.println(compoundToParents.get((String) a.getProperty("InChIKey")) == null);
+//				System.out.println(compoundToParents.get((String) a.getProperty("InChIKey")) == null);
 			}			
 			
 			
@@ -564,7 +548,7 @@ public class MetaboliteFinder{
 		}
 		
 		for(IAtomContainer a : filteredCompounds.atomContainers()){
-			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
+//			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
 			pathways.addAtomContainer(findPathway(startingCompoundStandardized, a, compoundToParents, inchikeyToContainers, annotate));
 		}		
 				
@@ -572,154 +556,7 @@ public class MetaboliteFinder{
 	}
 
 
-//	public void findAllEnvMicroMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, String outputFileName, FinderOption opt) throws Exception{
-//		
-//		IAtomContainerSet metabolites = findAllEnvMicroMetabolites(startingCompound, mass_formulas, massTolerance, nrOfSteps, annotate, opt);
-//		
-//		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputFileName));		
-//		sdfWriter.write(metabolites);
-//		sdfWriter.close();
-//	}
-//	
-//	public IAtomContainerSet findAllEnvMicroMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, FinderOption opt) throws Exception{
-//		ArrayList<Biotransformation> allBiotransformations = new ArrayList<Biotransformation>();
-//		
-//		ArrayList<String> remainingMassFormulas = (ArrayList<String>) mass_formulas.clone();
-//		IAtomContainerSet filteredCompounds = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-//		
-//		LinkedHashMap<String, ArrayList<Biotransformation>> substratesToBio = new LinkedHashMap<String, ArrayList<Biotransformation>>();
-//		LinkedHashMap<String, ArrayList<Biotransformation>>productsToBio = new LinkedHashMap<String, ArrayList<Biotransformation>>();
-//		LinkedHashMap<String, IAtomContainerSet> massFormulaToMolecules = new LinkedHashMap<String, IAtomContainerSet>();		
-//		LinkedHashMap<String, IAtomContainer> inchikeyToContainers = new LinkedHashMap<String, IAtomContainer>();
-//		
-//		IAtomContainer startingCompoundStandardized = this.hsbt.standardizeMoleculeWithCopy(startingCompound);
-//			
-//		InChIGenerator gen0 = this.inchiGenFactory.getInChIGenerator(startingCompoundStandardized);
-//		startingCompoundStandardized.setProperty("InChIKey", gen0.getInchiKey());
-//		startingCompoundStandardized.setProperty("InChI", gen0.getInchi());
-//		
-//		IAtomContainerSet pathways = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-//
-//		inchikeyToContainers.put((String) startingCompoundStandardized.getProperty("InChIKey"), startingCompoundStandardized);
-//		
-//		for(int k=0; k < mass_formulas.size(); k++){
-//			 massFormulaToMolecules.put(mass_formulas.get(k), DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class));
-//		}
-//		
-//		IAtomContainerSet currentCompounds = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-//		currentCompounds.addAtomContainer(startingCompound);
-//		int counter = 1;
-//		
-//		while(nrOfSteps >0 && remainingMassFormulas.size()>0){
-//			
-//			ArrayList<Biotransformation> currentBioT = this.ebt.applyEnvMicrobialTransformations(currentCompounds, true, true, 0.5);
-//			IAtomContainerSet extractedCompounds = this.ebt.extractAtomContainerWithTransformationData(currentBioT, annotate);
-//			allBiotransformations.addAll(currentBioT);
-//			currentCompounds.removeAllAtomContainers();
-//			currentCompounds.add(extractedCompounds);
-//			
-//			for(IAtomContainer a : currentCompounds.atomContainers()){
-//				inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
-//			}
-//	
-////			for(int k=0; k < mass_formulas.size(); k++){
-////				String[] mf = mass_formulas.get(k).split(":");
-////				for(IAtomContainer a : extractedCompounds.atomContainers()){ 
-////					if( (mf.length == 2 && ((String) a.getProperty("Molecular formula")).contentEquals(mf[1].trim()) &&
-////							Math.abs( Double.valueOf((String) a.getProperty("Major Isotope Mass")) - Double.valueOf(mf[0])) <= massTolerance) ||
-////							(mf.length == 1 && Math.abs( Double.valueOf((String) a.getProperty("Major Isotope Mass")) - Double.valueOf(mf[0])) <= massTolerance)){
-////						massFormulaToMolecules.get(mass_formulas.get(k)).addAtomContainer(a);
-////						filteredCompounds.addAtomContainer(a);
-//////						break;
-////					}
-////				}
-////				if(massFormulaToMolecules.get(mass_formulas.get(k)).getAtomContainerCount() > 0){
-////					remainingMassFormulas.remove(mass_formulas.get(k));
-////				}
-////				
-////			}			
-//			for(int k=0; k < mass_formulas.size(); k++){			
-//				if(opt == FinderOption.FORMULA){
-//					IMolecularFormula formula1 = MolecularFormulaManipulator.getMolecularFormula(mass_formulas.get(k), this.builder);
-//					for(IAtomContainer a : extractedCompounds.atomContainers()){ 
-//						if( MolecularFormulaManipulator.getString(formula1).contentEquals(mass_formulas.get(k))){
-//							massFormulaToMolecules.get(mass_formulas.get(k)).addAtomContainer(a);
-//							filteredCompounds.addAtomContainer(a);
-////							break;
-//						}
-//					}					
-//				}
-//				else if(opt == FinderOption.MASS){
-//					Double mass = Double.valueOf(mass_formulas.get(k));
-//					for(IAtomContainer a : extractedCompounds.atomContainers()){ 
-//						if( Math.abs(Double.valueOf((String) a.getProperty("Major Isotope Mass")) - mass) <= massTolerance){
-//							massFormulaToMolecules.get(mass_formulas.get(k)).addAtomContainer(a);
-//							filteredCompounds.addAtomContainer(a);
-////							break;
-//						}
-//					}					
-//				}
-//				else if(opt == FinderOption.MASSFORMULA){
-//					String[] mf = mass_formulas.get(k).split(":");
-//					IMolecularFormula formula2 = MolecularFormulaManipulator.getMolecularFormula(mf[1], this.builder);
-//					Double mass2 = Double.valueOf(mf[0]);
-//					for(IAtomContainer a : extractedCompounds.atomContainers()){ 
-//						if( (MolecularFormulaManipulator.getString(formula2).contentEquals(mass_formulas.get(k))) && 
-//								(Math.abs(Double.valueOf((String) a.getProperty("Major Isotope Mass")) - mass2) <= massTolerance)){
-//							massFormulaToMolecules.get(mass_formulas.get(k)).addAtomContainer(a);
-//							filteredCompounds.addAtomContainer(a);
-////							break;
-//						}
-//					}					
-//				}
-//				if(massFormulaToMolecules.get(mass_formulas.get(k)).getAtomContainerCount() > 0){
-//					remainingMassFormulas.remove(mass_formulas.get(k));
-//				}
-//				
-//			}
-//			
-//			nrOfSteps--;
-//			counter++;
-////			System.err.println("Remaining masses: " + remainingMasses.size() + "\n");
-//			System.err.println("\n\n\n\n\nNumber of possibilities: " + filteredCompounds.getAtomContainerCount() );
-//		}
-//		
-//		for(int i = 0; i < allBiotransformations.size(); i++){
-//			Biotransformation bt = allBiotransformations.get(i);
-//			for(IAtomContainer ac : bt.getSubstrates().atomContainers()){
-//				String ikey = ac.getProperty("InChIKey");
-//				if(ikey != null){
-//					if(substratesToBio.containsKey(ikey)){
-//						substratesToBio.get(ikey).add(bt);
-//					}else{
-//						substratesToBio.put(ikey,new ArrayList<Biotransformation>());
-//						substratesToBio.get(ikey).add(bt);
-//					}
-//				}
-//			}
-//
-//			for(IAtomContainer at : bt.getProducts().atomContainers()){
-//				String ikey = at.getProperty("InChIKey");
-//				if(ikey != null){
-//					if(productsToBio.containsKey(ikey)){
-//						productsToBio.get(ikey).add(bt);
-//					}else{
-//						productsToBio.put(ikey,new ArrayList<Biotransformation>());
-//						productsToBio.get(ikey).add(bt);
-//					}
-//				}
-//			}
-//		}
-//		
-//		for(IAtomContainer a : filteredCompounds.atomContainers()){
-//			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
-//			pathways.addAtomContainer(findPathway(startingCompoundStandardized, a, inchikeyToContainers, annotate));
-//		}		
-//				
-//		return pathways;
-//	}
-//	
-	
+
 	public IAtomContainer findPathway(IAtomContainer startingCompound, IAtomContainer leafCompound,
 			LinkedHashMap<String, IAtomContainerSet> compoundToParents, LinkedHashMap<String,IAtomContainer> inchikeyToContainers, boolean annotate
 			
