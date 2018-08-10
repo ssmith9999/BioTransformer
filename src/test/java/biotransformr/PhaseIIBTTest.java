@@ -31,8 +31,7 @@ public class PhaseIIBTTest extends Phase2BTransformer{
 		IAtomContainer mol = em.getSmiParser().parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
 		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);		
 		ArrayList<Biotransformation> biotransformations = em.applyPhase2TransformationsChainAndReturnBiotransformations(mol, true, true, true, 1, 0.0);
-		System.out.println(biotransformations.size());
-		System.out.println(Utilities.selectUniqueBiotransformations(biotransformations).size());
+		System.out.println("Number of biotransformations: " + biotransformations.size());
 		em.saveBioTransformationProductsToSdf(biotransformations, "data/epicatechin_PhaseII_metabolites.sdf");	
 	}
 

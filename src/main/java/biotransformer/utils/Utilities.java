@@ -50,7 +50,7 @@ public class Utilities {
 				p.put(CDKConstants.TITLE,m.getValue());
 			}
 		}		
-		System.out.println(p);
+//		System.out.println(p);
 		molecule.setProperties(p);	
 	}
 

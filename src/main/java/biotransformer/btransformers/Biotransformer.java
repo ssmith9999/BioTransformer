@@ -1151,10 +1151,10 @@ public class Biotransformer {
 		IAtomContainerSet partialSet = generateAllMetabolitesFromAtomContainerViaTransformationAtAllLocations(
 				starget, reaction.getSmirksReaction(), false);
 		
-		System.out.println("PartialSet after applying reaction " + reaction.name + " at all locations simultaneously: " + partialSet.getAtomContainerCount());
-		for(IAtomContainer a : partialSet.atomContainers()){
-			System.out.println(this.smiGen.isomeric().create(a));
-		}
+//		System.out.println("PartialSet after applying reaction " + reaction.name + " at all locations simultaneously: " + partialSet.getAtomContainerCount());
+//		for(IAtomContainer a : partialSet.atomContainers()){
+//			System.out.println(this.smiGen.isomeric().create(a));
+//		}
 		
 		Double score=0.0;
 		IAtomContainerSet subs = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
@@ -1402,7 +1402,7 @@ public class Biotransformer {
 	//					System.err.println(this.reactionsHash.size());
 	//					System.out.println(customReactionHash.get(b.getReactionType().toString()).getComonName());
 	//					System.out.println(customReactionHash.get(b.getReactionType().toString()).getBTRMID());
-						System.out.println(b.getReactionType().toString());
+//						System.out.println(b.getReactionType().toString());
 	//					System.out.println(customReactionHash.get(b.getReactionType().toString()));
 						String reactionName = customReactionHash.get(b.getReactionType().toString()).getComonName();
 						if (reactionName.length() == 0){
