@@ -1,3 +1,9 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
 package biotransformer.utils;
 
 import java.util.ArrayList;
@@ -5,6 +11,8 @@ import java.util.LinkedHashMap;
 import java.util.LinkedHashSet;
 import java.util.Map;
 import java.util.Map.Entry;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.openscience.cdk.AtomContainerSet;
 import org.openscience.cdk.CDKConstants;
@@ -81,6 +89,45 @@ public class Utilities {
 		return DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
 	}
 	
+	
+	public static String returnFirstCleanSynonym(String[] synonyms){
+		String fcs = null;
+		Pattern p = Pattern.compile("CHEBI:[0-9]+|UNII-|CHEMBL|ZINC|DB[0-9]+|[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z]-|[0-9]+-[0-9]+-[0-9]|^AC[0-9]+|%",  Pattern.CASE_INSENSITIVE);
+		for(int i=0; i < synonyms.length ; i++){
+			Matcher b = p.matcher(synonyms[i]);
+//			System.out.println(synonyms[i] + ": " + b.find());
+			if(!b.find()){
+				fcs = synonyms[i];
+//				System.out.println("WORKS: " + synonyms[i]);
+				break;				
+			}		
+		}
+		if(fcs == null){
+			fcs = synonyms[0];
+		}
+		return fcs;		
+	}
+
+	public static String returnFirstCleanSynonym(ArrayList<String> synonyms){
+		String fcs = null;
+		// CHEMSPIDER|CID[0-9]+|SID[0-9]+|
+		Pattern p = Pattern.compile("CHEBI:[0-9]+|UNII-|CHEMBL|ZINC|DB[0-9]+|[A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z][A-Z]-|[0-9]+-[0-9]+-[0-9]|^AC[0-9]+|%",  Pattern.CASE_INSENSITIVE);
+		for(int i=0; i < synonyms.size() ; i++){
+			Matcher b = p.matcher(synonyms.get(i).trim());
+//			System.out.println(synonyms.get(i) + ": " + b.find());
+			
+			if(!b.find()){
+				fcs = synonyms.get(i);
+//				System.out.println("WORKS: " + synonyms.get(i));
+				break;			
+			}		
+//			System.out.println(synonyms.get(i) + ": " + b.find());
+		}
+		if(fcs == null){
+			fcs = synonyms.get(0);
+		}
+		return fcs;	
+	}
 //	public static IAtomContainerSet uniquefy(IAtomContainerSet molecules)
 //			throws Exception {
 //		if (molecules != null && (!molecules.isEmpty()) && molecules.getAtomContainerCount() > 1) {

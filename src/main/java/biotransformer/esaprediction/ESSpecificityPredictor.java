@@ -1,3 +1,9 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
 package biotransformer.esaprediction;
 
 import java.io.IOException;
@@ -20,6 +26,7 @@ import biotransformer.biosystems.BioSystem;
 import biotransformer.transformation.MetabolicReaction;
 import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemicalClassFinder;
+import biotransformer.utils.ChemicalClassFinder.ChemicalClassName;
 import reactantpredictor.ReactantPred;
 
 /**
@@ -53,11 +60,14 @@ public class ESSpecificityPredictor {
 					+ "be either of the following: CYP1A2, CYP2A6, CYP2B6, CYP2C8, CYP2C9, CYP2C19, CYP2D6, CYP2E1, or CYP3A4.");
 		} else if(!ChemStructureExplorer.isMixture(substrate)){
 			boolean validCyp450 = false;
+			ChemicalClassName chemClassName = ChemicalClassFinder.findChemicalClass(substrate);
 			
 			if(!( ChemStructureExplorer.getMajorIsotopeMass(substrate) > 1500.0 || ChemStructureExplorer.isGlycosylatedCompound(substrate) || ChemStructureExplorer.isGlutathioneConjugate(substrate)
 					|| ChemStructureExplorer.isSulfatedCompound(substrate) || ChemStructureExplorer.isAcylCoAConjugate(substrate) || 
-					ChemicalClassFinder.isEtherLipid(substrate) || ChemicalClassFinder.isGlyceroLipid(substrate)  || 
-					ChemicalClassFinder.isGlycerophosphoLipid(substrate) || ChemicalClassFinder.isSphingoLipid(substrate)     )) {
+					chemClassName == ChemicalClassName.ETHER_LIPID || chemClassName == ChemicalClassName.GLYCEROLIPID  || 
+					chemClassName == ChemicalClassName.GLYCEROPHOSPHOLIPID || chemClassName == ChemicalClassName.SPHINGOLIPID ||
+					chemClassName == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL)) {
+				
 				if(this.bSys.name.toString() == "HUMAN"){
 							
 					ReactantPred rp = new ReactantPred();

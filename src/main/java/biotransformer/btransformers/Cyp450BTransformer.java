@@ -1,7 +1,7 @@
 /**
  * This class implements the class of CYP450Biotransformers, which simulate the transformation of molecules by CYP450 enzymes.
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 
@@ -37,6 +37,7 @@ import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.FileUtilities;
+import biotransformer.utils.Utilities;
 import reactantpredictor.ReactantPred;
 
 
@@ -199,7 +200,7 @@ public class Cyp450BTransformer extends Biotransformer {
 			}
 		}
 
-		return biotransformations;
+		return Utilities.selectUniqueBiotransformations(biotransformations);
 	}	
 	
 	public void  simulateCyp450MetabolismAndSaveToSDF(IAtomContainerSet containers, int nrOfSteps, Double scoreThreshold, String outputFolder, boolean annotate) throws Exception {
@@ -228,7 +229,8 @@ public class Cyp450BTransformer extends Biotransformer {
 			}
 		}		
 	}
-
+	
+	
 	public void  simulateCyp450MetabolismAndSaveToSingleSDF(IAtomContainerSet containers, int nrOfSteps, Double scoreThreshold, String outputFileName, boolean annotate) throws Exception {
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		if(!containers.isEmpty()){

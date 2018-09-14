@@ -3,7 +3,7 @@
  * by enzymes from microbial species found in the soil and aquatic environments. It implements rules and constraints developed
  * by the EAWAG/IUMBBD (http://eawag-bbd.ethz.ch/).
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 
@@ -84,9 +84,9 @@ public class EnvMicroBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
 	 * @return an arraylist of biotransformations, which are instances of the environmental microbial reactions applied to the target, with a threshold of 0.0
 	 * @throws Exception
 	 */	
@@ -97,10 +97,10 @@ public class EnvMicroBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param scoreThreshold
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param scoreThreshold - minimum threshold for reaction scores
 	 * @return an arraylist of biotransformations, which are instances of the environmental microbial metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
 	 */	
@@ -120,10 +120,10 @@ public class EnvMicroBTransformer extends Biotransformer {
 				return biotransformations;
 			}
 			else {
-				throw new IllegalArgumentException(target.getProperty("InChIKey")+ "\n"
+				throw new IllegalArgumentException("\n\n" + target.getProperty("InChIKey")+ "\n\n"
 						+ "For the prediction of environmental microbial metabolism, the compound must: "
-						+ "1) be organic; 2) not be a mixture; 3) not be a cofactor or dead end compound, and 4) have a mmolecular mass of 1000 Da. or less.\nFor more"
-						+ " information, consult the following link: http://eawag-bbd.ethz.ch/predict/notbepredicted.html#Unknowncomp");
+						+ "1) be organic; 2) not be a mixture; 3) not be a cofactor or dead end compound, and 4) have a molecular mass of 1000 Da. or less.\nFor more"
+						+ " information, consult the following link: http://eawag-bbd.ethz.ch/predict/notbepredicted.html#Unknowncomp\n\n\n");
 			} 
 		}
 		catch (Exception e){
@@ -164,10 +164,10 @@ public class EnvMicroBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the environmental microbial metabolic reactions applied to the target, with the minimum threshold of 0.0
 	 * @throws Exception
@@ -180,10 +180,10 @@ public class EnvMicroBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the environmental microbial metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
@@ -225,6 +225,13 @@ public class EnvMicroBTransformer extends Biotransformer {
 		ArrayList<Biotransformation> biotransformations = this.applyEnvMicrobialTransformationsChain(container, true, true, nrOfSteps, scoreThreshold);
 		this.saveBioTransformationProductsToSdf(biotransformations, outputFileName, annotate);
 	}
+	
+	public void simulateEnvMicrobialDegradationAndSaveToCSV(IAtomContainer container, boolean preprocess, boolean filter, int nrOfSteps, Double scoreThreshold, String outputFileName, boolean annotate) throws Exception{
+		ArrayList<Biotransformation> biotransformations = this.applyEnvMicrobialTransformationsChain(container, true, true, nrOfSteps, scoreThreshold);
+		this.saveBioTransformationProductsToCSV(biotransformations, outputFileName, annotate);
+	}
+	
+	
 	
 	public void simulateEnvMicrobialDegradationAndSaveToSDF(IAtomContainerSet containers, boolean preprocess, boolean filter, int nrOfSteps, Double scoreThreshold, String outputFolder, boolean annotate) throws Exception{
 		

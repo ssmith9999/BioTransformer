@@ -1,3 +1,9 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
 package biotransformer.fingerprint;
 
 import java.io.BufferedReader;
@@ -4411,6 +4417,8 @@ public class ChemStructureFingerprinter {
 	 * 
 	 * @param molecule
 	 *            : The molecule of interest
+	 * @param queries
+	 *            : The dictionary of structural patterns forming the fingerprint
 	 * @return : An SFingerprint representation of the molecule
 	 * @throws Exception
 	 */
@@ -4566,6 +4574,7 @@ public class ChemStructureFingerprinter {
 	 * @param sdfInput
 	 *            : A SDF file
 	 * @throws Exception
+	 * 			: Throws an Exception
 	 */
 
 	public void serial_fingerprinter_sdf(File sdfInput) throws Exception {
@@ -4607,6 +4616,7 @@ public class ChemStructureFingerprinter {
 	 *            : a HashMap with fingerprint patterns and their SMARTS
 	 *            expressions
 	 * @throws Exception
+	 * 			: Throws an Exception
 	 */
 	public void serialAtomfingerprinterToSdf(File sdfInput,
 			LinkedHashMap<String, String> queries) throws Exception {
@@ -4695,6 +4705,7 @@ public class ChemStructureFingerprinter {
 	 * @return An array list of fingerprints for every atom of each molecule in
 	 *         the SDF file
 	 * @throws Exception
+	 * 			  : Throws an Exception
 	 */
 	public ArrayList<ArrayList<ArrayList<Integer>>> geterateSerialAtomfingerprintToArraylist(
 			File sdfInput, LinkedHashMap<String, String> queries) throws Exception {
@@ -4786,6 +4797,7 @@ public class ChemStructureFingerprinter {
 	 * @return : A string with the atom-based fingerprints of every molecule. A
 	 *         .csv file is also saved.
 	 * @throws Exception
+	 *  		  : Throws an Exception
 	 */
 
 	public String saveSerialAtomFingerprinterToCSV(File sdfInput,

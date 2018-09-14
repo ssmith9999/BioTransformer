@@ -1,3 +1,9 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
 package biotransformer.utils;
 
 import java.io.IOException;
@@ -201,10 +207,10 @@ public class ChemStructureExplorer {
 			matches = smartsPattern.getUniqueMatchingAtoms(molecule);
 			IAtomContainer structure = smartsPattern.getMatchingStructure(molecule);
 
-			for (int k = 0; k < structure.getAtomCount(); k++) {
-				System.out.println(structure.getAtom(k));
-			}
-			System.out.println(matches);
+//			for (int k = 0; k < structure.getAtomCount(); k++) {
+//				System.out.println(structure.getAtom(k));
+//			}
+//			System.out.println(matches);
 		}
 
 		return matches;
@@ -782,10 +788,10 @@ public class ChemStructureExplorer {
 				+ "$([H][#8]-[#6]-,:1-,:C([H])([H])-,:[#6;R2]=,:2[#6;R1]=,:[#6;R1]([#6;R1]=,:[#6;R1][#6;R2]=,:2[#8]-,:C-,:1([H])[#6;R1]=,:1[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1][#6;R1]=,:1)-[#8]S(=O)(=O)[#8][H]),"
 				// 8-O-Sulfate
 				+ "$([H][#8]-[#6]-,:1-,:C([H])([H])-,:[#6;R2]=,:2[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1](-[#8]S(=O)(=O)[#8][H])[#6;R2]=,:2[#8]-,:C-,:1([H])[#6;R1]=,:1[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1][#6;R1]=,:1),"
-				// 4'-O-Glucuronide
-				+ "$([H]C-,:1([H])-,:[#6;R2]=,:2[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1][#6;R2]=,:2[#8]-,:C([H])([#6;R1]=,:2[#6;R1]=,:[#6;R1][#6;R1](=,:[#6;R1][#6;R1]=,:2)-[#8]-[#6]-2-[#8]-[#6](-[#6](-[#8])-[#6](-[#8])-[#6]-2-[#8])-[#6](-[#8])=O)-,:[#6]-,:1[#8;A;H1X2]),"
-				// 5-O-Glucuronide
-				+ "$([H]C-,:1([H])-,:[#6;R2]2=,:[#6;R2]([#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1]2-[#8]-[#6]-2-[#8]-[#6](-[#6](-[#8])-[#6](-[#8])-[#6]-2-[#8])-[#6](-[#8])=O)[#8]-,:C([H])([#6;R1]=,:2[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1][#6;R1]=,:2)-,:[#6]-,:1[#8;A;H1X2]),"
+//				// 4'-O-Glucuronide
+//				+ "$([H]C-,:1([H])-,:[#6;R2]=,:2[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1][#6;R2]=,:2[#8]-,:C([H])([#6;R1]=,:2[#6;R1]=,:[#6;R1][#6;R1](=,:[#6;R1][#6;R1]=,:2)-[#8]-[#6]-2-[#8]-[#6](-[#6](-[#8])-[#6](-[#8])-[#6]-2-[#8])-[#6](-[#8])=O)-,:[#6]-,:1[#8;A;H1X2]),"
+//				// 5-O-Glucuronide
+//				+ "$([H]C-,:1([H])-,:[#6;R2]2=,:[#6;R2]([#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1]2-[#8]-[#6]-2-[#8]-[#6](-[#6](-[#8])-[#6](-[#8])-[#6]-2-[#8])-[#6](-[#8])=O)[#8]-,:C([H])([#6;R1]=,:2[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1][#6;R1]=,:2)-,:[#6]-,:1[#8;A;H1X2]),"
 				// 6-O-Glucuronide
 				+ "$([H]C-,:1([H])-,:[#6;R2]=,:2[#6;R1]=,:[#6;R1]([#6;R1]=,:[#6;R1][#6;R2]=,:2[#8]-,:C([H])([#6;R1]=,:2[#6;R1]=,:[#6;R1][#6;R1]=,:[#6;R1][#6;R1]=,:2)-,:[#6]-,:1[#8;A;H1X2])-[#8]-[#6]-1-[#8]-[#6](-[#6](-[#8])-[#6](-[#8])-[#6]-1-[#8])-[#6](-[#8])=O),"
 				 // 8-O-Glucuronide
@@ -1433,8 +1439,9 @@ public class ChemStructureExplorer {
 		
 		
 //		properties.put("XLogP", xlogp.toString());
-		properties.put("ALogP", alogp.toString().split(",")[0]);
 		properties.put("Major Isotope Mass" , majorIsotopeMass.toString());
+		properties.put("ALogP", alogp.toString().split(",")[0]);
+		
 //		properties.put("Molecular weight" , weight.toString());
 		return properties;
 		

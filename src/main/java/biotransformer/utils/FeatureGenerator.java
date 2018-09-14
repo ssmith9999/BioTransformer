@@ -4,7 +4,8 @@ package biotransformer.utils;
  * This class implements several functions to generate the different features of molecules,
  * including separate functions for atomic and molecular features generation, 
  * and a function used to read and preprocess the molecules from a chemical file.
- * @author Zheng Shi; Yannick Djoumbou Feunang
+ *
+ * @author Yannick Djoumbou Feunang
  *
  */
 import java.io.File;
@@ -400,20 +401,20 @@ public class FeatureGenerator {
 		 * This function is used to generate the atomic features for the molecules
 		 * contained in the input file.
 		 * 
-		 * @param input_path
-		 *            : path of the file which contains the input molecules
+		 * @param containers
+		 *            : IAtomContainerSet, which contains the input molecules
 		 * @return String representation of atomic features where each feature is separated by a comma
 		 * @throws CDKException
 		 * @throws IOException
 		 */
-		public ArrayList<ArrayList<String>> generateAtomicFeatures(IAtomContainerSet set)
+		public ArrayList<ArrayList<String>> generateAtomicFeatures(IAtomContainerSet containers)
 				throws CDKException, IOException {
 			ArrayList<ArrayList<String>> result = new ArrayList<ArrayList<String>>();
 			Aromaticity aromaticity = new Aromaticity(ElectronDonation.cdk(), Cycles.all());
 			int i,j,length;
-			int l=set.getAtomContainerCount();
+			int l=containers.getAtomContainerCount();
 			for(i=0;i<l;i++) {
-				IAtomContainer container = set.getAtomContainer(i);
+				IAtomContainer container = containers.getAtomContainer(i);
 				CDKHydrogenAdder adder = CDKHydrogenAdder.getInstance(container.getBuilder());
 				AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(container);
 				adder.addImplicitHydrogens(container);

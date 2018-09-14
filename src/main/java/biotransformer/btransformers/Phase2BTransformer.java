@@ -2,7 +2,7 @@
  * This class implements the class of phase II biotransformers, which simulate the transformation of molecules
  * by phase II enzymes.
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 
@@ -667,7 +667,7 @@ public class Phase2BTransformer extends Biotransformer{
 //		System.out.println(this.reactionsByGroups.get("cypReactions").size());
 		int count = 0;
 		for(Enzyme e: this.enzymesList){
-			System.out.println(e.getName() + " : " + e.getReactionsNames().size());
+//			System.out.println(e.getName() + " : " + e.getReactionsNames().size());
 			count = count + e.getReactionsNames().size();
 		}
 		System.out.println("Humber of enzymes: " + this.enzymesList.size());

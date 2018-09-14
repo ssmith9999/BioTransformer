@@ -1,3 +1,9 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
 package biotransformer.utils;
 
 import java.io.FileNotFoundException;
@@ -93,106 +99,8 @@ public class HumanSuperBioTransformer {
 //		System.err.println(this.combinedReactionsHash.containsKey("EAWAG_RULE_BT0008"));
 	}
 
-
-//	public ArrayList<Biotransformation> simulateHumanMetabolism(IAtomContainer target) throws Exception{
-//		 ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
-//		 
-//		 IAtomContainer molecule = this.ecb.standardizeMoleculeWithCopy(target);
-//		 AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
-//		 IAtomContainerSet products = DefaultChemObjectBuilder
-//					.getInstance().newInstance(IAtomContainerSet.class);
-//		 
-//		 products.addAtomContainer(molecule);
-//
-//		 
-////		/*
-////		 *  Apply ECBased
-////		 */		 
-////
-////		 biotransformations.addAll(this.ecb.simulateECBasedMetabolism(molecule, true, true, 0.0));
-////		 products.add(this.ecb.extractAtomContainer(biotransformations));
-////		 products = ChemStructureExplorer.uniquefy(products);
-////		 System.out.println("Number of EC-based biotransformations after first pass: " + biotransformations.size());
-//		 
-//		 
-//		if(!(ChemicalClassFinder.isEtherLipid(molecule) || ChemicalClassFinder.isGlyceroLipid(molecule) || ChemicalClassFinder.isGlycerophosphoLipid(molecule) ||
-//				ChemicalClassFinder.isSphingoLipid(molecule))) {
-//			 
-//			/*
-//			 *  Apply CYP450 metabolism
-//			 */	 
-//			 ArrayList<Biotransformation> cyp450Biots = new  ArrayList<Biotransformation>();
-//			 for(IAtomContainer met : products.atomContainers()){
-//				 System.out.println("predicting CYP450 metabolites for: " + this.ecb.smiGen.create(met));
-//				 cyp450Biots.addAll(this.cyb.predictCyp450Biotransformations(met, true, true, 0.5));
-//			 }
-//			 IAtomContainerSet cyp450Prods = this.ecb.extractAtomContainer(cyp450Biots);
-//			 products.add(cyp450Prods);
-//			 products = ChemStructureExplorer.uniquefy(products);
-//			 biotransformations.addAll(cyp450Biots);
-//			 System.out.println("Number of CYP450 biotransformations: " + cyp450Biots.size());
-//			 System.out.println("Number of CYP450 products: " + cyp450Prods.getAtomContainerCount());
-//			 
-//			 
-//			/*
-//			 *  Apply ECBased
-//			 *  Some products of CYP450 might be unstable, such as epoxides, and will be further transformed
-//			 */		 
-//			 ArrayList<Biotransformation> ecBiotsSecondPass = new  ArrayList<Biotransformation>();
-//			 for(IAtomContainer atc : cyp450Prods.atomContainers()){
-//				 ecBiotsSecondPass.addAll(this.ecb.simulateECBasedPhaseIMetabolism(atc, true, true, 0.0));
-//
-//			 }
-//			 biotransformations.addAll(ecBiotsSecondPass);
-//			 products.add(this.ecb.extractAtomContainer(ecBiotsSecondPass));
-//			 products = ChemStructureExplorer.uniquefy(products);
-//			
-//			 System.out.println("Number of EC-based biotransformations during second pass: " + ecBiotsSecondPass.size());
-//			 
-////			/*
-////			 *  Apply Phase II metabolism
-////			 */		 
-////			 ArrayList<Biotransformation> phaseIIBiots = new  ArrayList<Biotransformation>();
-////			 phaseIIBiots.addAll(this.p2b.applyPhaseIITransformationsChainAndReturnBiotransformations(products, true, true, 2, 0.5));
-////			 products.add(this.ecb.extractAtomContainer(phaseIIBiots));
-////			 biotransformations.addAll(phaseIIBiots);
-////			 System.out.println("Number of PhaseII biotransformations: " + phaseIIBiots.size());
-//					 
-//			/*
-//			 *  Apply Human gut metabolism
-//			 */
-//			 ArrayList<Biotransformation> hGutBiots = new  ArrayList<Biotransformation>();
-//			 hGutBiots.addAll(this.hgb.simulateGutMicrobialMetabolism(products, false, true, 6, 0.5));
-//			 System.out.println("Number of human gut biotransformations: " + hGutBiots.size());
-//			 biotransformations.addAll(hGutBiots);
-//			 products.add(this.ecb.extractAtomContainer(hGutBiots));
-//			 products = ChemStructureExplorer.uniquefy(products);
-//			 
-//			/*
-//			 *  Apply Phase II metabolism
-//			 */		 
-//			 ArrayList<Biotransformation> phaseIIBiots = new  ArrayList<Biotransformation>();
-//			 phaseIIBiots.addAll(this.p2b.applyPhaseIITransformationsChainAndReturnBiotransformations(products, true, true, 1, 0.5));
-//			 products.add(this.ecb.extractAtomContainer(phaseIIBiots));
-//			 products = ChemStructureExplorer.uniquefy(products);
-//			 biotransformations.addAll(phaseIIBiots);
-//			 System.out.println("Number of PhaseII biotransformations: " + phaseIIBiots.size());				
-//			
-//		} else {
-//			biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolism(molecule, true, true, 0.0));
-//			
-//		}
-//
-//		 
-//
-//		 return biotransformations;
-//
-//
-//		 
-//	}
-//
 	
-	public ArrayList<Biotransformation> simulateHumanAndGutMicrobialMetabolism(IAtomContainer target) throws Exception{
+	public ArrayList<Biotransformation> simulateHumanSuperbioMetabolism(IAtomContainer target) throws Exception{
 		 ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		 
 //		 	System.out.println("Is Biotransformer valid: " + ChemStructureExplorer.isBioTransformerValid(target));
@@ -249,9 +157,9 @@ public class HumanSuperBioTransformer {
 					 biotransformations.addAll(cyp450Biots);
 //					 System.out.println("Number of CYP450 biotransformations: " + cyp450Biots.size());
 					 System.out.println("Number of CYP450 products: " + cyp450Prods.getAtomContainerCount());
-					 for(IAtomContainer a : cyp450Prods.atomContainers()){
-						 System.out.println(this.smiGen.create(a));
-					 }
+//					 for(IAtomContainer a : cyp450Prods.atomContainers()){
+//						 System.out.println(this.smiGen.create(a));
+//					 }
 					 
 					 System.out.println("products: " + products.getAtomContainerCount());
 					 
@@ -318,8 +226,8 @@ public class HumanSuperBioTransformer {
 						 }
 					 }
 					 
-					 System.out.println(hGutSubstrates == null);
-					 System.out.println(hGutSubstrates.getAtomContainerCount());
+//					 System.out.println(hGutSubstrates == null);
+//					 System.out.println(hGutSubstrates.getAtomContainerCount());
 					 ArrayList<Biotransformation> hGutBiots = new  ArrayList<Biotransformation>();
 					 hGutBiots.addAll(this.hgb.simulateGutMicrobialMetabolismHydrolysisAndReduction(hGutSubstrates, true, true, 8, 0.1));
 					 System.out.println("Number of human gut biotransformations: " + hGutBiots.size());
@@ -356,7 +264,7 @@ public class HumanSuperBioTransformer {
 						 /*
 						 *  Apply Phase II metabolism
 						 */	 
-						 System.out.println("Predicting Phase 2 metabolism for " + phaseIISubstrates.getAtomContainerCount());
+						System.out.println("Predicting Phase 2 metabolism for " + phaseIISubstrates.getAtomContainerCount());
 						System.out.println("\n\n===========================================");
 						System.out.println("Predicting human phase 2 metabolism");
 						System.out.println("===========================================\n\n");
@@ -368,14 +276,142 @@ public class HumanSuperBioTransformer {
 						 System.out.println("Number of PhaseII biotransformations: " + phaseIIBiots.size() + "\n\n\n");				
 					 }
 
-				} else {
+				}
+					
+				else {
+//					System.out.println("\n\n===========================================");
+//					System.out.println("Predicting EC metabolism");
+//					System.out.println("===========================================\n\n");
+//					ArrayList<Biotransformation> ecBiots = this.ecb.simulateECBasedMetabolismChain(molecule, true, true, 1, 0.1);
+//					biotransformations.addAll(ecBiots);
+//					System.out.println("Number of EC biotransformations: " + ecBiots.size() + "\n\n\n");
+
+					
+//						 System.out.println("Predicting EC  metabolism round 1");
+					/*
+					 *  Apply ECBased
+					 */		 
+					
 					System.out.println("\n\n===========================================");
 					System.out.println("Predicting EC metabolism");
 					System.out.println("===========================================\n\n");
-					ArrayList<Biotransformation> ecBiots = this.ecb.simulateECBasedMetabolismChain(molecule, true, true, 1, 0.1);
-					biotransformations.addAll(ecBiots);
-					System.out.println("Number of EC biotransformations: " + ecBiots.size() + "\n\n\n");
-					
+					System.out.println("Smiles before EC-based simulation: " + this.smiGen.create(molecule));
+					 biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolismChain(molecule, true, true, 1, 0.1));
+					 products.add(this.ecb.extractAtomContainer(biotransformations));
+					 products = ChemStructureExplorer.uniquefy(products);
+					 System.out.println("Number of EC-based biotransformations after first pass: " + biotransformations.size());
+
+					 /*
+					 *  Apply ECBased
+					 *  Some products of CYP450 might be unstable, such as epoxides, and will be further transformed.
+					 *  
+					 *  !!!!!!!! MAKE SURE THESE DO NOT INCLUDE HYDROLYSIS REATIONS AND SOME OTHERS. THAT OFTEN DO NOT OCCUR AFTER CYP450
+					 */		 
+					 
+					 LinkedHashMap<String, IAtomContainerSet> partitionedMolecules = this.p2filter.partitionSetForPhaseIIMetabolism(products);
+					 
+					 phaseIISubstrates.add(partitionedMolecules.get("phaseIISubstrates"));
+					 phaseIINonSubstrates.add(partitionedMolecules.get("phaseIINonSubstrates"));
+					 
+					 System.out.println("phaseIISubstrates: " + phaseIISubstrates.getAtomContainerCount());
+					 
+//					 if	(phaseIINonSubstrates.getAtomContainerCount()>0){
+//						System.out.println("\n\n===========================================");
+//						System.out.println("Predicting EC metabolism - 2nd pass");
+//						System.out.println("===========================================\n\n");
+//						 ArrayList<Biotransformation> ecBiotsSecondPass = new  ArrayList<Biotransformation>();
+//						 ecBiotsSecondPass = this.ecb.simulateECBasedPhaseIMetabolismChain(partitionedMolecules.get("phaseIINonSubstrates"), true, true, 1, 0.1);
+//						 biotransformations.addAll(ecBiotsSecondPass);
+//						 IAtomContainerSet ecBiotsSecondPassProducts = this.ecb.extractAtomContainer(ecBiotsSecondPass);					 
+//						 products.add(ecBiotsSecondPassProducts);
+//						 products = ChemStructureExplorer.uniquefy(products);
+//						 
+//						 /*
+//						  *   Only the ones suitable for phaseII will land into the gut
+//						  */
+//						 
+//						 LinkedHashMap<String, IAtomContainerSet> partitionedMoleculesAfterEC2 = this.p2filter.partitionSetForPhaseIIMetabolism(ecBiotsSecondPassProducts);
+////							 System.out.print("partitionedMoleculesAfterEC2");
+////							 System.out.print("phaseIISubstrates" + partitionedMoleculesAfterEC2.get("phaseIISubstrates").getAtomContainerCount());
+////							 System.out.print("phaseIINonSubstrates" + partitionedMoleculesAfterEC2.get("phaseIINonSubstrates").getAtomContainerCount());
+//						 
+//						 phaseIISubstrates.add(partitionedMoleculesAfterEC2.get("phaseIISubstrates"));
+//						 
+//						 phaseIINonSubstrates.add(partitionedMoleculesAfterEC2.get("phaseIINonSubstrates"));	
+////							 System.out.println("Number of EC-based biotransformations during second pass: " + ecBiotsSecondPass.size());
+////							 System.out.println("Number of EC-based metabolites during second pass: " + ecBiotsSecondPassProducts.getAtomContainerCount());
+//					 }
+					 
+
+					 System.out.println("Predicting human gut metabolism of " + products.getAtomContainerCount() + " metabolites");
+					/*
+					 *  Apply Human gut metabolism
+					 */
+					 
+//						 for(IAtomContainer atc : products.atomContainers()){
+//							 System.out.println(this.ecb.smiGen.create(atc));
+//						 }
+					 
+					 IAtomContainerSet hGutSubstrates = phaseIISubstrates;
+					 
+					 for(IAtomContainer a : phaseIINonSubstrates.atomContainers()){
+						 /*
+						  * add some large molecules, such as tannins, which can be degraded by bacteria
+						  */
+						 if(ChemStructureExplorer.getMajorIsotopeMass(a) >= 900.0){
+							 hGutSubstrates.addAtomContainer(a);
+						 }
+					 }
+					 
+//					 System.out.println(hGutSubstrates == null);
+//					 System.out.println(hGutSubstrates.getAtomContainerCount());
+					 ArrayList<Biotransformation> hGutBiots = new  ArrayList<Biotransformation>();
+					 hGutBiots.addAll(this.hgb.simulateGutMicrobialMetabolismHydrolysisAndReduction(hGutSubstrates, true, true, 1, 0.1));
+					 System.out.println("Number of human gut biotransformations: " + hGutBiots.size());
+					 biotransformations.addAll(hGutBiots);
+					 IAtomContainerSet hGutProducts = this.ecb.extractAtomContainer(hGutBiots);
+					 System.out.println("Number of human gut metabolites: " + hGutProducts.getAtomContainerCount());
+					 products.add(hGutProducts);
+//						 products = ChemStructureExplorer.uniquefy(products);
+					 
+					 LinkedHashMap<String, IAtomContainerSet> partitionedMoleculesAfterHGut = this.p2filter.partitionSetForPhaseIIMetabolism(hGutProducts);
+					 
+					 phaseIISubstrates.add(partitionedMoleculesAfterHGut.get("phaseIISubstrates"));
+					 phaseIINonSubstrates.add(partitionedMoleculesAfterHGut.get("phaseIINonSubstrates"));
+					 
+					 phaseIISubstrates = ChemStructureExplorer.uniquefy(phaseIISubstrates);
+					 
+//						 System.out.println("Predicting phase II metabolism of " + phaseIISubstrates.getAtomContainerCount() + " out of " + products.getAtomContainerCount());
+					 
+//						 for(IAtomContainer atomc : phaseIISubstrates.atomContainers()){
+//							 System.out.println(this.smiGen.create(atomc));
+//						 }
+					 
+					 
+					 if(phaseIISubstrates.getAtomContainerCount()>0){
+						 
+//							 IAtomContainerSet phase2Cadidates = this.p2filter.returnFilteredPhaseIICandidates(products);
+						 
+//							 System.out.println("Predicting phase II metabolism of " + phaseIISubstrates.getAtomContainerCount() + " out of " + products.getAtomContainerCount());
+						
+//							 for(IAtomContainer atc : phaseIISubstrates.atomContainers()){
+//								 System.out.println(this.ecb.smiGen.create(atc));
+//							 }
+						 
+						 /*
+						 *  Apply Phase II metabolism
+						 */	 
+						System.out.println("Predicting Phase 2 metabolism for " + phaseIISubstrates.getAtomContainerCount() + " metabolites.");
+						System.out.println("\n\n===========================================");
+						System.out.println("Predicting human phase 2 metabolism");
+						System.out.println("===========================================\n\n");
+						 ArrayList<Biotransformation> phaseIIBiots = new  ArrayList<Biotransformation>();
+						 phaseIIBiots.addAll(this.p2b.applyPhase2TransformationsChainAndReturnBiotransformations(phaseIISubstrates, true, true, true, 1, 0.1));
+						 products.add(this.ecb.extractAtomContainer(phaseIIBiots));
+						 products = ChemStructureExplorer.uniquefy(products);
+						 biotransformations.addAll(phaseIIBiots);
+						 System.out.println("Number of PhaseII biotransformations: " + Utilities.selectUniqueBiotransformations(phaseIIBiots).size() + "\n\n\n");				
+					 }
 				}
 
 			}
@@ -389,17 +425,17 @@ public class HumanSuperBioTransformer {
 		 return uniqueBiotransformations;
 	}
 
-	public void simulateHumanAndGutMicrobialMetabolismAndSaveToSDF(IAtomContainer molecule, String outputFileName, boolean annotate) throws Exception{
-		ArrayList<Biotransformation> biotransformations = this.simulateHumanAndGutMicrobialMetabolism(molecule);
+	public void simulateHumanSuperbioMetabolismAndSaveToSDF(IAtomContainer molecule, String outputFileName, boolean annotate) throws Exception{
+		ArrayList<Biotransformation> biotransformations = this.simulateHumanSuperbioMetabolism(molecule);
 
 		this.ecb.saveBioTransformationProductsToSdf(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
 	}
 		
-	public void simulateHumanAndGutMicrobialMetabolismFromSDF(String inputFileName, boolean annotate) throws Exception {
-		simulateHumanAndGutMicrobialMetabolismFromSDF(inputFileName, "data", annotate);
+	public void simulateHumanSuperbioMetabolismFromSDF(String inputFileName, boolean annotate) throws Exception {
+		simulateHumanSuperbioMetabolismFromSDF(inputFileName, "data", annotate);
 	}
 	
-	public void simulateHumanAndGutMicrobialMetabolismFromSDF(String inputFileName, String outputFolder, boolean annotate) throws Exception {
+	public void simulateHumanSuperbioMetabolismFromSDF(String inputFileName, String outputFolder, boolean annotate) throws Exception {
 		
 		IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 		int nr = 0;
@@ -421,7 +457,7 @@ public class HumanSuperBioTransformer {
 						}
 					}
 					identifier = identifier.replace(":", "-").replace("/", "_");
-					this.simulateHumanAndGutMicrobialMetabolismAndSaveToSDF(molecule, outputFolder + "/" + identifier + "_BioT_sim_metabolites.sdf", annotate);
+					this.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule, outputFolder + "/" + identifier + "_BioT_sim_metabolites.sdf", annotate);
 
 				}
 				catch(Exception e){
@@ -433,7 +469,7 @@ public class HumanSuperBioTransformer {
 		
 	}
 	
-	public void  simulateHumanMetabolismAndSaveToSDF(IAtomContainerSet containers, String outputFolder, boolean annotate) throws Exception {
+	public void  simulateHumanSuperbioMetabolismAndSaveToSDF(IAtomContainerSet containers, String outputFolder, boolean annotate) throws Exception {
 		int nr = 0;
 		if(!containers.isEmpty()){
 			for(IAtomContainer molecule : containers.atomContainers()){
@@ -454,7 +490,7 @@ public class HumanSuperBioTransformer {
 						}
 					}
 					identifier = identifier.replace(":", "-").replace("/", "_");
-					this.simulateHumanAndGutMicrobialMetabolismAndSaveToSDF(molecule, outputFolder + "/" + identifier + "_BioT_sim_metabolites.sdf", annotate);
+					this.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule, outputFolder + "/" + identifier + "_BioT_sim_metabolites.sdf", annotate);
 
 				}
 				catch(Exception e){
@@ -466,11 +502,124 @@ public class HumanSuperBioTransformer {
 		}		
 	}
 	
+	
+	
+	
+	public void simulateHumanSuperbioMetabolismAndSaveToCSV(IAtomContainer molecule, String outputFileName, boolean annotate) throws Exception{
+		ArrayList<Biotransformation> biotransformations = this.simulateHumanSuperbioMetabolism(molecule);
+
+		this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+	}
+		
+	
+//	public void  simulateHumanMetabolismAndSaveToCSV(IAtomContainerSet containers, String outputFolder, boolean annotate) throws Exception {
+//		int nr = 0;
+//		if(!containers.isEmpty()){
+//			for(IAtomContainer molecule : containers.atomContainers()){
+//
+//				try{
+//					String identifier = molecule.getProperty(CDKConstants.TITLE);
+//					if(identifier == null){
+//						identifier = molecule.getProperty("Name");
+//						if(identifier == null){
+//							identifier = molecule.getProperty("$MolName"); 
+//							if(identifier == null){
+//								identifier = molecule.getProperty("InChiKey");
+//								if(identifier == null){
+//									identifier = this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
+//								}
+//							}
+//
+//						}
+//					}
+//					identifier = identifier.replace(":", "-").replace("/", "_");
+//					this.simulateHumanAndGutMicrobialMetabolismAndSaveToCSV(molecule, outputFolder + "/" + identifier + "_BioT_sim_metabolites.sdf", annotate);
+//
+//				}
+//				catch(Exception e){
+//					System.err.println("Could not predicted metabolism for molecule nr. " + nr);
+//					System.err.println(e.getLocalizedMessage());
+//				}
+//
+//			}
+//		}		
+//	}
+	
+	
+	
+	public ArrayList<Biotransformation>  simulateAllHumanMetabolism(IAtomContainerSet containers, double scoreThreshold) throws Exception {
+		int nr = 0;
+		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+		if(!containers.isEmpty()){
+			for(IAtomContainer molecule : containers.atomContainers()){
+
+				try{
+					biotransformations.addAll(simulateOneStepAllHuman(molecule, scoreThreshold));
+				}
+				catch(Exception e){
+					System.err.println("Could not predicted metabolism for molecule nr. " + nr);
+					System.err.println(e.getLocalizedMessage());
+				}
+
+			}
+		}
+		return biotransformations;
+	}
+	
+
+	
+	
+	public void simulateAllHumanMetabolismAndSavetoCSV(IAtomContainer molecule, String outputFileName, double scoreThreshold, boolean annotate) throws Exception {
+		try{
+			ArrayList<Biotransformation> biotransformations = simulateOneStepAllHuman(molecule, scoreThreshold);
+			this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}
+
+	
+	public void simulateAllHumanMetabolismAndSavetoSDF(IAtomContainer molecule, String outputFileName, double scoreThreshold, boolean annotate) throws Exception {
+		try{
+			ArrayList<Biotransformation> biotransformations = simulateOneStepAllHuman(molecule, scoreThreshold);
+			this.ecb.saveBioTransformationProductsToSdf(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}
+	
+	
+	
+	
+	public void simulateAllHumanMetabolismAndSavetoCSV(IAtomContainerSet containers, String outputFileName, double scoreThreshold, boolean annotate) throws Exception {
+		try{
+			ArrayList<Biotransformation> biotransformations = simulateAllHumanMetabolism(containers, scoreThreshold);
+			this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}
+
+	
+	public void simulateAllHumanMetabolismAndSavetoSDF(IAtomContainerSet containers, String outputFileName, double scoreThreshold, boolean annotate) throws Exception {
+		try{
+			ArrayList<Biotransformation> biotransformations = simulateAllHumanMetabolism(containers, scoreThreshold);
+			this.ecb.saveBioTransformationProductsToSdf(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}
+	
+
 	public LinkedHashMap<String, IAtomContainerSet> partitionSetForPhaseIIMetabolism(IAtomContainerSet products) throws CDKException, Exception{
 		return this.p2filter.partitionSetForPhaseIIMetabolism(products);
 	}
 	
-	public void simulateHumanMetabolismFromSDFtoSingleSDF(String inputFileName, String outputFileName, boolean annotate) throws Exception {
+	public void simulateHumanSuperbioMetabolismFromSDFtoSingleSDF(String inputFileName, String outputFileName, boolean annotate) throws Exception {
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 				
 		int nr = 0;
@@ -496,7 +645,7 @@ public class HumanSuperBioTransformer {
 						}
 					}
 					
-					ArrayList<Biotransformation> bts = this.simulateHumanAndGutMicrobialMetabolism(molecule);
+					ArrayList<Biotransformation> bts = this.simulateHumanSuperbioMetabolism(molecule);
 					System.out.println(bts.size() + " biotransformations");
 					biotransformations.addAll(bts); 	
 				}
@@ -509,6 +658,47 @@ public class HumanSuperBioTransformer {
 //		this.ecb.saveBioTransformationsToSDF(biotransformations, outputFileName);
 		this.ecb.saveBioTransformationProductsToSdf(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
 	}	
+	
+	
+	public void simulateHumanSuperbioMetabolismFromSDFtoSingleCSV(String inputFileName, String outputFileName, boolean annotate) throws Exception {
+		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+				
+		int nr = 0;
+		IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+		if(!containers.isEmpty()){
+			for(IAtomContainer molecule : containers.atomContainers()){
+				nr++;
+				System.out.println("molecule nr. " +nr);
+				
+				try{
+					String identifier = molecule.getProperty(CDKConstants.TITLE);
+					if(identifier == null){
+						identifier = molecule.getProperty("Name");
+						if(identifier == null){
+							identifier = molecule.getProperty("$MolName"); 
+							if(identifier == null){
+								identifier = molecule.getProperty("InChiKey");
+								if(identifier == null){
+									identifier = this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
+								}
+							}
+
+						}
+					}
+					
+					ArrayList<Biotransformation> bts = this.simulateHumanSuperbioMetabolism(molecule);
+					System.out.println(bts.size() + " biotransformations");
+					biotransformations.addAll(bts); 	
+				}
+				catch(Exception e){
+					System.err.println("Could not predicted metabolism for molecule nr. " + nr);
+					System.err.println(e.getLocalizedMessage());
+				}
+			}	
+		}
+//		this.ecb.saveBioTransformationsToSDF(biotransformations, outputFileName);
+		this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+	}
 	
 	
 	public ArrayList<Biotransformation> simulateOneStepAllHuman(IAtomContainer target) throws Exception{
@@ -794,6 +984,25 @@ public class HumanSuperBioTransformer {
 	public IAtomContainerSet extractAtomContainerWithTransformationData(ArrayList<Biotransformation> biotransformations, boolean annotate) throws Exception{
 		return this.ecb.extractAtomContainerWithTransformationData(biotransformations, this.combinedReactionsHash, annotate);
 	}
+	
+	public void saveBioTransformationProductsToSdf(ArrayList<Biotransformation> biotransformations, String outputFileName, boolean annotate) throws Exception {
+		try{
+			this.ecb.saveBioTransformationProductsToSdf(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}
+	public void saveBioTransformationProductsToCSV(ArrayList<Biotransformation> biotransformations, String outputFileName, boolean annotate) throws Exception {
+		try{
+			this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}	
+	
+	
 	
 //	public IAtomContainerSet extractAtomContainerWithTransformationData(ArrayList<Biotransformation> biotransformations) throws Exception{
 ////		AtomContainerSet acontainers = new AtomContainerSet();

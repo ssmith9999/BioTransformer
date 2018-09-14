@@ -1,11 +1,24 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
 package biotransformer.utils;
 
 import java.io.BufferedReader;
+import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
+import java.io.FileWriter;
 import java.io.IOException;
+import java.io.OutputStreamWriter;
+import java.io.Writer;
+import java.nio.file.Path;
+import java.nio.file.Paths;
+import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
 import org.apache.commons.io.FilenameUtils;
@@ -24,6 +37,13 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+
+import org.apache.commons.csv.CSVFormat;
+import org.apache.commons.csv.CSVPrinter;
+
+import biotransformer.transformation.Biotransformation;
+import biotransformer.transformation.MetabolicReaction;
+ 
 
 
 public class FileUtilities {
@@ -166,6 +186,48 @@ public class FileUtilities {
 		sdfWriter.close();
 	}
 
+	
+	
+	public static void saveAtomContainerSetsToCSV(IAtomContainerSet products, String outputFileName) throws Exception{
+
+		LinkedHashMap<Object, Object> properties = new LinkedHashMap<Object, Object>();
+		
+		if(products.getAtomContainerCount() > 0){
+			
+		}
+		
+		try{
+			
+			if(products.getAtomContainerCount() > 0){				
+				
+				ArrayList<String> header = new ArrayList<String>();	
+				for( Object prop : products.getAtomContainer(0).getProperties().keySet()){
+					header.add(String.valueOf(prop));
+				}
+				FileWriter fWriter = new FileWriter(outputFileName);
+				CSVPrinter csvPrinter 	= new CSVPrinter(fWriter, CSVFormat.DEFAULT);
+				csvPrinter.printRecord(header);
+				for(IAtomContainer atc : products.atomContainers()){
+					ArrayList<String> props = new ArrayList<String>();
+					for (int k = 0; k < header.size(); k++){
+						props.add((String) atc.getProperty(header.get(k)));
+					}
+					csvPrinter.printRecord(props);
+				}				
+				csvPrinter.flush();
+				System.out.println("The results were saved to the following file: " + outputFileName + "\n");
+			}
+			else{
+				System.out.println("The number of metabolites to save is " + (products.getAtomContainerCount()));
+			}
+	 
+		}catch (Exception e) {
+			
+			e.printStackTrace();
+
+		}	
+		
+	}
 	
 	public static void saveAtomContainersToSDF(IAtomContainerSet containers, String outputFileName) throws CDKException, IOException{
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputFileName));		

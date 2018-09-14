@@ -1,7 +1,7 @@
 /**
  * This class implements the class of metabolic enzymes.
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 

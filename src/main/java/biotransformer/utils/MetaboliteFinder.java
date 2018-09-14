@@ -1,3 +1,9 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
 package biotransformer.utils;
 
 import java.io.FileOutputStream;
@@ -56,6 +62,11 @@ public class MetaboliteFinder{
 		sdfWriter.close();
 	}
 	
+	public void findAllHumanMetabolitesToCSV(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, String outputFileName, FinderOption opt) throws Exception{		
+		IAtomContainerSet metabolites = findAllHumanMetabolites(startingCompound, mass_formulas, massTolerance, nrOfSteps, annotate, opt);
+		FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputFileName);
+	}
+	
 	public IAtomContainerSet findAllHumanMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, FinderOption opt) throws Exception{
 		ArrayList<Biotransformation> allBiotransformations = new ArrayList<Biotransformation>();
 		
@@ -98,7 +109,7 @@ public class MetaboliteFinder{
 			IAtomContainerSet extractedCompounds = this.hsbt.extractAtomContainerWithTransformationData(currentBioT, annotate);
 			allBiotransformations.addAll(currentBioT);
 			currentCompounds.removeAllAtomContainers();
-			currentCompounds.add(extractedCompounds);
+			currentCompounds.add(ChemStructureExplorer.uniquefy(extractedCompounds));
 			
 			for(IAtomContainer a : currentCompounds.atomContainers()){
 				inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
@@ -133,6 +144,11 @@ public class MetaboliteFinder{
 				if(opt == FinderOption.FORMULA){
 					IMolecularFormula formula1 = MolecularFormulaManipulator.getMolecularFormula(mass_formulas.get(k), this.builder);
 					for(IAtomContainer a : extractedCompounds.atomContainers()){ 
+						if(a.getProperty("Molecular formula") == null){
+							a.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(a));
+						}
+						System.out.println("A: " + MolecularFormulaManipulator.getString(formula1));
+						System.out.println("B: " + a.getProperty("Molecular formula").toString());
 						if(MolecularFormulaManipulator.getString(formula1).contentEquals(a.getProperty("Molecular formula").toString().trim())){
 							System.out.println(a.getProperty("Molecular formula").toString().trim());
 							massFormulaToMolecules.get(mass_formulas.get(k)).addAtomContainer(a);
@@ -202,7 +218,8 @@ public class MetaboliteFinder{
 			}
 		}
 		
-		for(IAtomContainer a : filteredCompounds.atomContainers()){
+		IAtomContainerSet uniqueFilteredCompounds = ChemStructureExplorer.uniquefy(filteredCompounds);
+		for(IAtomContainer a : uniqueFilteredCompounds.atomContainers()){
 //			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
 			pathways.addAtomContainer(findPathway(startingCompoundStandardized, a, compoundToParents, inchikeyToContainers, annotate));
 		}		
@@ -216,6 +233,12 @@ public class MetaboliteFinder{
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputFileName));		
 		sdfWriter.write(metabolites);
 		sdfWriter.close();
+	}
+	
+	
+	public void findSuperbioMetabolitesToCSV(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, boolean annotate, String outputFileName, FinderOption opt) throws Exception{		
+		IAtomContainerSet metabolites = findSuperbioMetabolites(startingCompound, mass_formulas, massTolerance, annotate, opt);
+		FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputFileName);
 	}
 	
 	public IAtomContainerSet findSuperbioMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, boolean annotate, FinderOption opt) throws Exception{
@@ -241,7 +264,7 @@ public class MetaboliteFinder{
 		
 //		System.out.println("STARTING COMPOUND INCHIKEY: " + startingCompoundStandardized.getProperty("InChIKey"));
 		
-		allBiotransformations = this.hsbt.simulateHumanAndGutMicrobialMetabolism(startingCompoundStandardized);
+		allBiotransformations = this.hsbt.simulateHumanSuperbioMetabolism(startingCompoundStandardized);
 		IAtomContainerSet extractedCompounds = this.hsbt.extractAtomContainerWithTransformationData(allBiotransformations, annotate);
 		
 		for(IAtomContainer a : extractedCompounds.atomContainers()){
@@ -356,15 +379,24 @@ public class MetaboliteFinder{
 		}
 		
 		
-		System.out.println("Number of filtered compounds: " + filteredCompounds.getAtomContainerCount());
-		System.out.println("Number of explained masses: " + (mass_formulas.size() - remainingMassFormulas.size()) +  " out of " + mass_formulas.size() + "." );
+//		System.out.println("Number of filtered compounds: " + filteredCompounds.getAtomContainerCount());
+//		System.out.println("Number of explained masses: " + (mass_formulas.size() - remainingMassFormulas.size()) +  " out of " + mass_formulas.size() + "." );
 //		for(IAtomContainer m : filteredCompounds.atomContainers()){
 //			System.out.print(m.getProperty("InChIKey") + " ");
 //			System.out.print(compoundToParents.get((String)m.getProperty("InChIKey")).getAtomContainerCount());
 //			System.out.print(" parents\n");
 //		}
+		IAtomContainerSet uniqueFilteredCompounds = ChemStructureExplorer.uniquefy(filteredCompounds);
+		System.out.println("Number of filtered compounds: " + uniqueFilteredCompounds.getAtomContainerCount());
+		System.out.println("Number of explained masses: " + (mass_formulas.size() - remainingMassFormulas.size()) +  " out of " + mass_formulas.size() + "." );
+		ArrayList<String> explained_masses_formulas = (ArrayList<String>) mass_formulas.clone();
+		 explained_masses_formulas.removeAll(remainingMassFormulas);
 		
-		for(IAtomContainer a : filteredCompounds.atomContainers()){
+		for(int x = 0; x <  explained_masses_formulas.size(); x++){
+			System.out.println(explained_masses_formulas.get(x));
+		}
+		
+		for(IAtomContainer a : uniqueFilteredCompounds.atomContainers()){
 //			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
 			pathways.addAtomContainer(findPathway(startingCompoundStandardized, a, compoundToParents, inchikeyToContainers, annotate));
 		}		
@@ -380,6 +412,12 @@ public class MetaboliteFinder{
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputFileName));		
 		sdfWriter.write(metabolites);
 		sdfWriter.close();
+	}
+	
+	
+	public void findAllEnvMicroMetabolitesToCSV(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, String outputFileName, FinderOption opt) throws Exception{		
+		IAtomContainerSet metabolites = findAllEnvMicroMetabolites(startingCompound, mass_formulas, massTolerance, nrOfSteps, annotate, opt);
+		FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputFileName);
 	}
 	
 	public IAtomContainerSet findAllEnvMicroMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, FinderOption opt) throws Exception{
@@ -427,7 +465,7 @@ public class MetaboliteFinder{
 			IAtomContainerSet extractedCompounds = this.ebt.extractAtomContainerWithTransformationData(currentBioT, annotate);
 			allBiotransformations.addAll(currentBioT);
 			currentCompounds.removeAllAtomContainers();
-			currentCompounds.add(extractedCompounds);
+			currentCompounds.add(ChemStructureExplorer.uniquefy(extractedCompounds));
 			
 //			for(IAtomContainer a : currentCompounds.atomContainers()){
 //				inchikeyToContainers.put((String) a.getProperty("InChIKey"), a);
@@ -547,7 +585,8 @@ public class MetaboliteFinder{
 			}
 		}
 		
-		for(IAtomContainer a : filteredCompounds.atomContainers()){
+		IAtomContainerSet uniqueFilteredCompounds = ChemStructureExplorer.uniquefy(filteredCompounds);
+		for(IAtomContainer a : uniqueFilteredCompounds.atomContainers()){
 //			System.out.println(this.ebt.smiGen.create(a) + " - " + a.getProperty("Major Isotope Mass"));
 			pathways.addAtomContainer(findPathway(startingCompoundStandardized, a, compoundToParents, inchikeyToContainers, annotate));
 		}		
@@ -579,6 +618,9 @@ public class MetaboliteFinder{
 		if(annotate){
 			if(leafCompound.getProperty("Synonyms") != null){
 				String[] synonyms = ((String) leafCompound.getProperty("Synonyms")).split("\n");
+//				for(int s = 0; s < synonyms.length; s++){
+//					System.out.println(synonyms[s]);
+//				}
 				props.put(CDKConstants.TITLE, synonyms[0]);
 			}
 		}

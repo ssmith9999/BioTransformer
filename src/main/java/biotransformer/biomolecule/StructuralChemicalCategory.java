@@ -2,7 +2,7 @@
  * This class implements structure-based chemical categories, defined by a set of SMARTS 
  * patterns and/or boolean expressions.
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 

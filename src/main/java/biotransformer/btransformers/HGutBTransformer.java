@@ -3,7 +3,7 @@
  * by enzymes from microbial species found in the human gut. It implements rules and constraints extracted from or designed upon
  * (1) mining the scientific literature, (2) expert collaboration, and/or (3) experimental validation.
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 
@@ -151,11 +151,11 @@ public class HGutBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
 	 * @return an arraylist of biotransformations, which are instances of the human gut microbial reactions applied to the target, with a threshold of 0.0
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialDeconjugations(IAtomContainer target, boolean preprocess, boolean filter)
 			throws Exception {
@@ -164,11 +164,11 @@ public class HGutBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
 	 * @return an arraylist of biotransformations, which are instances of the human gut microbial reactions applied to the target, with the set minimum threshold
-	 * @throws Exception
+	 * @throws Exception -  throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialDeconjugations(IAtomContainer target, boolean preprocess, boolean filter, double scoreThreshold)
 			throws Exception {
@@ -194,13 +194,13 @@ public class HGutBTransformer extends Biotransformer {
 
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the human gut microbial metabolic reactions applied to the target, with the minimum threshold of 0.0
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialDeconjugationsChain(IAtomContainer target,
 			boolean preprocess, boolean filter, int nr_of_steps) throws Exception{
@@ -209,10 +209,10 @@ public class HGutBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the human gut microbial metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
@@ -238,9 +238,9 @@ public class HGutBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
 	 * @return an arraylist of biotransformations, which are instances of the human gut microbial reactions applied to the target, with a threshold of 0.0
 	 * @throws Exception
 	 */
@@ -251,11 +251,12 @@ public class HGutBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param scoreThreshold - minimum threshold for reaction scores
 	 * @return an arraylist of biotransformations, which are instances of the human gut microbial reactions applied to the target, with the set minimum threshold
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialReductions(IAtomContainer target, boolean preprocess, boolean filter, double scoreThreshold)
 			throws Exception {
@@ -278,13 +279,13 @@ public class HGutBTransformer extends Biotransformer {
 
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the human gut microbial metabolic reactions applied to the target, with the minimum threshold of 0.0
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialReductionsChain(IAtomContainer target,
 			boolean preprocess, boolean filter, int nr_of_steps) throws Exception{
@@ -293,13 +294,13 @@ public class HGutBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the human gut microbial metabolic reactions applied to the target, with the set minimum threshold
-	 * @throws Exception
+	 * @throws Exception -throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialReductionsChain(IAtomContainer target,
 			boolean preprocess, boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
@@ -329,11 +330,11 @@ public class HGutBTransformer extends Biotransformer {
 
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
 	 * @return an arraylist of biotransformations, which are instances of the human gut microbial reactions applied to the target, with a threshold of 0.0
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialConjugations(IAtomContainer target, boolean preprocess, boolean filter)
 			throws Exception {
@@ -342,11 +343,11 @@ public class HGutBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
 	 * @return an arraylist of biotransformations, which are instances of the human gut microbial reactions applied to the target, with the set minimum threshold
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyGutMicrobialConjugations(IAtomContainer target, boolean preprocess, boolean filter, double scoreThreshold)
 			throws Exception {

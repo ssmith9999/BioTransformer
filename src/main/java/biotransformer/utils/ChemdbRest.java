@@ -1,3 +1,10 @@
+/**
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
+ *
+ */
+
+
 package biotransformer.utils;
 
 import java.util.ArrayList;

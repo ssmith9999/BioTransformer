@@ -1,5 +1,7 @@
-.settings/
+.settings/*
 data/
 src/main/java/biotransformr/utils/ErdbTask.java
-test/
-target/
+src/test/java/biotransformer/BioTransformerTest
+src/test/java/biotransformer/ChemStructureFingerPrinterTest.java
+target/*
+.settings/org.eclipse.jdt.core.prefs

@@ -1,7 +1,8 @@
 package biotransformer.transformation;
 
 /**
- * @author Yannick Djoumbou
+ * 
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 

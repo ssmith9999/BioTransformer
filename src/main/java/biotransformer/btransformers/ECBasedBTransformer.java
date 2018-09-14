@@ -4,7 +4,7 @@
  * 
  * NC-IUBMB : Nomenclature Committee of the International Union of Biochemistry and Molecular Biology
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 package biotransformer.btransformers;
@@ -168,9 +168,10 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nrOfSteps -  number of steps
 	 * @return an arraylist of biotransformations, which are instances of the EC-based metabolic reactions applied to the target, with a threshold of 0.0
 	 * @throws Exception
 	 */
@@ -181,10 +182,10 @@ public class ECBasedBTransformer extends Biotransformer {
 
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param scoreThreshold
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param scoreThreshold - minimum score threshold for selected metbaolic reactions
 	 * @return an arraylist of biotransformations, which are instances of the EC-based metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
 	 */
@@ -217,13 +218,13 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the EC-based metabolic reactions applied to the target, with the minimum threshold of 0.0
-	 * @throws Exception
+	 * @throws Exception - Throw an exception
 	 */
 	public ArrayList<Biotransformation> applyEcBasedDeconjuationsChain(IAtomContainer target, boolean preprocess, boolean filter, int nr_of_steps)
 			throws Exception {
@@ -233,10 +234,10 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the EC-based metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
@@ -294,11 +295,11 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
 	 * @return an arraylist of biotransformations, which are instances of the EC-based metabolic reactions applied to the target, with a threshold of 0.0
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyEcBasedTransformations(IAtomContainer target, boolean preprocess, boolean filter)
 			throws Exception {
@@ -307,10 +308,10 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param scoreThreshold
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param scoreThreshold - minimum threshold for reaction scores
 	 * @return an arraylist of biotransformations, which are instances of the EC-based metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
 	 */
@@ -359,13 +360,13 @@ public class ECBasedBTransformer extends Biotransformer {
 
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the EC-based metabolic reactions applied to the target, with the minimum threshold of 0.0
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyEcBasedTransformationsChain(IAtomContainer target, boolean preprocess, boolean filter, int nr_of_steps)
 			throws Exception {
@@ -375,13 +376,13 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the EC-based metabolic reactions applied to the target, with the set minimum threshold
-	 * @throws Exception
+	 * @throws Exception - throw any exception
 	 */
 	public ArrayList<Biotransformation> applyEcBasedTransformationsChain(IAtomContainer target, boolean preprocess, boolean filter, int nr_of_steps, double scoreThreshold)
 			throws Exception {
@@ -433,10 +434,11 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param scoreThreshold
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
+	 * @param scoreThreshold - minimum threshold for reaction scores
 	 * @return an arraylist of biotransformations, which are instances of the EC-based metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
 	 */
@@ -491,10 +493,10 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the EC-based metabolic reactions applied to the target, with the minimum threshold of 0.0
 	 * @throws Exception
@@ -507,10 +509,10 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	/**
 	 * 
-	 * @param target
-	 * @param preprocess
-	 * @param filter
-	 * @param nr_of_steps
+	 * @param target - The molecule to transform
+	 * @param preprocess - specify whether to perform molecule preprocessing
+	 * @param filter - apply reaction filtering
+	 * @param nr_of_steps -  number of steps
 	 * @return an arraylist of biotransformations obtained after the specified number of steps (nr_of_steps), which are 
 	 * instances of the EC-based metabolic reactions applied to the target, with the set minimum threshold
 	 * @throws Exception
@@ -670,8 +672,8 @@ public class ECBasedBTransformer extends Biotransformer {
 	//			System.out.println("LIPID??");
 				
 				ChemicalClassName chemClassName = ChemicalClassFinder.findChemicalClass(molecule);
-	//			System.out.print("Chemical class: ");
-	//			System.out.println(chemClassName);
+				System.out.print("Chemical class: ");
+				System.out.println(chemClassName);
 				
 				if(!(chemClassName == ChemicalClassName.ETHER_LIPID || chemClassName == ChemicalClassName.GLYCEROLIPID || chemClassName == ChemicalClassName.GLYCEROPHOSPHOLIPID ||
 						chemClassName == ChemicalClassName.SPHINGOLIPID ||chemClassName == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL ||

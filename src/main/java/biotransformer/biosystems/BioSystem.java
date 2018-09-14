@@ -2,7 +2,7 @@
  * This class implements the class of biosystems. They can represent either individual
  * species/organisms or a collection thereof
  * 
- * @author Djoumbou Feunang, Yannick
+ * @author Djoumbou Feunang, Yannick, PhD
  *
  */
 package biotransformer.biosystems;
