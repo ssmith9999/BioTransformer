@@ -5,3 +5,6 @@ src/test/java/biotransformer/BioTransformerTest
 src/test/java/biotransformer/ChemStructureFingerPrinterTest.java
 target/*
 .settings/org.eclipse.jdt.core.prefs
+src/main/java/biotransformer/utils/BioTransformerDBBuilder.java
+src/main/java/biotransformer/utils/ErdbTask.java
+src/main/java/biotransformer/utils/CompoundDictionary.java
