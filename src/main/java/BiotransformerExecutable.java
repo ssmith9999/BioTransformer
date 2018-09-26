@@ -404,8 +404,8 @@ public class BiotransformerExecutable {
 			}
 			
 
-			if(commandLine.getOptionValue("n") != null){
-				nrOfSteps = Integer.valueOf(commandLine.getOptionValue("n"));
+			if(commandLine.getOptionValue("s") != null){
+				nrOfSteps = Integer.valueOf(commandLine.getOptionValue("s"));
 //				System.out.println("nrOfSteps: " + nrOfSteps);
 			}
 			
