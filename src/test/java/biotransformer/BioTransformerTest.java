@@ -223,6 +223,7 @@ public class BioTransformerTest {
 		}
 		
 		sdfWriter.close();
+		bRead.close();
 	}
 	
 	
@@ -285,6 +286,7 @@ public class BioTransformerTest {
 		}
 	
 	sdfWriter.close();
+	bRead.close();
 	}	
 	
 	

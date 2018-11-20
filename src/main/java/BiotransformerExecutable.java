@@ -223,7 +223,7 @@ public class BiotransformerExecutable {
 		final CommandLineParser cmdLineParser = new DefaultParser();
 		CommandLine commandLine = null;
 		
-		String header = "\nThis is the version 1.0.6 of BioTransformer. BioTransformer is a software tool that predicts small molecule metabolism in mammals, their gut microbiota,"
+		String header = "\nThis is the version 1.0.7 of BioTransformer. BioTransformer is a software tool that predicts small molecule metabolism in mammals, their gut microbiota,"
 				+ " as well as the soil/aquatic microbiota. BioTransformer also assists scientists in metabolite identification, based on the metabolism prediction. \n\n";
 		
 		String footer = "\n(* ) While the 'superbio' option runs a set number of transformation steps in a pre-defined order (e.g. deconjugation first, then Oxidation/reduction, etc.),"
@@ -253,15 +253,15 @@ public class BiotransformerExecutable {
 //				+ "the allHuman option predicts all possible metabolites from any applicable reaction(Oxidation, reduction, (de-)conjudation) at each step."
 //				+ "\n\n** For the environmental microbial biodegradation, all reactions (aerobic and anaerobic) are reported, and not only the aerobic biotransformations "
 //				+ "(as per default in the EAWAG BBD/PPS system)."
-//				+ "\n\n*********\nExamples:\n*********\n\n1) To predict the biotransformation of a molecule from an SDF input using the human super transformer, use java -jar biotransformer-1-0-5.jar -k pred -b superbio "
+//				+ "\n\n*********\nExamples:\n*********\n\n1) To predict the biotransformation of a molecule from an SDF input using the human super transformer, use java -jar biotransformer-1-0-7.jar -k pred -b superbio "
 //				+ "-f sdf -i #{input file name} -o #{output folder}.\n\n"
 //				+ "\t\t- For each of the query molecule in the input file, an outputfile will be created with the list of corresponding metabolites.\n\n"
 //				+ "2) To predict the 2-step biotransformation of Thymol (a monoterpene) using the human super transformer (option allHuman) using the SMILES input, run\n\n"
-//				+ "java -jar biotransformer-1-0-5.jar -k pred -b allHuman -f smiles -i \"CC(C)C1=CC=C(C)C=C1O\" -o #{replace with output file name} -s 2\n\n"
+//				+ "java -jar biotransformer-1-0-6.jar -k pred -b allHuman -f smiles -i \"CC(C)C1=CC=C(C)C=C1O\" -o #{replace with output file name} -s 2\n\n"
 //				+ "Currently, the outputfile is SDF per default.\n\n"
 //				+ "3) Identify all human metabolites (max depth = 2) of Epicatechin (\"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\") with masses 292.0946 Da and 304.0946 Da, with a mass tolerance "
 //				+ "of 0.01 Da. Provide an annotation (Common name).\n\n"
-//				+ "java -jar biotransformer-1-0-5.jar -k cid -b allHuman -f smiles -i \"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\" -o #{replace with output file name} "
+//				+ "java -jar biotransformer-1-0-6.jar -k cid -b allHuman -f smiles -i \"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\" -o #{replace with output file name} "
 //				+ "-s 2 -m \"292.0946; 304.0946\" -t 0.01 -a\n\t\t- DO NOT forget the quotes around the SMILES string or the list of masses.\n\n"
 //				+ "To report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
 //				+ "BioTransformer is offered to the public as a freely acessible software package. Beside the prediction software, a manually curated database called BioTransformerDB is also available.\n\n"
@@ -279,7 +279,7 @@ public class BiotransformerExecutable {
 		catch (MissingOptionException missingOptionException){
 			
 			if( Arrays.asList(commandLineArguments).contains("-h") || Arrays.asList(commandLineArguments).contains("--help")){
-				formatter.printHelp("\njava -jar biotransformer-1.0.6", header, options, footer, true);
+				formatter.printHelp("\njava -jar biotransformer-1.0.7", header, options, footer, true);
 			}
 			else {
 				System.out.println(missingOptionException.getLocalizedMessage());
@@ -433,10 +433,10 @@ public class BiotransformerExecutable {
 				inputFileName = commandLine.getOptionValue("imol");
 //				containers = FileUtils.parseSdf(inputFileName);
 				if(inputFileName == null){
-					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.5 --help.");
+					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
 				}
 //				if(outputF == null){
-//					throw new MissingOptionException("A destination folder must be specified when your query molecules are provided in a file (Molfile or SDF). For more information, type java -jar biotransformer-1.0.5 --help.");
+//					throw new MissingOptionException("A destination folder must be specified when your query molecules are provided in a file (Molfile or SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
 //				}
 			}
 			
@@ -444,27 +444,27 @@ public class BiotransformerExecutable {
 				inputFileName = commandLine.getOptionValue("isdf");
 //				containers = FileUtils.parseSdf(inputFileName);
 				if(inputFileName == null){
-					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.5 --help.");
+					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
 				}
 			}
 			else {
-				throw new IllegalArgumentException("You entered an invalid input format option(" + iFormat + "). It must be one of 'ismi','imol', or 'isdf'. Type java -jar biotransformer-1.0.5 --help for help.");
+				throw new IllegalArgumentException("You entered an invalid input format option(" + iFormat + "). It must be one of 'ismi','imol', or 'isdf'. Type java -jar biotransformer-1.0.7 --help for help.");
 			}
 
 			if(oFormat.contentEquals("csv")){
 				outputF = commandLine.getOptionValue("ocsv");
 				if(outputF == null){
-					throw new MissingOptionException("You must be specify an output file name (CSV). For more information, type java -jar biotransformer-1.0.5 --help.");
+					throw new MissingOptionException("You must be specify an output file name (CSV). For more information, type java -jar biotransformer-1.0.7 --help.");
 				}
 			}			
 			else if(oFormat.contentEquals("sdf")){
 				outputF = commandLine.getOptionValue("osdf");
 				if(outputF == null){
-					throw new MissingOptionException("You must be specify an output file name (SDF). For more information, type java -jar biotransformer-1.0.5 --help.");
+					throw new MissingOptionException("You must be specify an output file name (SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
 				}
 			}
 			else {
-				throw new IllegalArgumentException("You entered an invalid output format option(" + oFormat + "). It must be one of 'ocsv' or 'osdf'. Type java -jar biotransformer-1.0.5 --help for help.");
+				throw new IllegalArgumentException("You entered an invalid output format option(" + oFormat + "). It must be one of 'ocsv' or 'osdf'. Type java -jar biotransformer-1.0.7 --help for help.");
 			}
 			
 //			System.out.println("TASK: "+ task.contentEquals("cid"));
@@ -664,7 +664,7 @@ public class BiotransformerExecutable {
 			}
 			else if (biotransformerType.contentEquals("hgut")){
 				HGutBTransformer hgut = new HGutBTransformer();
-				if(nrOfSteps!=6){
+				if(nrOfSteps!=8){
 					System.out.println("\n=======>The number of steps for reductive metabolism is set. No need to set a number of steps for the human gut metabolism.\n\n");
 				}
 							
@@ -745,10 +745,10 @@ public class BiotransformerExecutable {
 				if (singleInput !=null){
 					
 					if(oFormat.contentEquals("csv")){
-						hsbt.simulateAllHumanMetabolismAndSavetoCSV(singleInput, outputF, 0.5, annotate);
+						hsbt.predictAllHumanBiotransformationChainAndSaveToCSV(singleInput, nrOfSteps, 0.5, outputF, annotate);
 					}
 					else if(oFormat.contentEquals("sdf")){
-						hsbt.simulateAllHumanMetabolismAndSavetoSDF(singleInput, outputF, 0.5, annotate);
+						hsbt.predictAllHumanBiotransformationChainAndSaveToSDF(singleInput, nrOfSteps, 0.5, outputF, annotate);
 					}
 				}
 				else {
@@ -757,10 +757,10 @@ public class BiotransformerExecutable {
 					
 					
 					if(oFormat.contentEquals("csv")){
-						hsbt.simulateAllHumanMetabolismAndSavetoCSV(containers, outputF, 0.5, annotate);
+						hsbt.predictAllHumanBiotransformationChainAndSaveToCSV(containers, nrOfSteps, 0.5, outputF, annotate);
 					}
 					else if(oFormat.contentEquals("sdf")){
-						hsbt.simulateAllHumanMetabolismAndSavetoSDF(containers, outputF, 0.5, annotate);
+						hsbt.predictAllHumanBiotransformationChainAndSaveToSDF(containers, nrOfSteps, 0.5, outputF, annotate);
 					}				
 				}
 			}
@@ -791,7 +791,7 @@ public class BiotransformerExecutable {
 			}	
 			else {
 				throw new IllegalArgumentException("You entered an invalid biotransformer option.\n"
-						+ "Choose one of the following: ecbased, cyp450, hgut, phaseII, superbio, allHuman, or env.\nType java -jar biotransformer-1.0.5 --help for help.");
+						+ "Choose one of the following: ecbased, cyp450, hgut, phaseII, superbio, allHuman, or env.\nType java -jar biotransformer-1.0.7 --help for help.");
 			}			
 		}		
 	}

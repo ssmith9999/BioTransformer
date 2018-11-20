@@ -672,8 +672,8 @@ public class ECBasedBTransformer extends Biotransformer {
 	//			System.out.println("LIPID??");
 				
 				ChemicalClassName chemClassName = ChemicalClassFinder.findChemicalClass(molecule);
-				System.out.print("Chemical class: ");
-				System.out.println(chemClassName);
+//				System.out.print("Chemical class: ");
+//				System.out.println(chemClassName);
 				
 				if(!(chemClassName == ChemicalClassName.ETHER_LIPID || chemClassName == ChemicalClassName.GLYCEROLIPID || chemClassName == ChemicalClassName.GLYCEROPHOSPHOLIPID ||
 						chemClassName == ChemicalClassName.SPHINGOLIPID ||chemClassName == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL ||
@@ -775,9 +775,9 @@ public class ECBasedBTransformer extends Biotransformer {
 					}
 				}
 				identifier = identifier.replace(":", "-").replace("/", "_");
-				System.out.println(identifier);
+//				System.out.println(identifier);
 				ArrayList<Biotransformation> biotransformations = this.simulateECBasedMetabolismChain(molecule, true, true, nrOfSteps, scoreThreshold);
-				System.out.println(biotransformations.size() + " biotransformations.");
+//				System.out.println(biotransformations.size() + " biotransformations.");
 //				this.saveBioTransformationProductsToSdf(biotransformations, outputFolder + "/" + identifier + "_EC_based_metabolites.sdf");
 				this.saveBioTransformationProductsToSdf(biotransformations, outputFolder + "/" + identifier + "_EC_based_metabolites.sdf", annotate);			
 			}

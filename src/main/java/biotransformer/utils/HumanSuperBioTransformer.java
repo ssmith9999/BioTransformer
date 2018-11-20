@@ -591,18 +591,61 @@ public class HumanSuperBioTransformer {
 	}
 	
 	
-	
-	
-	public void simulateAllHumanMetabolismAndSavetoCSV(IAtomContainerSet containers, String outputFileName, double scoreThreshold, boolean annotate) throws Exception {
+	public void predictAllHumanBiotransformationChainAndSaveToCSV(IAtomContainer substrate, int nrOfSteps, double threshold, String outputFileName, boolean annotate){
 		try{
-			ArrayList<Biotransformation> biotransformations = simulateAllHumanMetabolism(containers, scoreThreshold);
+			
+			ArrayList<Biotransformation> biotransformations = predictAllHumanBiotransformationChain(substrate, nrOfSteps, threshold);
 			this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
 		}
 		catch(Exception e){
 			System.err.println(e.getLocalizedMessage());
 		}		
 	}
+	
+	
+	public void predictAllHumanBiotransformationChainAndSaveToCSV(IAtomContainerSet containers, int nrOfSteps, double threshold, String outputFileName, boolean annotate){
+		try{
+			
+			ArrayList<Biotransformation> biotransformations = predictAllHumanBiotransformationChain(containers, nrOfSteps, threshold);
+			this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}
+	
+	public void predictAllHumanBiotransformationChainAndSaveToSDF(IAtomContainerSet containers, int nrOfSteps, double threshold, String outputFileName, boolean annotate){
+		try{
+			
+			ArrayList<Biotransformation> biotransformations = predictAllHumanBiotransformationChain(containers, nrOfSteps, threshold);
+			this.ecb.saveBioTransformationProductsToSdf(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+		}
+		catch(Exception e){
+			System.err.println(e.getLocalizedMessage());
+		}		
+	}	
+	
+//	public void simulateAllHumanMetabolismAndSavetoCSV(IAtomContainerSet containers, String outputFileName, double scoreThreshold, int nrOfSteps, boolean annotate) throws Exception {
+//		try{
+//			ArrayList<Biotransformation> biotransformations = predictAllHumanBiotransformationChain(containers, nrOfSteps, scoreThreshold);
+//			this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+//		}
+//		catch(Exception e){
+//			System.err.println(e.getLocalizedMessage());
+//		}		
+//	}
 
+//	public void predictAllHumanBiotransformationChainAndSaveToSDF(IAtomContainer substrate, int nrOfSteps, double threshold, String outputFileName, boolean annotate){
+//		try{
+//			
+//			ArrayList<Biotransformation> biotransformations = predictAllHumanBiotransformationChain(substrate, nrOfSteps, threshold);
+//			this.ecb.saveBioTransformationProductsToCSV(Utilities.selectUniqueBiotransformations(biotransformations), outputFileName, this.combinedReactionsHash, annotate);
+//		}
+//		catch(Exception e){
+//			System.err.println(e.getLocalizedMessage());
+//		}		
+//	}
+	
 	
 	public void simulateAllHumanMetabolismAndSavetoSDF(IAtomContainerSet containers, String outputFileName, double scoreThreshold, boolean annotate) throws Exception {
 		try{
@@ -863,6 +906,32 @@ public class HumanSuperBioTransformer {
 		return Utilities.selectUniqueBiotransformations(biotransformations);
 	}	
 
+	
+	
+	public ArrayList<Biotransformation> predictAllHumanBiotransformationChain(IAtomContainerSet containers, int nrOfSteps, double threshold) throws Exception{
+		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+
+		int counter = 0;
+		while(nrOfSteps>0){
+			
+			counter++;
+			System.out.println("\nStep: " + counter + "\n");
+			ArrayList<Biotransformation> currentBiotransformations = simulateOneStepAllHuman(containers, threshold);
+			nrOfSteps--;
+			if(!currentBiotransformations.isEmpty()){
+				biotransformations.addAll(currentBiotransformations);
+				containers.removeAllAtomContainers();
+				containers = this.ecb.extractAtomContainer(currentBiotransformations);				
+			}
+			else{
+				break;
+			}
+		}
+
+		return Utilities.selectUniqueBiotransformations(biotransformations);
+	}
+	
+	
 	
 	public void predictMetabolismAllHumanFromSDFtoSDF(String inputFileName, String outputFileName, boolean annotate) throws Exception{
 		predictMetabolismAllHumanFromSDFAndSavetoSDF(inputFileName, outputFileName, 1, 0.5, annotate);

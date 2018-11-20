@@ -35,10 +35,10 @@ public class ECBasedBTTest extends ECBasedBTransformer{
 		System.out.println(em.getReactionsList().get("ecBasedDeconjugations").size());
 		System.out.println(em.getReactionsList().get("ecBasedReactionsNonDeconjugative").size());
 		
-		IAtomContainer mol = em.getSmiParser().parseSmiles("CCCCCCCCCCCCCCCCCC(=O)OCC(COP(=O)([O-])OCC[N+](C)(C)C)OC(=O)CCCCCCCCCCCCCCCCC");
+		IAtomContainer mol = em.getSmiParser().parseSmiles("CCCCCCCCCCCC=CC(=O)SCCNC(=O)CCNC(=O)C(O)C(C)(C)COP(O)(=O)OP(O)(=O)OCC1OC(C(O)C1OP(O)(O)=O)N1C=NC2=C1N=CN=C2N");
 		IAtomContainer stmol = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);
 
-		ArrayList<Biotransformation> biotransformations = em.simulateECBasedMetabolismChain(stmol, true, true, 1, 0.5);
+		ArrayList<Biotransformation> biotransformations = em.simulateECBasedMetabolismChain(stmol, true, true, 2, 0.5);
 		System.out.println("Nr. of biotransformations: " + biotransformations.size());
 		IAtomContainerSet acMetabolites = em.extractAtomContainer(biotransformations);
 		System.out.println("Nr. of metabolites: " + acMetabolites.getAtomContainerCount());

@@ -1511,7 +1511,7 @@ public class Biotransformer {
 								if(syno != null){
 //									System.out.println("SYNONYM IS NOT NULL");
 									tt = Utilities.returnFirstCleanSynonym(syno.split("\n"));
-									System.err.println("SYNO TT IS: " + tt);
+//									System.err.println("SYNO TT IS: " + tt);
 											
 								}
 								if(tt == null){
@@ -1544,7 +1544,7 @@ public class Biotransformer {
 //																String synonyms		= StringUtils.join(data.get("Synonyms"), "\n");
 																if (data.get("Synonyms") != null){
 																	tt = Utilities.returnFirstCleanSynonym(data.get("Synonyms"));
-																	System.err.println("SYNO TT 2 IS: " + tt);
+//																	System.err.println("SYNO TT 2 IS: " + tt);
 																}
 															}
 														}

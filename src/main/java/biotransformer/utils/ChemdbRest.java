@@ -7,6 +7,7 @@
 
 package biotransformer.utils;
 
+import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -38,6 +39,7 @@ public class ChemdbRest {
 			Unirest.setTimeouts(4000, 4000);
 			String path = pubChemCompoundURL + "inchikey/" + inchikey +"/synonyms/json";
 //			System.out.println(path);
+			
 			HttpResponse<JsonNode> jsonResponse = Unirest.post(path).header("accept", "application/json").asJson();
 			JSONObject jObject = jsonResponse.getBody().getObject();
 //			System.out.println("KEYS");
@@ -60,6 +62,7 @@ public class ChemdbRest {
 			}
 			return results;	
 		}
+
 		catch(JSONException e){
 			System.err.println(e.getLocalizedMessage());
 			return results;
@@ -71,7 +74,7 @@ public class ChemdbRest {
 		catch(com.mashape.unirest.http.exceptions.UnirestException ue){
 			System.err.println(ue.getLocalizedMessage());
 			return results;
-		}		
+		}
 	}
 	
 }

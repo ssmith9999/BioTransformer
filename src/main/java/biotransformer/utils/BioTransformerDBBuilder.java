@@ -152,6 +152,7 @@ public class BioTransformerDBBuilder {
 
 		sdfWriter.close();
 		sdfWriterNovel.close();
+		bReader.close();
 
 	}
 	
@@ -304,7 +305,7 @@ public class BioTransformerDBBuilder {
 				}
 			}	
 		}
-		
+		bReader.close();
 		ArrayList<EnzymeName> reportedReactions = new ArrayList<EnzymeName>(cypBiotransformations.keySet());
 		Collections.sort(reportedReactions);
 		for(EnzymeName m : reportedReactions){
@@ -505,7 +506,7 @@ public class BioTransformerDBBuilder {
 				}				
 			}
 		}
-		
+		bReader.close();
 		for(Map.Entry<EnzymeName, Set<ReactionName>> clist : cypReactionList.entrySet()){
 			System.out.println('"' + clist.getKey().name() + "\": [");
 			for(ReactionName rn : clist.getValue()){
@@ -682,7 +683,7 @@ public class BioTransformerDBBuilder {
 		
 		bw0.write("}");
 		bw0.close();
-		
+		bReader.close();
 		
 		
     }

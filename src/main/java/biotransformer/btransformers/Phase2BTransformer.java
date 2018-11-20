@@ -492,7 +492,8 @@ public class Phase2BTransformer extends Biotransformer{
 //			System.out.println(inputFileName.replace(".sdf", ""));
 			if(allPhaseIImetabolites.size()>0){
 				this.saveBioTransformationProductsToSdf(allPhaseIImetabolites, inputFileName.replace(".sdf", "") + "_PhaseII_metabolites.sdf");			
-			}		
+			}
+			sdfr.close();
 		}
 	
 	public void applyReactionChainFromSdfToSingleSdf(String inputFileName,
@@ -519,7 +520,8 @@ public class Phase2BTransformer extends Biotransformer{
 			}
 			if(allPhaseIImetabolites.size()>0){
 				this.saveBioTransformationProductsToSdf(allPhaseIImetabolites, outputFileName, annotate);			
-			}		
+			}
+			sdfr.close();
 		}
 	
 	

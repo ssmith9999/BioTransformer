@@ -184,6 +184,7 @@ public class FileUtilities {
 		}
 		
 		sdfWriter.close();
+		bRead.close();
 	}
 
 	
