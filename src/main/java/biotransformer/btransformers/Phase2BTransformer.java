@@ -36,6 +36,7 @@ import biotransformer.transformation.MRPatterns.ReactionName;
 import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemicalClassFinder;
+import biotransformer.utils.Utilities;
 import predicition.P2Filter;
 
 /**
@@ -271,7 +272,7 @@ public class Phase2BTransformer extends Biotransformer{
 				biotransformations.addAll(bt);
 			}
 		}
-		return biotransformations;
+		return Utilities.selectUniqueBiotransformations(biotransformations);
 	}
 	
 	public ArrayList<Biotransformation> applyPhase2TransformationsChainAndReturnBiotransformations(IAtomContainer target,
@@ -295,8 +296,6 @@ public class Phase2BTransformer extends Biotransformer{
 		
 		ArrayList<Biotransformation> products = new ArrayList<Biotransformation>();	
 		
-		
-
 		
 //		AtomContainerSet containers = (AtomContainerSet) targets;
 		IAtomContainerSet containers = targets;

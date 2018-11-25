@@ -229,13 +229,18 @@ public class HumanSuperBioTransformer {
 //					 System.out.println(hGutSubstrates == null);
 //					 System.out.println(hGutSubstrates.getAtomContainerCount());
 					 ArrayList<Biotransformation> hGutBiots = new  ArrayList<Biotransformation>();
-					 hGutBiots.addAll(this.hgb.simulateGutMicrobialMetabolismHydrolysisAndReduction(hGutSubstrates, true, true, 8, 0.1));
+					 hGutBiots.addAll(this.hgb.applyGutMicrobialMetabolismHydrolysisAndReductionChain(hGutSubstrates, true, true, 8, 0.1));
 					 System.out.println("Number of human gut biotransformations: " + hGutBiots.size());
 					 biotransformations.addAll(hGutBiots);
 					 IAtomContainerSet hGutProducts = this.ecb.extractAtomContainer(hGutBiots);
 					 System.out.println("Number of human gut metabolites: " + hGutProducts.getAtomContainerCount());
 					 products.add(hGutProducts);
 //					 products = ChemStructureExplorer.uniquefy(products);
+//					 for(int i = 0; i < hGutBiots.size(); i++){
+//						 System.out.println(hGutBiots.get(i).getReactionType());
+//						 hGutBiots.get(i).display();
+//						 System.out.println("\n\n");
+//					 }
 					 
 					 LinkedHashMap<String, IAtomContainerSet> partitionedMoleculesAfterHGut = this.p2filter.partitionSetForPhaseIIMetabolism(hGutProducts);
 					 
@@ -268,12 +273,12 @@ public class HumanSuperBioTransformer {
 						System.out.println("\n\n===========================================");
 						System.out.println("Predicting human phase 2 metabolism");
 						System.out.println("===========================================\n\n");
-						 ArrayList<Biotransformation> phaseIIBiots = new  ArrayList<Biotransformation>();
-						 phaseIIBiots.addAll(this.p2b.applyPhase2TransformationsChainAndReturnBiotransformations(phaseIISubstrates, true, true, true, 1, 0.1));
-						 products.add(this.ecb.extractAtomContainer(phaseIIBiots));
-						 products = ChemStructureExplorer.uniquefy(products);
-						 biotransformations.addAll(phaseIIBiots);
-						 System.out.println("Number of PhaseII biotransformations: " + phaseIIBiots.size() + "\n\n\n");				
+						ArrayList<Biotransformation> phaseIIBiots = new  ArrayList<Biotransformation>();
+						phaseIIBiots.addAll(this.p2b.applyPhase2TransformationsChainAndReturnBiotransformations(phaseIISubstrates, true, true, true, 1, 0.1));
+						products.add(this.ecb.extractAtomContainer(phaseIIBiots));
+						products = ChemStructureExplorer.uniquefy(products);
+						biotransformations.addAll(phaseIIBiots);
+						System.out.println("Number of PhaseII biotransformations: " + phaseIIBiots.size() + "\n\n\n");				
 					 }
 
 				}
@@ -366,8 +371,13 @@ public class HumanSuperBioTransformer {
 //					 System.out.println(hGutSubstrates == null);
 //					 System.out.println(hGutSubstrates.getAtomContainerCount());
 					 ArrayList<Biotransformation> hGutBiots = new  ArrayList<Biotransformation>();
-					 hGutBiots.addAll(this.hgb.simulateGutMicrobialMetabolismHydrolysisAndReduction(hGutSubstrates, true, true, 1, 0.1));
+					 hGutBiots.addAll(this.hgb.applyGutMicrobialMetabolismHydrolysisAndReductionChain(hGutSubstrates, true, true, 1, 0.1));
 					 System.out.println("Number of human gut biotransformations: " + hGutBiots.size());
+					
+					 for(int i = 0; i < hGutBiots.size(); i++){
+						 System.out.println(hGutBiots.get(i).getReactionType());
+					 }
+					 
 					 biotransformations.addAll(hGutBiots);
 					 IAtomContainerSet hGutProducts = this.ecb.extractAtomContainer(hGutBiots);
 					 System.out.println("Number of human gut metabolites: " + hGutProducts.getAtomContainerCount());
@@ -425,6 +435,9 @@ public class HumanSuperBioTransformer {
 		 return uniqueBiotransformations;
 	}
 
+	
+	
+	
 	public void simulateHumanSuperbioMetabolismAndSaveToSDF(IAtomContainer molecule, String outputFileName, boolean annotate) throws Exception{
 		ArrayList<Biotransformation> biotransformations = this.simulateHumanSuperbioMetabolism(molecule);
 

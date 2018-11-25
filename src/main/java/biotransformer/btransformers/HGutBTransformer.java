@@ -41,6 +41,7 @@ import biotransformer.transformation.MReactionSets;
 import biotransformer.transformation.MetabolicReaction;
 import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemStructureManipulator;
+import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.Utilities;
 
 public class HGutBTransformer extends Biotransformer {
@@ -55,25 +56,19 @@ public class HGutBTransformer extends Biotransformer {
 	 * The deconjugation enzymes include esterases, alpha-rhamnosidases, beta-glucuronidases, beta-glycosidases.
 	 */
 	private void setReactionsList(){
-		//		this.reactionsList.put("standardizationReactions", MReactionSets.standardizationReactions);
-		ArrayList<MetabolicReaction> reductionReact = new ArrayList<MetabolicReaction>() ;
-		ArrayList<MetabolicReaction> phaseIIReact = new ArrayList<MetabolicReaction>();
+		ArrayList<MetabolicReaction> reductionReact 	= new ArrayList<MetabolicReaction>() ;
+		ArrayList<MetabolicReaction> phaseIIReact 		= new ArrayList<MetabolicReaction>();
 		ArrayList<MetabolicReaction> deconjugationReact = new ArrayList<MetabolicReaction>();
-//		this.enzymesByreactionGroups.put("deconjugationReactions", new ArrayList<Enzyme>());
-//		this.enzymesByreactionGroups.put("gutMicroReductiveReactions", new ArrayList<Enzyme>());
-//		this.enzymesByreactionGroups.put("gutMicroPhaseIIReactions", new ArrayList<Enzyme>());
-
-		ArrayList<Enzyme> reductionEnz = new ArrayList<Enzyme>() ;
-		ArrayList<Enzyme> phaseIIEnz = new ArrayList<Enzyme>();
-		ArrayList<Enzyme> deconjugationEnz = new ArrayList<Enzyme>();
+		ArrayList<Enzyme> reductionEnz 					= new ArrayList<Enzyme>() ;
+		ArrayList<Enzyme> phaseIIEnz 					= new ArrayList<Enzyme>();
+		ArrayList<Enzyme> deconjugationEnz 				= new ArrayList<Enzyme>();
 		
 				
 		for( Enzyme enz : this.bSystem.getEnzymesList()){
 			if(enz.getName().contentEquals("EC_2_1_1_6") || enz.getName().contentEquals("SULFOTRANSFERASE") ||
 					enz.getName().contentEquals("UDP_GLUCURONOSYLTRANSFERASE")){
 				phaseIIReact.addAll(enz.getReactionSet());
-				phaseIIEnz.add(enz);	
-//				this.enzymesByreactionGroups.get("gutMicroPhaseIIReactions").add(enz);
+				phaseIIEnz.add(enz);
 			}
 			
 			else if (
@@ -83,7 +78,7 @@ public class HGutBTransformer extends Biotransformer {
 					
 					// sulfatase
 					
-					enz.getName().contentEquals("EC_3_1_6_1") || 
+					enz.getName().contentEquals("EC_3_1_6_1") || enz.getName().contentEquals("EC_3_1_6_19") ||
 					
 					// glycosidase
 					enz.getName().contentEquals("EC_3_2_1_X") || enz.getName().contentEquals("EC_3_2_1_20") || 
@@ -92,33 +87,25 @@ public class HGutBTransformer extends Biotransformer {
 					enz.getName().contentEquals("EC_3_2_1_147") || enz.getName().contentEquals("FLAVONOID_C_GLYCOSIDASE") || 
 					enz.getName().contentEquals("EC_3_1_1_73") ||
 					
-					// hydroxylase
+					// hydrolase
 					enz.getName().contentEquals("EC_3_5_1_24")
-
-									
 					
 					){
 				deconjugationReact.addAll(enz.getReactionSet());
 				deconjugationEnz.add(enz);
-//				this.enzymesByreactionGroups.get("deconjugationReactions").add(enz);
 			}
 			
 			else{
 				reductionReact.addAll(enz.getReactionSet());
 //				System.err.println(enz.getName());
-				reductionEnz.add(enz);
-				
+				reductionEnz.add(enz);				
 			}
 		}
-		
-		
-		
+				
 		this.reactionsByGroups.put("gutMicroReductiveReactions", reductionReact);
 		this.reactionsByGroups.put("gutMicroPhaseIIReactions", phaseIIReact);
-		// Phase O consists of deglycosyltation, de-esterification, desulfation 
 		this.reactionsByGroups.put("deconjugationReactions", deconjugationReact );
-		
-		
+			
 //		System.err.println("deconjugationReactions: " + deconjugationEnz.size());
 //		System.err.println("gutMicroReductiveReactions: " + reductionEnz.size());
 //		System.err.println("gutMicroPhaseIIReactions: " + phaseIIEnz.size());
@@ -173,13 +160,8 @@ public class HGutBTransformer extends Biotransformer {
 	public ArrayList<Biotransformation> applyGutMicrobialDeconjugations(IAtomContainer target, boolean preprocess, boolean filter, double scoreThreshold)
 			throws Exception {
 		
-		
-
-		
 		if(ChemStructureExplorer.isBioTransformerValid(target)) {
-			
-//			return this.applyReactionsAndReturnBiotransformations(target, this.reactionsByGroups.get("deconjugationReactions"), preprocess, filter, scoreThreshold);
-			return this.metabolizeWithEnzymes(target, this.enzymesByreactionGroups.get("deconjugationReactions"), preprocess, filter, scoreThreshold);
+						return this.metabolizeWithEnzymes(target, this.enzymesByreactionGroups.get("deconjugationReactions"), preprocess, filter, scoreThreshold);
 		
 		}
 		else if(ChemStructureExplorer.isMixture(target) || ChemStructureExplorer.isCompoundInorganic(target)){
@@ -471,6 +453,81 @@ public class HGutBTransformer extends Biotransformer {
 	
 	
 	}
+		
+	public ArrayList<Biotransformation> applyGutMicrobialMetabolismHydrolysisAndReductionStep(IAtomContainer target,
+			boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
+		
+		try {
+			if(ChemStructureExplorer.isCompoundInorganic(target) || ChemStructureExplorer.isMixture(target)){
+				throw new IllegalArgumentException(target.getProperty("InChIKey")+ "\nThe substrate must be: 1) organic, and; 2) not a mixture.");
+			} 
+			else if(ChemStructureExplorer.isBioTransformerValid(target)){
+				ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+				IAtomContainer st = ChemStructureManipulator.standardizeMoleculeWithCopy(target, true);
+				
+				if(this.isDeconjugationCandidate(st)){
+//					System.err.println("IS A DECONJUGATION CANDIDATE");
+					biotransformations = this.applyGutMicrobialDeconjugationsChain(st,
+							preprocess, filter, 1, scoreThreshold);
+				}
+				else {
+//					System.err.println("IS NOT A DECONJUGATION CANDIDATE");
+					biotransformations = this.applyGutMicrobialReductionsChain(st,
+							preprocess, filter, 1, scoreThreshold);							
+				}
+				return Utilities.selectUniqueBiotransformations(biotransformations);
+			}else{
+				return null;
+			}
+		}
+		catch (Exception iae) {
+			System.err.println(iae.getLocalizedMessage());
+			return null;
+		}
+	}
+		
+	public ArrayList<Biotransformation> applyGutMicrobialMetabolismHydrolysisAndReductionStep(IAtomContainerSet targets, boolean preprocess, 
+			boolean filter, Double scoreThreshold) throws Exception{
+		
+		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+		for(IAtomContainer atc : targets.atomContainers()){
+			ArrayList<Biotransformation> bts = this.applyGutMicrobialMetabolismHydrolysisAndReductionStep(atc, preprocess, 
+					filter, scoreThreshold);
+			if(bts != null && bts.size()>0){
+				biotransformations.addAll(bts);
+			}
+		}
+		
+		return Utilities.selectUniqueBiotransformations(biotransformations);
+	}
+	
+	
+	public ArrayList<Biotransformation> applyGutMicrobialMetabolismHydrolysisAndReductionChain(IAtomContainer target, boolean preprocess, 
+			boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
+		IAtomContainerSet targets = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+		targets.addAtomContainer(target);
+		return applyGutMicrobialMetabolismHydrolysisAndReductionChain(targets, preprocess, filter, nr_of_steps, scoreThreshold);
+	}
+	
+	
+	public ArrayList<Biotransformation> applyGutMicrobialMetabolismHydrolysisAndReductionChain(IAtomContainerSet targets, boolean preprocess, 
+			boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
+		
+		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+		int i = 0;
+		IAtomContainerSet products = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+		products.add(targets);
+		
+		while (i < nr_of_steps){
+//			System.err.println("Step nr " + (i+1));
+			biotransformations.addAll(this.applyGutMicrobialMetabolismHydrolysisAndReductionStep(products, preprocess, filter, scoreThreshold));
+			products = this.extractAtomContainer(biotransformations);
+			i++;
+		}
+		
+		return Utilities.selectUniqueBiotransformations(biotransformations);
+	}
+	
 	
 	
 	public ArrayList<Biotransformation> simulateGutMicrobialMetabolismHydrolysisAndReduction(IAtomContainer target,
@@ -553,8 +610,6 @@ public class HGutBTransformer extends Biotransformer {
 		}
 	}
 	
-	
-
 	
 //	public ArrayList<Biotransformation> simulateGutMicrobialMetabolismHydrolysisAndReduction(IAtomContainer target,
 //			boolean preprocess, boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
@@ -656,7 +711,6 @@ public class HGutBTransformer extends Biotransformer {
 		
 	}
 	
-
 	public ArrayList<Biotransformation> simulateGutMicrobialMetabolism(IAtomContainer target,
 			boolean preprocess, boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
 		
@@ -724,9 +778,7 @@ public class HGutBTransformer extends Biotransformer {
 //					}				
 //				}
 			
-
 				return Utilities.selectUniqueBiotransformations(biotransformations);
-
 			}
 			else{
 				return null;
@@ -830,8 +882,10 @@ public class HGutBTransformer extends Biotransformer {
 				dec = true;
 				break;
 			}
-		}
-		
+			if(dec == false && ChemicalClassFinder.isSulfateEster(molecule)){
+				dec = true;
+			}
+		}		
 		return dec;		
 	}
 

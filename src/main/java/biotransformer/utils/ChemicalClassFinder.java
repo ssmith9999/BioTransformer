@@ -39,7 +39,8 @@ public class ChemicalClassFinder {
 		SATURATED_FATTY_ACID,
 		UNFUNCTIONALIZED_SATURATED_FATTY_ACID,
 		GLYCEROL_3_PHOSPHATE_INOSITOL,
-		C23_BILE_ACID, C24_BILE_ACID
+		C23_BILE_ACID, C24_BILE_ACID,
+		SULFATE_ESTER
 		
 	}
 	
@@ -173,7 +174,15 @@ public class ChemicalClassFinder {
 		});
 		chemicalClassDefinitions.get(ChemicalClassName.C23_BILE_ACID).put("negativeSmarts", new String[]{
 		});		
-		
+
+		chemicalClassDefinitions.put(ChemicalClassName.SULFATE_ESTER, new LinkedHashMap<String, String[]>());		
+		chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).put("smarts", new String[]{
+				"["
+				+ "$([#6]-[#8;X2][S;X4]([#8;A;X1-,X2H1])(=[O;X1])=[O;X1])"
+				+ "]"
+		});
+		chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).put("negativeSmarts", new String[]{
+		});
 		
 //		chemicalClassDefinitions.put(ChemicalClassName.GLYCEROPHOSPHOLIPID, "");
 //		chemicalClassDefinitions.put(ChemicalClassName.OMEGA_HYDROXYLATED_FATTY_ACID, "");
@@ -255,8 +264,6 @@ public class ChemicalClassFinder {
 	}
 	
 	
-	
-	
 	public static boolean isUnsaturatedFattyAcid(IAtomContainer molecule){	
 		
 		return false;
@@ -317,10 +324,8 @@ public class ChemicalClassFinder {
 				b = false;
 				break;
 			}
-		}
-		
+		}	
 		return b;
-
 	}	
 
 	public static boolean isGlyceroLipid(IAtomContainer molecule) throws SMARTSException{	
@@ -460,6 +465,31 @@ public class ChemicalClassFinder {
 		return b;
 
 	}	
+	
+	
+	public static boolean isSulfateEster(IAtomContainer molecule) throws SMARTSException{	
+		
+		boolean b = true;
+		
+		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).get("smarts")){
+			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+				b = false;
+				break;
+			}
+		}					
+		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).get("negativeSmarts")){
+			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+			if(npattern.hasSMARTSPattern(molecule)>0){
+				b = false;
+				break;
+			}
+		}	
+		return b;
+	}
+	
+	
+	
 	
 	public static void main(String[] args) throws SMARTSException, CloneNotSupportedException, CDKException{
 		ChemicalClassFinder ccf = new ChemicalClassFinder();

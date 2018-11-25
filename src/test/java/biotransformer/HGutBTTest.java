@@ -27,16 +27,30 @@ public class HGutBTTest extends HGutBTransformer{
 	
 	public static void main(String[] args) throws Exception{
 		HGutBTTest em = new HGutBTTest();
-		System.out.println(em.getBioSystemName());
-		IAtomContainer mol2 = em.getSmiParser().parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
-		ArrayList<Biotransformation> biotransformations = em.simulateGutMicrobialMetabolism(mol2, true, true, 2, 0.0);
-//		IAtomContainerSet acMetabolites = em.extractAtomContainer(biotransformations);
-		
-		for(Biotransformation b : biotransformations){
-			b.display();
-			System.out.println();
-		}
+//		System.out.println(em.getBioSystemName());
+		IAtomContainer mol1 = em.getSmiParser().parseSmiles("OC1CC2=C(O)C=C(O)C=C2OC1C3=CC(O)=C(O)C=C3");
+		IAtomContainer mol2 = em.getSmiParser().parseSmiles("OC1=CC=C(C=C1)C1OC2=CC(O)=CC(O)=C2CC1=O");
+		IAtomContainer mol3 = em.getSmiParser().parseSmiles("OC1CC2=C(O)C=C(O)C=C2OC1C1=CC=C(O)C=C1");
+		IAtomContainerSet mols = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
 
+		mols.addAtomContainer(mol1);
+		mols.addAtomContainer(mol2);
+		mols.addAtomContainer(mol3);
+		
+//		ArrayList<Biotransformation> biotransformations = em.simulateGutMicrobialMetabolism(mol2, true, true, 2, 0.0);
+		ArrayList<Biotransformation> biotransformations = em.applyGutMicrobialMetabolismHydrolysisAndReductionChain(mols, true, true, 8, 0.5);
+		IAtomContainerSet acMetabolites = em.extractAtomContainer(biotransformations);
+		
+		for(IAtomContainer a : acMetabolites.atomContainers()){
+			System.out.println(em.smiGen.create(a));
+		}
+		System.out.println(acMetabolites.getAtomContainerCount());
+		System.out.println(biotransformations.size());
+//		for(Biotransformation b : biotransformations){
+//			b.display();
+//			System.out.println();
+//		}
+		em.saveBioTransformationProductsToSdf(biotransformations, "data/epi-new-hgut.sdf");
 	}	
 	
 

@@ -574,6 +574,7 @@ public class MRPatterns {
 			_3_7_12_OH_CHOLESTANE_OXIDATION,
 			_3_OXO_7_12_OH_CHOLESTANE_OXIDATION,
 			_3_7_12_OH_CHOLESTANE_27_HYDROXYLATION,
+			HYDROLYSIS_OF_SECONDARY_ALKYL_SULFATE_ESTER_PATTERN1,
 
 		/**
 		 * 	Environmental microbial metabolic reactions.

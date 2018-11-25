@@ -664,22 +664,22 @@ public class BiotransformerExecutable {
 			}
 			else if (biotransformerType.contentEquals("hgut")){
 				HGutBTransformer hgut = new HGutBTransformer();
-				if(nrOfSteps!=8){
-					System.out.println("\n=======>The number of steps for reductive metabolism is set. No need to set a number of steps for the human gut metabolism.\n\n");
-				}
+//				if(nrOfSteps!=8){
+//					System.out.println("\n=======>The number of steps for reductive metabolism is set. No need to set a number of steps for the human gut metabolism.\n\n");
+//				}
 							
 				ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 				if (singleInput !=null){
-					biotransformations = hgut.simulateGutMicrobialMetabolism(singleInput, true, true, 8, 0.5);
+					biotransformations = hgut.applyGutMicrobialMetabolismHydrolysisAndReductionChain(singleInput, true, true, nrOfSteps, 0.5);
 				}
 				else {
 					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 					if (containers.getAtomContainerCount()>0){
 						containers = FileUtilities.parseSdf(inputFileName);
-						biotransformations = hgut.simulateGutMicrobialMetabolism(containers, true, true, 8, 0.5);
+						biotransformations = hgut.applyGutMicrobialMetabolismHydrolysisAndReductionChain(containers, true, true, nrOfSteps, 0.5);
 					}				
 				}
-								
+//				System.out.println("No. of biotransformations: " + biotransformations.size());		
 				if(oFormat.contentEquals("csv")){
 					hgut.saveBioTransformationProductsToCSV(biotransformations, outputF, annotate);
 				}

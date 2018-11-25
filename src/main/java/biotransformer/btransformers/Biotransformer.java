@@ -930,6 +930,8 @@ public class Biotransformer {
 				target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 			}
 			
+//			System.out.println(target.getProperty("InChI"));
+//			System.out.println(this.smiGen.create(starget));
 					
 			for(Enzyme enz : enzymes){
 				if(esspredictor.isValidSubstrate(starget, EnzymeName.valueOf(enz.getName()))){
@@ -985,9 +987,11 @@ public class Biotransformer {
 			
 			for(MetabolicReaction j : filteredReactions){
 //				System.out.println(j.name);
-//				IAtomContainer n = this.smiParser.parseSmiles(this.smiGen.create(starget));
-//				IAtomContainerSet partialSet = this.generateAllMetabolitesFromAtomContainer(n, j, true);
-				IAtomContainerSet partialSet = this.generateAllMetabolitesFromAtomContainer(starget, j, true);
+				
+				IAtomContainer n = this.smiParser.parseSmiles(this.smiGen.create(starget));
+				IAtomContainerSet partialSet = this.generateAllMetabolitesFromAtomContainer(n, j, true);
+				// For some reason, the line below sometimes returns less products
+//				IAtomContainerSet partialSet = this.generateAllMetabolitesFromAtomContainer(starget, j, true);
 
 //				System.out.println("partialSet: " + partialSet.getAtomContainerCount());
 				Double score=0.0;
@@ -1029,6 +1033,7 @@ public class Biotransformer {
 										
 						ArrayList<Enzyme> enzList = new ArrayList<Enzyme>();
 						Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(j.name), reactToEnzymes.get(ReactionName.valueOf(j.name)), prod, score, this.getBioSystemName());
+//						bioT.display();
 						results.add(bioT);
 					}
 				}	
