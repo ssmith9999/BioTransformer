@@ -50,7 +50,7 @@ public class HGutBTTest extends HGutBTransformer{
 //			b.display();
 //			System.out.println();
 //		}
-		em.saveBioTransformationProductsToSdf(biotransformations, "data/epi-new-hgut.sdf");
+		em.saveBioTransformationProductsToSdf(biotransformations, "data/test-new-hgut.sdf");
 	}	
 	
 

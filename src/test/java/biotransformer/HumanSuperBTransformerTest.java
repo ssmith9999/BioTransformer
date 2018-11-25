@@ -51,7 +51,7 @@ public class HumanSuperBTransformerTest extends HumanSuperBioTransformer{
 		SmilesParser	smiParser		= new SmilesParser(builder);
 		
 
-		IAtomContainer molecule = smiParser.parseSmiles("OC1CC2=C(O)C=C(O)C=C2OC1C1=CC=C(O)C=C1");
+		IAtomContainer molecule = smiParser.parseSmiles("OC1CC2=C(O)C=C(O)C=C2OC1C1=CC(O)=C(O)C=C1");
 		Biotransformer b = new Biotransformer(BioSystemName.HUMAN);
 		IAtomContainer mt = ChemStructureManipulator.standardizeMoleculeWithCopy(molecule);
 		AtomContainerManipulator.convertImplicitToExplicitHydrogens(mt);
