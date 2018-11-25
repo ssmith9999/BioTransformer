@@ -8,3 +8,4 @@ target/*
 src/main/java/biotransformer/utils/BioTransformerDBBuilder.java
 src/main/java/biotransformer/utils/ErdbTask.java
 src/main/java/biotransformer/utils/CompoundDictionary.java
+*.xml

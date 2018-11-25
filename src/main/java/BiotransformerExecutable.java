@@ -223,7 +223,7 @@ public class BiotransformerExecutable {
 		final CommandLineParser cmdLineParser = new DefaultParser();
 		CommandLine commandLine = null;
 		
-		String header = "\nThis is the version 1.0.7 of BioTransformer. BioTransformer is a software tool that predicts small molecule metabolism in mammals, their gut microbiota,"
+		String header = "\nThis is the version 1.0.8 of BioTransformer. BioTransformer is a software tool that predicts small molecule metabolism in mammals, their gut microbiota,"
 				+ " as well as the soil/aquatic microbiota. BioTransformer also assists scientists in metabolite identification, based on the metabolism prediction. \n\n";
 		
 		String footer = "\n(* ) While the 'superbio' option runs a set number of transformation steps in a pre-defined order (e.g. deconjugation first, then Oxidation/reduction, etc.),"
@@ -253,7 +253,7 @@ public class BiotransformerExecutable {
 //				+ "the allHuman option predicts all possible metabolites from any applicable reaction(Oxidation, reduction, (de-)conjudation) at each step."
 //				+ "\n\n** For the environmental microbial biodegradation, all reactions (aerobic and anaerobic) are reported, and not only the aerobic biotransformations "
 //				+ "(as per default in the EAWAG BBD/PPS system)."
-//				+ "\n\n*********\nExamples:\n*********\n\n1) To predict the biotransformation of a molecule from an SDF input using the human super transformer, use java -jar biotransformer-1-0-7.jar -k pred -b superbio "
+//				+ "\n\n*********\nExamples:\n*********\n\n1) To predict the biotransformation of a molecule from an SDF input using the human super transformer, use java -jar biotransformer-1-0-8.jar -k pred -b superbio "
 //				+ "-f sdf -i #{input file name} -o #{output folder}.\n\n"
 //				+ "\t\t- For each of the query molecule in the input file, an outputfile will be created with the list of corresponding metabolites.\n\n"
 //				+ "2) To predict the 2-step biotransformation of Thymol (a monoterpene) using the human super transformer (option allHuman) using the SMILES input, run\n\n"
@@ -279,7 +279,7 @@ public class BiotransformerExecutable {
 		catch (MissingOptionException missingOptionException){
 			
 			if( Arrays.asList(commandLineArguments).contains("-h") || Arrays.asList(commandLineArguments).contains("--help")){
-				formatter.printHelp("\njava -jar biotransformer-1.0.7", header, options, footer, true);
+				formatter.printHelp("\njava -jar biotransformer-1.0.8", header, options, footer, true);
 			}
 			else {
 				System.out.println(missingOptionException.getLocalizedMessage());
@@ -433,10 +433,10 @@ public class BiotransformerExecutable {
 				inputFileName = commandLine.getOptionValue("imol");
 //				containers = FileUtils.parseSdf(inputFileName);
 				if(inputFileName == null){
-					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
+					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.8 --help.");
 				}
 //				if(outputF == null){
-//					throw new MissingOptionException("A destination folder must be specified when your query molecules are provided in a file (Molfile or SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
+//					throw new MissingOptionException("A destination folder must be specified when your query molecules are provided in a file (Molfile or SDF). For more information, type java -jar biotransformer-1.0.8 --help.");
 //				}
 			}
 			
@@ -444,27 +444,27 @@ public class BiotransformerExecutable {
 				inputFileName = commandLine.getOptionValue("isdf");
 //				containers = FileUtils.parseSdf(inputFileName);
 				if(inputFileName == null){
-					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
+					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-1.0.8 --help.");
 				}
 			}
 			else {
-				throw new IllegalArgumentException("You entered an invalid input format option(" + iFormat + "). It must be one of 'ismi','imol', or 'isdf'. Type java -jar biotransformer-1.0.7 --help for help.");
+				throw new IllegalArgumentException("You entered an invalid input format option(" + iFormat + "). It must be one of 'ismi','imol', or 'isdf'. Type java -jar biotransformer-1.0.8 --help for help.");
 			}
 
 			if(oFormat.contentEquals("csv")){
 				outputF = commandLine.getOptionValue("ocsv");
 				if(outputF == null){
-					throw new MissingOptionException("You must be specify an output file name (CSV). For more information, type java -jar biotransformer-1.0.7 --help.");
+					throw new MissingOptionException("You must be specify an output file name (CSV). For more information, type java -jar biotransformer-1.0.8 --help.");
 				}
 			}			
 			else if(oFormat.contentEquals("sdf")){
 				outputF = commandLine.getOptionValue("osdf");
 				if(outputF == null){
-					throw new MissingOptionException("You must be specify an output file name (SDF). For more information, type java -jar biotransformer-1.0.7 --help.");
+					throw new MissingOptionException("You must be specify an output file name (SDF). For more information, type java -jar biotransformer-1.0.8 --help.");
 				}
 			}
 			else {
-				throw new IllegalArgumentException("You entered an invalid output format option(" + oFormat + "). It must be one of 'ocsv' or 'osdf'. Type java -jar biotransformer-1.0.7 --help for help.");
+				throw new IllegalArgumentException("You entered an invalid output format option(" + oFormat + "). It must be one of 'ocsv' or 'osdf'. Type java -jar biotransformer-1.0.8 --help for help.");
 			}
 			
 //			System.out.println("TASK: "+ task.contentEquals("cid"));
@@ -791,7 +791,7 @@ public class BiotransformerExecutable {
 			}	
 			else {
 				throw new IllegalArgumentException("You entered an invalid biotransformer option.\n"
-						+ "Choose one of the following: ecbased, cyp450, hgut, phaseII, superbio, allHuman, or env.\nType java -jar biotransformer-1.0.7 --help for help.");
+						+ "Choose one of the following: ecbased, cyp450, hgut, phaseII, superbio, allHuman, or env.\nType java -jar biotransformer-1.0.8 --help for help.");
 			}			
 		}		
 	}
