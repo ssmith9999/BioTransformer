@@ -10,6 +10,8 @@ import java.util.ArrayList;
 
 import org.json.JSONObject;
 import org.json.simple.parser.ParseException;
+import org.openscience.cdk.CDKConstants;
+import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.exception.InvalidSmilesException;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
@@ -52,11 +54,25 @@ public class HumanSuperBTransformerTest extends HumanSuperBioTransformer{
 		
 
 		IAtomContainer molecule = smiParser.parseSmiles("OC1CC2=C(O)C=C(O)C=C2OC1C1=CC(O)=C(O)C=C1");
-		Biotransformer b = new Biotransformer(BioSystemName.HUMAN);
-		IAtomContainer mt = ChemStructureManipulator.standardizeMoleculeWithCopy(molecule);
-		AtomContainerManipulator.convertImplicitToExplicitHydrogens(mt);
-//		hsbt.simulateHumanSuperbioMetabolismAndSaveToCSV(molecule, "data/epicatechin-superbio-2.csv", false);
-		hsbt.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule, "data/epicatechin-superbio-3.sdf", false);
+		molecule.setProperty(CDKConstants.TITLE, "MOL1");
+		IAtomContainer molecule2 = smiParser.parseSmiles("OC1CC2=C(CCO)C=C(O)C=C2OC1C1=CC(O)=C(O)C=C1");
+		molecule2.setProperty(CDKConstants.TITLE, "MOL2");
+		IAtomContainerSet acontainers = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+		acontainers.addAtomContainer(molecule);
+		acontainers.addAtomContainer(molecule2);
+		
+		hsbt.predictAllHumanBiotransformationChainAndSaveToCSV(acontainers, 1, 0.5, "/Users/yandj/test-2-mols-allHuman-metabolites.csv", false);
+		
+		//		Biotransformer b = new Biotransformer(BioSystemName.HUMAN);
+//		IAtomContainer mt = ChemStructureManipulator.standardizeMoleculeWithCopy(molecule);
+//		AtomContainerManipulator.convertImplicitToExplicitHydrogens(mt);
+		
+		
+		
+////		hsbt.simulateHumanSuperbioMetabolismAndSaveToCSV(molecule, "data/epicatechin-superbio-2.csv", false);
+//		hsbt.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule, "data/epicatechin-superbio-3.sdf", false);
+		
+//		hsbt.simulateHumanSuperbioMetabolismFromSDFtoSingleSDF("/Users/yandj/test.sdf", "/Users/yandj/test-multiple.sdf", true);		
 				
 	}
 

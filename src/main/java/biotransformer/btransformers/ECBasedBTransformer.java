@@ -575,13 +575,13 @@ public class ECBasedBTransformer extends Biotransformer {
 							chemClassName == ChemicalClassName.SPHINGOLIPID ||chemClassName == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL || 
 							chemClassName == ChemicalClassName.C24_BILE_ACID || chemClassName == ChemicalClassName.C23_BILE_ACID
 							)) {
-//				System.out.println("NO");
+//						System.out.println("NO");
 						 if(isDeconjugationCandidate(molecule)){
-//					 System.out.println("IS DECONJUGATION CANDIDATE");
+//					 			System.out.println("IS DECONJUGATION CANDIDATE");
 							 biotransformations.addAll(this.applyEcBasedDeconjuationsChain(molecule, true, true, 1, scoreThreshold));
 						 }
 						 else{
-//					 System.out.println("IS NOT A DECONJUGATION CANDIDATE");
+//					 		System.out.println("IS NOT A DECONJUGATION CANDIDATE");
 							 biotransformations.addAll(this.applyEcBasedTransformationsChain(molecule, true, true, 1, scoreThreshold));
 						 }
 						 

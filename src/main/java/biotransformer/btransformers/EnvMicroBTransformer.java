@@ -222,16 +222,25 @@ public class EnvMicroBTransformer extends Biotransformer {
 
 	
 	public void simulateEnvMicrobialDegradationAndSaveToSDF(IAtomContainer container, boolean preprocess, boolean filter, int nrOfSteps, Double scoreThreshold, String outputFileName, boolean annotate) throws Exception{
-		ArrayList<Biotransformation> biotransformations = this.applyEnvMicrobialTransformationsChain(container, true, true, nrOfSteps, scoreThreshold);
+		ArrayList<Biotransformation> biotransformations = this.applyEnvMicrobialTransformationsChain(container, preprocess, filter, nrOfSteps, scoreThreshold);
 		this.saveBioTransformationProductsToSdf(biotransformations, outputFileName, annotate);
 	}
 	
 	public void simulateEnvMicrobialDegradationAndSaveToCSV(IAtomContainer container, boolean preprocess, boolean filter, int nrOfSteps, Double scoreThreshold, String outputFileName, boolean annotate) throws Exception{
-		ArrayList<Biotransformation> biotransformations = this.applyEnvMicrobialTransformationsChain(container, true, true, nrOfSteps, scoreThreshold);
+		ArrayList<Biotransformation> biotransformations = this.applyEnvMicrobialTransformationsChain(container, preprocess, filter, nrOfSteps, scoreThreshold);
 		this.saveBioTransformationProductsToCSV(biotransformations, outputFileName, annotate);
 	}
 	
 	
+	public ArrayList<Biotransformation> simulateEnvMicrobialDegradation(IAtomContainerSet containers, boolean preprocess, boolean filter, int nrOfSteps, Double scoreThreshold) throws Exception{
+		ArrayList<Biotransformation> biotransformations  =  new ArrayList<Biotransformation>();
+		
+		for(IAtomContainer atc: containers.atomContainers()){
+			biotransformations.addAll(this.applyEnvMicrobialTransformationsChain(atc, preprocess, filter, nrOfSteps, scoreThreshold));
+		}
+		
+		return biotransformations;		
+	}
 	
 	public void simulateEnvMicrobialDegradationAndSaveToSDF(IAtomContainerSet containers, boolean preprocess, boolean filter, int nrOfSteps, Double scoreThreshold, String outputFolder, boolean annotate) throws Exception{
 		

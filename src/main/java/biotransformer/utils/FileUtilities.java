@@ -50,12 +50,12 @@ public class FileUtilities {
 
 	public FileUtilities() {
 		// TODO Auto-generated constructor stub
-
+//		InChIGeneratorFactory inchiGenFactory = InChIGeneratorFactory.getInstance();
 	
 	}
 	
 	
-	public static IAtomContainerSet parseSdf(String sdfFileName) throws FileNotFoundException {
+	public static IAtomContainerSet parseSdf(String sdfFileName) throws IOException {
 		IAtomContainerSet containers = DefaultChemObjectBuilder.getInstance().newInstance(
 				IAtomContainerSet.class);
 		
@@ -68,12 +68,49 @@ public class FileUtilities {
 			containers.addAtomContainer(mol);	
 		}
 		
-		
+		sdfr.close();
 		return containers;
 		
 	}
 	
-	public static int countUniqueCompounds(String sdfFileName) throws FileNotFoundException, CDKException{
+	
+	public static IAtomContainerSet parseSdfAndAddTitles(String sdfFileName, InChIGeneratorFactory igf) throws CDKException, IOException {
+		IAtomContainerSet containers = DefaultChemObjectBuilder.getInstance().newInstance(
+				IAtomContainerSet.class);
+		
+		IChemObjectBuilder bldr = SilentChemObjectBuilder.getInstance();
+		
+		IteratingSDFReader sdfr = new IteratingSDFReader(new FileReader(sdfFileName), bldr);
+		
+		while (sdfr.hasNext()){
+			IAtomContainer molecule = sdfr.next();
+			String identifier = molecule.getProperty(CDKConstants.TITLE);
+			if(identifier == null){
+				identifier = molecule.getProperty("Name");
+				if(identifier == null){
+					identifier = molecule.getProperty("$MolName"); 
+					if(identifier == null){
+						identifier = molecule.getProperty("InChIKey");
+						if(identifier == null){
+							identifier = igf.getInChIGenerator(molecule).getInchiKey();
+						}
+					}
+
+				}
+				molecule.setProperty(CDKConstants.TITLE, identifier);
+			}
+			
+			containers.addAtomContainer(molecule);	
+		}
+		
+		sdfr.close();
+		return containers;
+		
+	}
+	
+	
+	
+	public static int countUniqueCompounds(String sdfFileName) throws CDKException, IOException{
 		int count = 0;
 		
 		IAtomContainerSet containers = parseSdf(sdfFileName);
@@ -189,7 +226,7 @@ public class FileUtilities {
 
 	
 	
-	public static void saveAtomContainerSetsToCSV(IAtomContainerSet products, String outputFileName) throws Exception{
+	public static void saveAtomContainerSetToCSV(IAtomContainerSet products, String outputFileName) throws Exception{
 
 		LinkedHashMap<Object, Object> properties = new LinkedHashMap<Object, Object>();
 		
@@ -215,8 +252,10 @@ public class FileUtilities {
 					}
 					csvPrinter.printRecord(props);
 				}				
-				csvPrinter.flush();
+//				csvPrinter.flush();
+				csvPrinter.close();
 				System.out.println("The results were saved to the following file: " + outputFileName + "\n");
+				
 			}
 			else{
 				System.out.println("The number of metabolites to save is " + (products.getAtomContainerCount()));
@@ -230,7 +269,7 @@ public class FileUtilities {
 		
 	}
 	
-	public static void saveAtomContainersToSDF(IAtomContainerSet containers, String outputFileName) throws CDKException, IOException{
+	public static void saveAtomContainerSetToSDF(IAtomContainerSet containers, String outputFileName) throws CDKException, IOException{
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputFileName));		
 		sdfWriter.write(containers);
 		sdfWriter.close();

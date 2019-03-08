@@ -6,7 +6,7 @@ as well as the soil/aquatic microbiota. BioTransformer also assists scientists i
 
 BioTransformer is offered to the public as a freely acessible software package. Beside the prediction software, a manually curated database called BioTransformerDB is also available. Use and re-distribution of the these resources, in whole or in part, for commercial purposes requires explicit permission of the authors and explicit acknowledgment of the source material (BioTransformer) and the original publication (see citation). We ask that all users of the BioTransformer software tool or BioTransformerDB to cite the BioTransformer reference in any resulting publications.
 
-Cite: Djoumbou Feunang Y, Fiamoncini J, de la Fuente AG, Manach C, Greiner R, and Wishart DS; BioTransformer: A Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification; Journal of Cheminformatics; 2018; Submitted
+Cite: Djoumbou Feunang Y, Fiamoncini J, de la Fuente AG, Manach C, Greiner R, and Wishart DS; BioTransformer: A Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification; Journal of Cheminformatics; (2019) 11:2; DOI: 10.1186/s13321‐018‐0324‐5
 ***************************************************************************************************
 
 Usage:

@@ -64,7 +64,7 @@ public class MetaboliteFinder{
 	
 	public void findAllHumanMetabolitesToCSV(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, String outputFileName, FinderOption opt) throws Exception{		
 		IAtomContainerSet metabolites = findAllHumanMetabolites(startingCompound, mass_formulas, massTolerance, nrOfSteps, annotate, opt);
-		FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputFileName);
+		FileUtilities.saveAtomContainerSetToCSV(metabolites, outputFileName);
 	}
 	
 	public IAtomContainerSet findAllHumanMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, FinderOption opt) throws Exception{
@@ -238,7 +238,7 @@ public class MetaboliteFinder{
 	
 	public void findSuperbioMetabolitesToCSV(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, boolean annotate, String outputFileName, FinderOption opt) throws Exception{		
 		IAtomContainerSet metabolites = findSuperbioMetabolites(startingCompound, mass_formulas, massTolerance, annotate, opt);
-		FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputFileName);
+		FileUtilities.saveAtomContainerSetToCSV(metabolites, outputFileName);
 	}
 	
 	public IAtomContainerSet findSuperbioMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, boolean annotate, FinderOption opt) throws Exception{
@@ -417,7 +417,7 @@ public class MetaboliteFinder{
 	
 	public void findAllEnvMicroMetabolitesToCSV(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, String outputFileName, FinderOption opt) throws Exception{		
 		IAtomContainerSet metabolites = findAllEnvMicroMetabolites(startingCompound, mass_formulas, massTolerance, nrOfSteps, annotate, opt);
-		FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputFileName);
+		FileUtilities.saveAtomContainerSetToCSV(metabolites, outputFileName);
 	}
 	
 	public IAtomContainerSet findAllEnvMicroMetabolites(IAtomContainer startingCompound, ArrayList<String>mass_formulas, double massTolerance, int nrOfSteps, boolean annotate, FinderOption opt) throws Exception{

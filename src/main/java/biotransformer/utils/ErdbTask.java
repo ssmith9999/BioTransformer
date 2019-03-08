@@ -121,6 +121,8 @@ public class ErdbTask {
 		System.out.println("lipinskiOrleadLikeCompounds: " + lipinskiOrleadLikeCompounds.size() );
 		System.out.println("filtered: " + filtered.size() );
 		System.out.println("reactantNr: " + reactantNr);
+		
+		bReader.close();
 	}
 	
 	public void generateReactantsSetFromTSV() throws IOException{
@@ -282,7 +284,7 @@ public class ErdbTask {
 		System.out.println("maxAsaRIsSmiles: " + maxAsaRIsSmiles);
 		System.out.println("maxMLogPaRIsSmiles: " + maxMLogPaRIsSmiles);
 		
-		
+		bReader.close();
 	}
 	
 	
@@ -710,6 +712,8 @@ public class ErdbTask {
 		bw0.write(jsonText);
 		bw0.close();
 		
+		bReader.close();
+
 	}
 	
 	

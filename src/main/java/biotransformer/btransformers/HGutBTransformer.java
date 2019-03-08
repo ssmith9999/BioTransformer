@@ -856,7 +856,7 @@ public class HGutBTransformer extends Biotransformer {
 				if(identifier == null){
 					identifier = molecule.getProperty("Name");
 					if(identifier == null){
-						identifier = molecule.getProperty("InChiKey");
+						identifier = molecule.getProperty("InChIKey");
 						if(identifier == null){
 							identifier = this.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
 						}

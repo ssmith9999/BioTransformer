@@ -11,6 +11,7 @@ import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
 import org.apache.commons.cli.MissingOptionException;
+import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -233,12 +234,12 @@ public class BiotransformerExecutable {
 				+ "Examples:\n"
 				+ "*********\n\n"
 				+"1) To predict the biotransformation of a molecule from an SDF input using the human super transformer (option superbio) and annotate the metabolites with names and database IDs (from PubChem), run\n"
-				+ "\n	java -jar biotransformer-1-0-6.jar -k pred -b superbio -isdf #{input file name} -osdf #{output file} -a."
+				+ "\n	java -jar biotransformer-1-0-8.jar -k pred -b superbio -isdf #{input file name} -osdf #{output file} -a."
 				+ "\n\n2) To predict the 2-step biotransformation of Thymol (a monoterpene) using the human super transformer (option allHuman) using the SMILES input and saving to a CSV file, run"
-				+ "\n	java -jar biotransformer-1-0-6.jar  -k pred -b allHuman -ismi \"CC(C)C1=CC=C(C)C=C1O\" -ocsv #{replace with output file name} -s 2"
+				+ "\n	java -jar biotransformer-1-0-8.jar  -k pred -b allHuman -ismi \"CC(C)C1=CC=C(C)C=C1O\" -ocsv #{replace with output file name} -s 2"
 				+ "\n\n3) Identify all human metabolites (max depth = 2) of Epicatechin (\"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\") with masses 292.0946 Da and 304.0946 Da, with a mass tolerance of 0.01 Da."
 				+ " Provide an annotation (Common name, synonyms, and PubChem CID), when available."
-				+ "\n	java -jar biotransformer-1-0-6.jar  -k cid -b allHuman -ismi \"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\" -osdf #{replace with output file name} -s 2 -m \"292.0946;304.0946\" -t 0.01 -a"
+				+ "\n	java -jar biotransformer-1-0-8.jar  -k cid -b allHuman -ismi \"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\" -osdf #{replace with output file name} -s 2 -m \"292.0946;304.0946\" -t 0.01 -a"
 				+ "\n	- DO NOT forget the quotes around the SMILES string or the list of masses"
 				+ "\nTo report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
 				+ "To report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
@@ -257,18 +258,18 @@ public class BiotransformerExecutable {
 //				+ "-f sdf -i #{input file name} -o #{output folder}.\n\n"
 //				+ "\t\t- For each of the query molecule in the input file, an outputfile will be created with the list of corresponding metabolites.\n\n"
 //				+ "2) To predict the 2-step biotransformation of Thymol (a monoterpene) using the human super transformer (option allHuman) using the SMILES input, run\n\n"
-//				+ "java -jar biotransformer-1-0-6.jar -k pred -b allHuman -f smiles -i \"CC(C)C1=CC=C(C)C=C1O\" -o #{replace with output file name} -s 2\n\n"
+//				+ "java -jar biotransformer-1-0-8.jar -k pred -b allHuman -f smiles -i \"CC(C)C1=CC=C(C)C=C1O\" -o #{replace with output file name} -s 2\n\n"
 //				+ "Currently, the outputfile is SDF per default.\n\n"
 //				+ "3) Identify all human metabolites (max depth = 2) of Epicatechin (\"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\") with masses 292.0946 Da and 304.0946 Da, with a mass tolerance "
 //				+ "of 0.01 Da. Provide an annotation (Common name).\n\n"
-//				+ "java -jar biotransformer-1-0-6.jar -k cid -b allHuman -f smiles -i \"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\" -o #{replace with output file name} "
+//				+ "java -jar biotransformer-1-0-8.jar -k cid -b allHuman -f smiles -i \"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\" -o #{replace with output file name} "
 //				+ "-s 2 -m \"292.0946; 304.0946\" -t 0.01 -a\n\t\t- DO NOT forget the quotes around the SMILES string or the list of masses.\n\n"
 //				+ "To report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
-//				+ "BioTransformer is offered to the public as a freely acessible software package. Beside the prediction software, a manually curated database called BioTransformerDB is also available.\n\n"
-//				+ "Users are free to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material unfer the condition that they must give appropriate "
+//				+ "BioTransformer is offered to the public as a freely acessible software package. Beside the prediction software, a manually curated database called BioTransformerDB is also available. The package is available under the GNU license GPL v2.1\n\n"
+//				+ "Users are free to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material under the condition that they must give appropriate "
 //				+ "credit, provide links to the license, and indicate if changes were made. Furthermore, use and re-distribution of the these resources, in whole or in part, for commercial purposes requires "
 //				+ "explicit permission of the authors. We ask that all users of the BioTransformer software tool or BioTransformerDB to cite the BioTransformer reference in any resulting publications, and to acknowledge the authors.\n\n"
-//				+ "Cite: Djoumbou Feunang, Yannick; Cheminformatics Tools for Enabling Metabolomics; 2017; PhD Thesis";
+//				+ "Cite: Djoumbou-Feunang Y, Fiamoncini J, de la Fuente AG, Manach C, Greiner R, and Wishart DS; BioTransformer: A Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification; Journal of Cheminformatics 201911:2; DOI: 10.1186/s13321-018-0324-5.";
 		
 		HelpFormatter formatter = new HelpFormatter();
 
@@ -509,7 +510,7 @@ public class BiotransformerExecutable {
 							}
 							
 							if(oFormat.contentEquals("csv")){
-								FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputF);
+								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
 							}
 							else if(oFormat.contentEquals("sdf")){							
 								SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
@@ -553,7 +554,7 @@ public class BiotransformerExecutable {
 							}
 							
 							if(oFormat.contentEquals("csv")){
-								FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputF);
+								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
 							}
 							else if(oFormat.contentEquals("sdf")){							
 								SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
@@ -598,7 +599,7 @@ public class BiotransformerExecutable {
 							}
 							
 							if(oFormat.contentEquals("csv")){
-								FileUtilities.saveAtomContainerSetsToCSV(metabolites, outputF);
+								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
 							}
 							else if(oFormat.contentEquals("sdf")){							
 								SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
@@ -673,9 +674,10 @@ public class BiotransformerExecutable {
 					biotransformations = hgut.applyGutMicrobialMetabolismHydrolysisAndReductionChain(singleInput, true, true, nrOfSteps, 0.5);
 				}
 				else {
-					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+					
+					
+					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, hgut.inchiGenFactory);					
 					if (containers.getAtomContainerCount()>0){
-						containers = FileUtilities.parseSdf(inputFileName);
 						biotransformations = hgut.applyGutMicrobialMetabolismHydrolysisAndReductionChain(containers, true, true, nrOfSteps, 0.5);
 					}				
 				}
@@ -696,7 +698,7 @@ public class BiotransformerExecutable {
 							true, true, true, nrOfSteps, 0.5);
 				}
 				else {
-					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, phase2b.inchiGenFactory);
 					if (containers.getAtomContainerCount()>0){
 						containers = FileUtilities.parseSdf(inputFileName);
 						biotransformations = phase2b.applyPhase2TransformationsChainAndReturnBiotransformations(containers,
@@ -753,8 +755,8 @@ public class BiotransformerExecutable {
 				}
 				else {
 					ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
-					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
-					
+					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, hsbt.getInChIGenFactory());
+					System.out.println(containers.getAtomContainerCount());
 					
 					if(oFormat.contentEquals("csv")){
 						hsbt.predictAllHumanBiotransformationChainAndSaveToCSV(containers, nrOfSteps, 0.5, outputF, annotate);
@@ -770,6 +772,7 @@ public class BiotransformerExecutable {
 				
 				if (singleInput !=null){
 					if(oFormat.contentEquals("csv")){
+
 						ebt.simulateEnvMicrobialDegradationAndSaveToCSV(singleInput, true, true, nrOfSteps, 0.5, outputF, annotate);
 					}
 					else if(oFormat.contentEquals("sdf")){
@@ -779,13 +782,14 @@ public class BiotransformerExecutable {
 				else {
 					ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
-					biotransformations = ebt.applyEnvMicrobialTransformations(containers, true, true, 0.5);
-					
+					//biotransformations = ebt.applyEnvMicrobialTransformations(containers, true, true, 0.5);
+					biotransformations = ebt.simulateEnvMicrobialDegradation(containers, true, true, nrOfSteps, 0.5);
+							
 					if(oFormat.contentEquals("csv")){
 						ebt.saveBioTransformationProductsToCSV(biotransformations, outputF, annotate);
 					}
 					else if(oFormat.contentEquals("sdf")){
-						ebt.saveBioTransformationProductsToCSV(biotransformations, outputF, annotate);
+						ebt.saveBioTransformationProductsToSdf(biotransformations, outputF, annotate);
 					}					
 				}
 			}	

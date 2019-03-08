@@ -23,6 +23,7 @@ import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.inchi.InChIGenerator;
+import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
 import org.openscience.cdk.smiles.SmilesGenerator;
@@ -56,6 +57,7 @@ public class HumanSuperBioTransformer {
 	
 	public SmilesParser smiParser					= ecb.getSmiParser();
 	public SmilesGenerator smiGen 		= new SmilesGenerator().isomeric();
+	
 	
 	public HumanSuperBioTransformer() throws IOException, ParseException, CDKException {
 
@@ -99,7 +101,9 @@ public class HumanSuperBioTransformer {
 //		System.err.println(this.combinedReactionsHash.containsKey("EAWAG_RULE_BT0008"));
 	}
 
-	
+	public InChIGeneratorFactory getInChIGenFactory(){
+		return this.ecb.inchiGenFactory;
+	}
 	public ArrayList<Biotransformation> simulateHumanSuperbioMetabolism(IAtomContainer target) throws Exception{
 		 ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		 
@@ -134,10 +138,11 @@ public class HumanSuperBioTransformer {
 					System.out.println("Predicting EC metabolism");
 					System.out.println("===========================================\n\n");
 					System.out.println("Smiles before EC-based simulation: " + this.smiGen.create(molecule));
-					 biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolismChain(molecule, true, true, 1, 0.1));
+					 biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolismChain(molecule, true, true, 1, 0.5));
 					 products.add(this.ecb.extractAtomContainer(biotransformations));
 					 products = ChemStructureExplorer.uniquefy(products);
 					 System.out.println("Number of EC-based biotransformations after first pass: " + biotransformations.size());
+					 System.out.println("Number of EC-based metabolites after first pass: " + products.getAtomContainerCount());
 //					 System.out.println("Predicting CYP450 metabolism");
 					/*
 					 *  Apply CYP450 metabolism
@@ -149,7 +154,7 @@ public class HumanSuperBioTransformer {
 					 ArrayList<Biotransformation> cyp450Biots = new  ArrayList<Biotransformation>();
 					 for(IAtomContainer met : products.atomContainers()){
 //						 System.out.println("predicting CYP450 metabolites for: " + this.ecb.smiGen.create(met));
-						 cyp450Biots.addAll(this.cyb.predictCyp450Biotransformations(met, true, true, 0.1));
+						 cyp450Biots.addAll(this.cyb.predictCyp450Biotransformations(met, true, true, 0.5));
 					 }
 					 IAtomContainerSet cyp450Prods = this.ecb.extractAtomContainer(cyp450Biots);
 					 products.add(cyp450Prods);
@@ -206,7 +211,6 @@ public class HumanSuperBioTransformer {
 					 }
 					 
 
-					 System.out.println("Predicting human gut metabolism of " + products.getAtomContainerCount() + " metabolites");
 					/*
 					 *  Apply Human gut metabolism
 					 */
@@ -225,6 +229,7 @@ public class HumanSuperBioTransformer {
 							 hGutSubstrates.addAtomContainer(a);
 						 }
 					 }
+					 System.out.println("Predicting human gut metabolism of " + products.getAtomContainerCount() + " metabolites");
 					 
 //					 System.out.println(hGutSubstrates == null);
 //					 System.out.println(hGutSubstrates.getAtomContainerCount());
@@ -301,11 +306,11 @@ public class HumanSuperBioTransformer {
 					System.out.println("Predicting EC metabolism");
 					System.out.println("===========================================\n\n");
 					System.out.println("Smiles before EC-based simulation: " + this.smiGen.create(molecule));
-					 biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolismChain(molecule, true, true, 1, 0.1));
+					 biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolismChain(molecule, true, true, 1, 0.0));
 					 products.add(this.ecb.extractAtomContainer(biotransformations));
 					 products = ChemStructureExplorer.uniquefy(products);
 					 System.out.println("Number of EC-based biotransformations after first pass: " + biotransformations.size());
-
+					 System.out.println("Number of metabolites after first EC pass: " + products.getAtomContainerCount());
 					 /*
 					 *  Apply ECBased
 					 *  Some products of CYP450 might be unstable, such as epoxides, and will be further transformed.
@@ -318,7 +323,7 @@ public class HumanSuperBioTransformer {
 					 phaseIISubstrates.add(partitionedMolecules.get("phaseIISubstrates"));
 					 phaseIINonSubstrates.add(partitionedMolecules.get("phaseIINonSubstrates"));
 					 
-					 System.out.println("phaseIISubstrates: " + phaseIISubstrates.getAtomContainerCount());
+//					 System.out.println("phaseIISubstrates: " + phaseIISubstrates.getAtomContainerCount());
 					 
 //					 if	(phaseIINonSubstrates.getAtomContainerCount()>0){
 //						System.out.println("\n\n===========================================");
@@ -353,9 +358,9 @@ public class HumanSuperBioTransformer {
 					 *  Apply Human gut metabolism
 					 */
 					 
-//						 for(IAtomContainer atc : products.atomContainers()){
-//							 System.out.println(this.ecb.smiGen.create(atc));
-//						 }
+						 for(IAtomContainer atc : products.atomContainers()){
+							 System.out.println(this.ecb.smiGen.create(atc));
+						 }
 					 
 					 IAtomContainerSet hGutSubstrates = phaseIISubstrates;
 					 
@@ -371,12 +376,12 @@ public class HumanSuperBioTransformer {
 //					 System.out.println(hGutSubstrates == null);
 //					 System.out.println(hGutSubstrates.getAtomContainerCount());
 					 ArrayList<Biotransformation> hGutBiots = new  ArrayList<Biotransformation>();
-					 hGutBiots.addAll(this.hgb.applyGutMicrobialMetabolismHydrolysisAndReductionChain(hGutSubstrates, true, true, 1, 0.1));
+					 hGutBiots.addAll(this.hgb.applyGutMicrobialMetabolismHydrolysisAndReductionChain(hGutSubstrates, true, true, 1, 0.0));
 					 System.out.println("Number of human gut biotransformations: " + hGutBiots.size());
 					
-					 for(int i = 0; i < hGutBiots.size(); i++){
-						 System.out.println(hGutBiots.get(i).getReactionType());
-					 }
+//					 for(int i = 0; i < hGutBiots.size(); i++){
+//						 System.out.println(hGutBiots.get(i).getReactionType());
+//					 }
 					 
 					 biotransformations.addAll(hGutBiots);
 					 IAtomContainerSet hGutProducts = this.ecb.extractAtomContainer(hGutBiots);
@@ -450,25 +455,12 @@ public class HumanSuperBioTransformer {
 	
 	public void simulateHumanSuperbioMetabolismFromSDF(String inputFileName, String outputFolder, boolean annotate) throws Exception {
 		
-		IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+		IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, this.getInChIGenFactory());
 		int nr = 0;
 		if(!containers.isEmpty()){
 			for(IAtomContainer molecule : containers.atomContainers()){
 				try{
 					String identifier = molecule.getProperty(CDKConstants.TITLE);
-					if(identifier == null){
-						identifier = molecule.getProperty("Name");
-						if(identifier == null){
-							identifier = molecule.getProperty("$MolName"); 
-							if(identifier == null){
-								identifier = molecule.getProperty("InChiKey");
-								if(identifier == null){
-									identifier = this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
-								}
-							}
-
-						}
-					}
 					identifier = identifier.replace(":", "-").replace("/", "_");
 					this.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule, outputFolder + "/" + identifier + "_BioT_sim_metabolites.sdf", annotate);
 
@@ -494,13 +486,14 @@ public class HumanSuperBioTransformer {
 						if(identifier == null){
 							identifier = molecule.getProperty("$MolName"); 
 							if(identifier == null){
-								identifier = molecule.getProperty("InChiKey");
+								identifier = molecule.getProperty("InChIKey");
 								if(identifier == null){
-									identifier = this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
+									identifier = this.getInChIGenFactory().getInChIGenerator(molecule).getInchiKey();
 								}
 							}
 
 						}
+						molecule.setProperty(CDKConstants.TITLE, identifier);
 					}
 					identifier = identifier.replace(":", "-").replace("/", "_");
 					this.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule, outputFolder + "/" + identifier + "_BioT_sim_metabolites.sdf", annotate);
@@ -537,9 +530,9 @@ public class HumanSuperBioTransformer {
 //						if(identifier == null){
 //							identifier = molecule.getProperty("$MolName"); 
 //							if(identifier == null){
-//								identifier = molecule.getProperty("InChiKey");
+//								identifier = molecule.getProperty("InChIKey");
 //								if(identifier == null){
-//									identifier = this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
+//									identifier = this.getInChIGenFactory().getInChIGenerator(molecule).getInchiKey();
 //								}
 //							}
 //
@@ -679,27 +672,13 @@ public class HumanSuperBioTransformer {
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 				
 		int nr = 0;
-		IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+		IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, this.getInChIGenFactory());
 		if(!containers.isEmpty()){
 			for(IAtomContainer molecule : containers.atomContainers()){
 				nr++;
 				System.out.println("molecule nr. " +nr);
 				
 				try{
-					String identifier = molecule.getProperty(CDKConstants.TITLE);
-					if(identifier == null){
-						identifier = molecule.getProperty("Name");
-						if(identifier == null){
-							identifier = molecule.getProperty("$MolName"); 
-							if(identifier == null){
-								identifier = molecule.getProperty("InChiKey");
-								if(identifier == null){
-									identifier = this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
-								}
-							}
-
-						}
-					}
 					
 					ArrayList<Biotransformation> bts = this.simulateHumanSuperbioMetabolism(molecule);
 					System.out.println(bts.size() + " biotransformations");
@@ -720,28 +699,14 @@ public class HumanSuperBioTransformer {
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 				
 		int nr = 0;
-		IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+		IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, this.getInChIGenFactory());
 		if(!containers.isEmpty()){
 			for(IAtomContainer molecule : containers.atomContainers()){
 				nr++;
 				System.out.println("molecule nr. " +nr);
 				
 				try{
-					String identifier = molecule.getProperty(CDKConstants.TITLE);
-					if(identifier == null){
-						identifier = molecule.getProperty("Name");
-						if(identifier == null){
-							identifier = molecule.getProperty("$MolName"); 
-							if(identifier == null){
-								identifier = molecule.getProperty("InChiKey");
-								if(identifier == null){
-									identifier = this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey();
-								}
-							}
 
-						}
-					}
-					
 					ArrayList<Biotransformation> bts = this.simulateHumanSuperbioMetabolism(molecule);
 					System.out.println(bts.size() + " biotransformations");
 					biotransformations.addAll(bts); 	
@@ -768,8 +733,8 @@ public class HumanSuperBioTransformer {
 //		 System.out.println("SMILES BEFORE STANDARDIZATION: " + this.smiGen.create(target));		 
 //		 System.out.println("SMILES AFTER STANDARDIZATION: " + this.smiGen.create(molecule));
 //
-//		 System.out.println("INCHIKEY BEFORE STANDARDIZATION: " + this.ecb.inchiGenFactory.getInChIGenerator(target).getInchiKey());		 
-//		 System.out.println("INCHIKEY AFTER STANDARDIZATION: " +  this.ecb.inchiGenFactory.getInChIGenerator(molecule).getInchiKey());
+//		 System.out.println("INCHIKEY BEFORE STANDARDIZATION: " + this.getInChIGenFactory().getInChIGenerator(target).getInchiKey());		 
+//		 System.out.println("INCHIKEY AFTER STANDARDIZATION: " +  this.getInChIGenFactory().getInChIGenerator(molecule).getInchiKey());
 		 
 		 IAtomContainerSet products = DefaultChemObjectBuilder
 					.getInstance().newInstance(IAtomContainerSet.class);
@@ -887,6 +852,7 @@ public class HumanSuperBioTransformer {
 	public ArrayList<Biotransformation> simulateOneStepAllHuman(IAtomContainerSet targets, double scoreThreshold) throws Exception {
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		for(IAtomContainer target : targets.atomContainers()){
+//			System.out.println("AtomContainer");
 			biotransformations.addAll(simulateOneStepAllHuman(target, scoreThreshold));
 		}
 		
@@ -984,23 +950,10 @@ public class HumanSuperBioTransformer {
 	public void predictMetabolismAllHumanFromSDFAndSavetoSDF(String inputFileName, String outputFolder, int nrOfSteps, double scoreThreshold, boolean annotate) throws Exception{
 			
 		int nr = 0;
-		IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+		IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, this.getInChIGenFactory());
 		for(IAtomContainer atc : containers.atomContainers()){
 			try{
 				String identifier = atc.getProperty(CDKConstants.TITLE);
-				if(identifier == null){
-					identifier = atc.getProperty("Name");
-					if(identifier == null){
-						identifier = atc.getProperty("$MolName"); 
-						if(identifier == null){
-							identifier = atc.getProperty("InChiKey");
-							if(identifier == null){
-								identifier = this.ecb.inchiGenFactory.getInChIGenerator(atc).getInchiKey();
-							}
-						}
-
-					}
-				}
 				identifier = identifier.replace(":", "-").replace("/", "_");
 				ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 				biotransformations.addAll(this.predictAllHumanBiotransformationChain(atc, nrOfSteps, scoreThreshold));
@@ -1017,24 +970,11 @@ public class HumanSuperBioTransformer {
 	public void predictMetabolismAllHumanFromSDFAndSavetoSingleSDF(String inputFileName, String outputFileName, int nrOfSteps, double scoreThreshold, boolean annotate) throws Exception{
 		
 		int nr = 0;
-		IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+		IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, this.getInChIGenFactory());
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		for(IAtomContainer atc : containers.atomContainers()){
 			try{
 				String identifier = atc.getProperty(CDKConstants.TITLE);
-				if(identifier == null){
-					identifier = atc.getProperty("Name");
-					if(identifier == null){
-						identifier = atc.getProperty("$MolName"); 
-						if(identifier == null){
-							identifier = atc.getProperty("InChiKey");
-							if(identifier == null){
-								identifier = this.ecb.inchiGenFactory.getInChIGenerator(atc).getInchiKey();
-							}
-						}
-
-					}
-				}
 				identifier = identifier.replace(":", "-").replace("/", "_");
 				
 				biotransformations.addAll(this.predictAllHumanBiotransformationChain(atc, nrOfSteps, scoreThreshold));

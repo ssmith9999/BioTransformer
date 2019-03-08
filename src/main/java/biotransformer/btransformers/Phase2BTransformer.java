@@ -265,9 +265,16 @@ public class Phase2BTransformer extends Biotransformer{
 	public ArrayList<Biotransformation> applyPhase2Transformations(IAtomContainerSet targets, boolean precheck, boolean preprocess, boolean filter, double scoreThreshold)
 			throws Exception {
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
-		IAtomContainerSet filteredTargets = this.reduceSet(targets);
-		for(IAtomContainer at : filteredTargets.atomContainers()){
-			ArrayList<Biotransformation> bt = applyPhase2Transformations(at, false, preprocess, filter, scoreThreshold);
+//		IAtomContainerSet filteredTargets = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+//		if(precheck == true){
+//			filteredTargets = this.reduceSet(targets);
+//		}else{
+//			filteredTargets = targets;
+//		}
+		
+//		for(IAtomContainer at : filteredTargets.atomContainers()){
+		for(IAtomContainer at : targets.atomContainers()){
+			ArrayList<Biotransformation> bt = applyPhase2Transformations(at, precheck, preprocess, filter, scoreThreshold);
 			if(bt.size()>0){
 				biotransformations.addAll(bt);
 			}

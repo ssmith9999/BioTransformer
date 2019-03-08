@@ -35,8 +35,9 @@ public class CYP450BTTest extends Cyp450BTransformer{
 
 	public static void main(String[] args) throws Exception {
 		CYP450BTTest hCyp450 = new CYP450BTTest(BioSystemName.HUMAN);
-		IAtomContainer ac = hCyp450.getSmiParser().parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
-		ArrayList<Biotransformation> cyp450mets= hCyp450.predictCyp450Biotransformations(ac, true, true, 0.5);
+		IAtomContainer ac = hCyp450.getSmiParser().parseSmiles("OC(=O)C1=C(O)C=CC(=C1)C1C=CNC=C1");
+//		ArrayList<Biotransformation> cyp450mets= hCyp450.predictCyp450Biotransformations(ac, true, true, 0.5);
+		ArrayList<Biotransformation> cyp450mets= hCyp450.predictCyp450BiotransformationChain(ac, true, true, 2, 0.5);
 		System.out.println(cyp450mets.size());
 		
 		hCyp450.saveBioTransformationProductsToCSV(cyp450mets, "data/test_cyp450.csv", true);

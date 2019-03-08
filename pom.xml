@@ -2,7 +2,7 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>djoumbou</groupId>
   <artifactId>biotransformer</artifactId>
-  <version>1.0.5</version>
+  <version>1.0.8</version>
   <name>BioTransformer</name>
   <description>A Freely Available, Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification</description>
   <dependencies>

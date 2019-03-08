@@ -4605,6 +4605,7 @@ public class ChemStructureFingerprinter {
 			}
 		}
 		System.out.println("\nNr of compounds: " + i);
+		reader.close();
 	}
 
 	/**
@@ -4781,6 +4782,7 @@ public class ChemStructureFingerprinter {
 			}
 		}
 		bw.close();
+		reader.close();
 		return totalBits;
 
 	}
@@ -4874,6 +4876,7 @@ public class ChemStructureFingerprinter {
 			}
 		}
 		bw.close();
+		reader.close();
 		return output;
 		// return total_bits;
 
@@ -5062,6 +5065,8 @@ public class ChemStructureFingerprinter {
 		
 		System.out.println("No. of errors: " + errors);
 		bWriter.close();
+		bReader.close();
+	
 	}
 	
 }

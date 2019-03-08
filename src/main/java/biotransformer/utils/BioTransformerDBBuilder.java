@@ -393,7 +393,7 @@ public class BioTransformerDBBuilder {
 				bw0.write(rno.getKey() + "\t" + rno.getValue().get(0) + "\t" + rno.getValue().get(1) + 
 						"\t" + (float)rno.getValue().get(0)/(float)rno.getValue().get(1)  );
 //				System.out.println(String.format("%-40s\t%10d\t%5d\t%5.3f", rno.getKey(), rno.getValue().get(0), rno.getValue().get(1), (float)rno.getValue().get(0)/(float)rno.getValue().get(1)     ));
-				bw0.newLine();;
+				bw0.newLine();
 			}
 			
 //			else

@@ -1652,7 +1652,19 @@ public class Biotransformer {
 	public void saveBioTransformationProductsToCSV(ArrayList<Biotransformation> biotransformations, String outputFileName, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
 		try{
 			IAtomContainerSet products = extractAtomContainerWithTransformationData(biotransformations, customReactionHash, annotate);
-			FileUtilities.saveAtomContainerSetsToCSV(products, outputFileName);			
+			FileUtilities.saveAtomContainerSetToCSV(products, outputFileName);			
+		}
+		catch (Exception e) {
+			e.printStackTrace();
+		}
+
+			
+	}
+	
+	public void saveBioTransformationProductsToSDF(ArrayList<Biotransformation> biotransformations, String outputFileName, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
+		try{
+			IAtomContainerSet products = extractAtomContainerWithTransformationData(biotransformations, customReactionHash, annotate);
+			FileUtilities.saveAtomContainerSetToSDF(products, outputFileName);			
 		}
 		catch (Exception e) {
 			e.printStackTrace();
