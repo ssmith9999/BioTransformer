@@ -242,13 +242,12 @@ public class BiotransformerExecutable {
 				+ "\n	java -jar biotransformer-1-0-8.jar  -k cid -b allHuman -ismi \"O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1\" -osdf #{replace with output file name} -s 2 -m \"292.0946;304.0946\" -t 0.01 -a"
 				+ "\n	- DO NOT forget the quotes around the SMILES string or the list of masses"
 				+ "\nTo report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
-				+ "To report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
-				+ "BioTransformer is offered to the public as a freely acessible software package. Beside the prediction software, a manually curated database called BioTransformerDB is also available.\nUsers are free "
-				+ "to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material unfer the condition that they must give appropriate credit, provide links to the "
-				+ "license, and indicate if changes were made. Furthermore, the above copyright notice and this permission notice must be included. Use and re-distribution of the these resources, in whole or in part, for "
-				+ "commercial purposes requires explicit permission of the authors. We ask that all users of the BioTransformer software tool, the BioTransformer web server, or BioTransformerDB to cite the BioTransformer "
-				+ "reference in any resulting publications, and to acknowledge the authors.\nCite: Djoumbou Feunang Y, Fiamoncini J, de la Fuente AG, Manach C, Greiner R, and Wishart DS; BioTransformer: A Comprehensive "
-				+ "Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification; Journal of Cheminformatics; 2018; Submitted.\n\nCopyright (c) 2017-2018 Yannick Djoumbou Feunang, PhD";
+				+ "BioTransformer is offered to the public as a freely acessible software package under the GNU License GPL v2.1.Users are free"
+				+ " to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material unfer "
+				+ "the condition that they must give appropriate credit, provide links to the license, and indicate if changes were made. Furthermore, "
+				+ "the above copyright notice and this permission notice must be included. Use and re-distribution of the these resources, in whole or in part, "
+				+ "for commercial purposes requires explicit permission of the authors. We ask that all users of the BioTransformer software tool, the BioTransformer web server, "
+				+ "or BioTransformerDB to cite the BioTransformer reference in any resulting publications, and to acknowledge the authors.";
 		
 //		String footer = "* While the superbio option runs a set number of transformation steps in a pre-defined order (e.g. deconjugation first, then Oxidation/reduction, etc.), "
 //				+ "the allHuman option predicts all possible metabolites from any applicable reaction(Oxidation, reduction, (de-)conjudation) at each step."
