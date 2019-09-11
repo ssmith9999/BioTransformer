@@ -168,7 +168,7 @@ public class FileUtilities {
 	}
 
 
-	public static void buildSdfFromTSV(String tsvFileName) throws IOException, CDKException{
+	public static void buildSdfFromTSV(String tsvFileName) throws Exception{
 		
 		BufferedReader bRead = new BufferedReader(new FileReader(tsvFileName));
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(FilenameUtils.getFullPathNoEndSeparator(tsvFileName) + 

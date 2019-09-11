@@ -169,7 +169,7 @@ public class BioTransformerTest {
 	}
 	
 
-	public static void buildSdfFromTSV(String tsvFileName) throws IOException, CDKException{
+	public static void buildSdfFromTSV(String tsvFileName) throws Exception{
 		
 		BufferedReader bRead = new BufferedReader(new FileReader(tsvFileName));
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(FilenameUtils.getFullPathNoEndSeparator(tsvFileName) + 
@@ -227,7 +227,7 @@ public class BioTransformerTest {
 	}
 	
 	
-	public static void buildSdfTSVViaFromRandomSelection(String tsvFileName, int size, int originalSampleSize) throws IOException, CDKException{
+	public static void buildSdfTSVViaFromRandomSelection(String tsvFileName, int size, int originalSampleSize) throws Exception{
 		
 		BufferedReader bRead = new BufferedReader(new FileReader(tsvFileName));
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(FilenameUtils.getFullPathNoEndSeparator(tsvFileName) + "/"  +  

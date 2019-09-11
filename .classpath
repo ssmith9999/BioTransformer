@@ -34,5 +34,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="/Users/yandj/Programming/Projects/Metabolism/bioT/biotransformr/lib/phaseIIFilter-1-0-0.jar"/>
 	<classpathentry kind="lib" path="/Users/yandj/Programming/Projects/Metabolism/bioT/biotransformr/lib/cypreact.jar"/>
+	<classpathentry kind="lib" path="lib/ambit2-tautomers-3.2.0.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

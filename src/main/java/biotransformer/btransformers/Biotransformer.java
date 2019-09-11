@@ -330,25 +330,25 @@ public class Biotransformer {
 		
 //		System.out.println("Just checking");
 		ArrayList<Biotransformation> results = new ArrayList<Biotransformation>();		
-//		IAtomContainer starget = this.standardizeMoleculeWithCopy(target);
-		IAtomContainer starget = target.clone();
+		IAtomContainer starget = ChemStructureManipulator.standardizeMoleculeWithCopy(target, preprocess);
+//		IAtomContainer starget = target.clone();
 
-// 		The molecule is preprocessed in the standardization operation anyway! This part is unnecessary		
-		if (preprocess) {
-			try {
-				starget = ChemStructureManipulator.preprocessContainer(starget);
-//				AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
-				AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
-//				System.out.println("After preprocessing blablabla: " + this.smiGen.create(starget));
-			}
-			catch (Exception e) {
-				System.out.println(e);
-			}
-		}
-		else{
-			AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
-			AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
-		}
+//// 		The molecule is preprocessed in the standardization operation anyway! This part is unnecessary		
+//		if (preprocess) {
+//			try {
+//				starget = ChemStructureManipulator.preprocessContainer(starget);
+////				AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
+//				AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
+////				System.out.println("After preprocessing blablabla: " + this.smiGen.create(starget));
+//			}
+//			catch (Exception e) {
+//				System.out.println(e);
+//			}
+//		}
+//		else{
+//			AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
+//			AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
+//		}
 	
 		if(target.getProperty("InChI") == null){
 			try {
@@ -448,22 +448,22 @@ public class Biotransformer {
 			MetabolicReaction reaction, boolean preprocess, Double scoreThreshold) throws Exception{
 		
 		ArrayList<Biotransformation> results = new ArrayList<Biotransformation>();		
-//		IAtomContainer starget = this.standardizeMoleculeWithCopy(target);
-		IAtomContainer starget = target.clone();
-		
-		if (preprocess) {
-			try {
-				starget = ChemStructureManipulator.preprocessContainer(starget);
-				AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
-				AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
-			}
-			catch (Exception e) {
-				System.out.println(e);
-			}
-		} else{
-			AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
-			AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
-		}
+		IAtomContainer starget = ChemStructureManipulator.standardizeMoleculeWithCopy(target, preprocess);
+//		IAtomContainer starget = target.clone();
+//		
+//		if (preprocess) {
+//			try {
+//				starget = ChemStructureManipulator.preprocessContainer(starget);
+//				AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
+//				AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
+//			}
+//			catch (Exception e) {
+//				System.out.println(e);
+//			}
+//		} else{
+//			AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
+//			AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
+//		}
 		
 		
 //		System.out.println("Target: " + this.smiGen.create(target));
@@ -902,6 +902,7 @@ public class Biotransformer {
 			LinkedHashMap<ReactionName, ArrayList<EnzymeName>> reactToEnzymes = new LinkedHashMap<ReactionName, ArrayList<EnzymeName>>();
 			LinkedHashMap<ReactionName, MetabolicReaction> reactions = new LinkedHashMap<ReactionName, MetabolicReaction>();
 			ArrayList<MetabolicReaction> matchedReactions = new ArrayList<MetabolicReaction>();
+//			IAtomContainer starget = ChemStructureManipulator.standardizeMoleculeWithCopy(target, preprocess);
 			IAtomContainer starget = target.clone();
 			
 			if (preprocess) {

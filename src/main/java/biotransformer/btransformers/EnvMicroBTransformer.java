@@ -269,17 +269,17 @@ public class EnvMicroBTransformer extends Biotransformer {
 			ArrayList<MetabolicReaction> reactions, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
 		
 		ArrayList<Biotransformation> results = new ArrayList<Biotransformation>();	
-		IAtomContainer starget = ChemStructureManipulator.standardizeMoleculeWithCopy(target);
+		IAtomContainer starget = ChemStructureManipulator.standardizeMoleculeWithCopy(target, preprocess);
 		
-		if (preprocess) {
-			try {
-				starget = ChemStructureManipulator.preprocessContainer(starget);
-//				System.out.println("After preprocessing: " + this.smiGen.create(starget));
-			}
-			catch (Exception e) {
-				System.out.println(e);
-			}
-		}
+//		if (preprocess) {
+//			try {
+//				starget = ChemStructureManipulator.preprocessContainer(starget);
+////				System.out.println("After preprocessing: " + this.smiGen.create(starget));
+//			}
+//			catch (Exception e) {
+//				System.out.println(e);
+//			}
+//		}
 		try{
 			if(ChemStructureExplorer.isPpsValid(target)){
 				System.out.println("The target is ppt valid");

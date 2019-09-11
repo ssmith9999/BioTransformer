@@ -43,6 +43,7 @@ public class MRPatterns {
 		CARBAMIDOTHIOIC_ACID_TO_THIOUREA_STANDARDIZATION, CARBAMIDIC_ACID_TO_UREA_STANDARDIZATION,
 		CARBOXYLIC_ACID_ANION_STANDARDIZATION,SULFONIC_ACID_STANDARDIZATION,
 		COENZYME_A_STANDARDIZATION,ANTHOCYANIDIN_STANDARDIZATION_PATTERN1,
+		CARBOXAMIDE_STANDARDIZATION_PATTERN1, CARBOXAMIDE_STANDARDIZATION_PATTERN2,
 
 
 		/**
@@ -696,6 +697,8 @@ public class MRPatterns {
 		 * 	Standardization reactions
 		 */
 		setOfSMIRKS.put(ReactionName.AZIDE_STANDARDIZATION.toString(),"[#7;A;X2-:1][N;X2+:2]#[N;X1:3]>>[#7:1]=[N+:2]=[#7-:3]");
+		setOfSMIRKS.put(ReactionName.CARBOXAMIDE_STANDARDIZATION_PATTERN1.toString(),"[H][#8;X2:3][#6;A;X3:2]([#6:1])=[#7;$([#7;X2]-[#6]),$([#7;X2H1]):4]>>[#6:1][#6;A;X3:2]([#7;A;$([#7;X3H1]-[#6]),$([#7;X3H2]):4])=[O;X1:3]");
+		setOfSMIRKS.put(ReactionName.CARBOXAMIDE_STANDARDIZATION_PATTERN2.toString(),"[#6:1]-[#6;X3:2]([#8;A;X1-:3])=[#7;$([#7;X2]-[#6]),$([#7;X2H1]):4]>>[#6:1]-[#6;X3:2](-[#7;X3:4])=[#8;A;X1:3]");
 		setOfSMIRKS.put(ReactionName.DIAZO_STANDARDIZATION.toString(),"[#6;A;X3-:1][N;X2+:2]#[N;X1:3]>>[#6;A:1]=[N+:2]=[#7-:3]");
 		setOfSMIRKS.put(ReactionName.DIAZONIUM_STANDARDIZATION.toString(),"[#6]-[#7:1]=[#7+:2]>>[#6][N+:1]#[N:2]");
 		setOfSMIRKS.put(ReactionName.IMINIUM_STANDARDIZATION.toString(),"[#6;A;X3+:1][#7;A;X3:2]>>[#6;A:1]=[#7+:2]");
@@ -1863,6 +1866,10 @@ public class MRPatterns {
 		 ***/
 		setOfReactantSMARTS.put(ReactionName.AZIDE_STANDARDIZATION.toString(),
 				new ArrayList<String>(Arrays.asList("[#7;A;X2-][N;X2+]#[N;X1]")));
+		setOfReactantSMARTS.put(ReactionName.CARBOXAMIDE_STANDARDIZATION_PATTERN1.toString(),
+				new ArrayList<String>(Arrays.asList("[#6]-[#6;X3]([#8;A;X2H1])=[#7;$([#7;X2]-[#6]),$([#7;X2H1])]")));		
+		setOfReactantSMARTS.put(ReactionName.CARBOXAMIDE_STANDARDIZATION_PATTERN2.toString(),
+				new ArrayList<String>(Arrays.asList("[#6]-[#6;X3]([#8;A;X1-])=[#7;$([#7;X2]-[#6]),$([#7;X2H1])]")));
 		setOfReactantSMARTS.put(ReactionName.DIAZO_STANDARDIZATION.toString(),
 				new ArrayList<String>(Arrays.asList("[#6;X3-][N;X2+]#[N;X1]")));
 		setOfReactantSMARTS.put(ReactionName.DIAZONIUM_STANDARDIZATION.toString(),

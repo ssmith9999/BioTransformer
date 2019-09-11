@@ -757,6 +757,7 @@ public class HumanSuperBioTransformer {
 				 *  
 				 */	
 //				System.out.println("Predict ECBased");
+//				biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolismChain(molecule, true, true, 1, scoreThreshold));
 				biotransformations.addAll(this.ecb.simulateECBasedPhaseIMetabolismChain(molecule, true, true, 1, scoreThreshold));
 //				biotransformations.addAll(this.ecb.applyEcBasedDeconjuations(molecule, true, true, 3));
 //				biotransformations.addAll(this.ecb.applyEcBasedTransformations(molecule, true, true, 0.5));

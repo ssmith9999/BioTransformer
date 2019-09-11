@@ -22,6 +22,8 @@ public class MReactionSets {
 	static{
 		standardizationReactions = new ArrayList<MetabolicReaction>();
 		standardizationReactions.add(new MetabolicReaction(ReactionName.AZIDE_STANDARDIZATION));
+		standardizationReactions.add(new MetabolicReaction(ReactionName.CARBOXAMIDE_STANDARDIZATION_PATTERN1));
+		standardizationReactions.add(new MetabolicReaction(ReactionName.CARBOXAMIDE_STANDARDIZATION_PATTERN2));
 		standardizationReactions.add(new MetabolicReaction(ReactionName.DIAZO_STANDARDIZATION));
 		standardizationReactions.add(new MetabolicReaction(ReactionName.DIAZONIUM_STANDARDIZATION));
 		standardizationReactions.add(new MetabolicReaction(ReactionName.IMINIUM_STANDARDIZATION));

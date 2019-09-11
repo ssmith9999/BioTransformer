@@ -318,10 +318,10 @@ public class ChemStructureExplorer {
 	 * @param mol2
 	 * @return a boolean value that specifies whether the two molecules are
 	 *         equal.
-	 * @throws CDKException
+	 * @throws Exception 
 	 */
 	public static boolean inchiEqualityHolds(IAtomContainer mol1, IAtomContainer mol2)
-			throws CDKException {
+			throws Exception {
 		boolean equal = false;
 
 		// Generate factory - throws CDKException if native code does not load
@@ -372,10 +372,10 @@ public class ChemStructureExplorer {
 	 * @param molecules
 	 * @param mol
 	 * @return
-	 * @throws CDKException
+	 * @throws Exception 
 	 */
 	public static boolean atomContainerInclusionHolds(IAtomContainerSet molecules,
-			IAtomContainer mol) throws CDKException {
+			IAtomContainer mol) throws Exception {
 		boolean inclusion = false;
 		for (int i = 0; i < molecules.getAtomContainerCount(); i++) {
 
