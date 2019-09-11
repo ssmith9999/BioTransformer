@@ -320,15 +320,15 @@ public class ChemStructureExplorer {
 	 *         equal.
 	 * @throws Exception 
 	 */
-	public static boolean inchiEqualityHolds(IAtomContainer mol1, IAtomContainer mol2)
+	public static boolean inchikeyEqualityHolds(IAtomContainer mol1, IAtomContainer mol2)
 			throws Exception {
 		boolean equal = false;
 
 		// Generate factory - throws CDKException if native code does not load
 		InChIGeneratorFactory factory = InChIGeneratorFactory.getInstance();
 		// Get InChIGenerator
-		String inchikey1 = mol1.getProperty("InChI");
-		String inchikey2 = mol2.getProperty("InChI");
+		String inchikey1 = mol1.getProperty("InChIKey");
+		String inchikey2 = mol2.getProperty("InChIKey");
 		
 		
 		if(inchikey1 ==null){
@@ -379,7 +379,7 @@ public class ChemStructureExplorer {
 		boolean inclusion = false;
 		for (int i = 0; i < molecules.getAtomContainerCount(); i++) {
 
-			if (inchiEqualityHolds(mol, molecules.getAtomContainer(i))) {
+			if (inchikeyEqualityHolds(mol, molecules.getAtomContainer(i))) {
 				inclusion = true;
 				break;
 			}

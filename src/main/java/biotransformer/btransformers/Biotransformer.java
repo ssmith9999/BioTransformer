@@ -1234,7 +1234,7 @@ public class Biotransformer {
 			for(Biotransformation b : bt){
 				if(b.getSubstrates().getAtomContainerCount() == b.getProducts().getAtomContainerCount() &&
 						b.getSubstrates().getAtomContainerCount() == 1 &&
-						ChemStructureExplorer.inchiEqualityHolds(b.getSubstrates().getAtomContainer(0),
+						ChemStructureExplorer.inchikeyEqualityHolds(b.getSubstrates().getAtomContainer(0),
 								b.getProducts().getAtomContainer(0))){
 					
 					System.err.println("Removing " + b.getReactionType());
