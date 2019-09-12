@@ -932,7 +932,7 @@ public class Biotransformer {
 			}
 			
 //			System.out.println(target.getProperty("InChI"));
-//			System.out.println(this.smiGen.create(starget));
+//			System.out.println("SMILES: " + this.smiGen.create(starget));
 					
 			for(Enzyme enz : enzymes){
 				if(esspredictor.isValidSubstrate(starget, EnzymeName.valueOf(enz.getName()))){

@@ -71,8 +71,8 @@ public class HumanSuperBTransformerTest extends HumanSuperBioTransformer{
 		
 		
 		
-////		hsbt.simulateHumanSuperbioMetabolismAndSaveToCSV(molecule, "data/epicatechin-superbio-2.csv", false);
-		hsbt.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule2, "data/epicatechin-superbio.sdf", false);
+//		hsbt.simulateHumanSuperbioMetabolismAndSaveToCSV(molecule2, "data/epicatechin-superbio-3-sstandardizer.csv", false);
+//		hsbt.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule2, "data/epicatechin-superbio.sdf", false);
 		
 //		hsbt.simulateHumanSuperbioMetabolismFromSDFtoSingleSDF("/Users/yandj/test.sdf", "/Users/yandj/test-multiple.sdf", true);		
 				

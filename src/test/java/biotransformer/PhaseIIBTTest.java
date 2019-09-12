@@ -26,13 +26,13 @@ public class PhaseIIBTTest extends Phase2BTransformer{
 
 		
 	public static void main(String[] args) throws Exception{
-		PhaseIIBTTest em = new PhaseIIBTTest(BioSystemName.HUMAN);
+		PhaseIIBTTest p2b = new PhaseIIBTTest(BioSystemName.HUMAN);
 		P2Filter p2f = new P2Filter();		
-		IAtomContainer mol = em.getSmiParser().parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
-		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);		
-		ArrayList<Biotransformation> biotransformations = em.applyPhase2TransformationsChainAndReturnBiotransformations(mol, true, true, true, 1, 0.0);
+		IAtomContainer mol = p2b.getSmiParser().parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
+//		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);		
+		ArrayList<Biotransformation> biotransformations = p2b.applyPhase2TransformationsChainAndReturnBiotransformations(mol, true, true, true, 1, 0.0);
 		System.out.println("Number of biotransformations: " + biotransformations.size());
-		em.saveBioTransformationProductsToSdf(biotransformations, "data/epicatechin_PhaseII_metabolites.sdf", false);	
+		p2b.saveBioTransformationProductsToSdf(biotransformations, "data/epicatechin_PhaseII_metabolites.sdf", false);	
 	}
 
 }

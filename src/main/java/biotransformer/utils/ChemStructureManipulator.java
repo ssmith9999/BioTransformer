@@ -42,7 +42,7 @@ public class ChemStructureManipulator {
 		sstandardizer.setImplicitHydrogens(true);
 		sstandardizer.setGenerate2D(true);
 		sstandardizer.setNeutralise(false);
-		sstandardizer.setGenerateStereofrom2D(true);
+//		sstandardizer.setGenerateStereofrom2D(true);
 		sstandardizer.setGenerateSMILES(true);	
 		sstandardizer.setGenerateTautomers(true);
 	}
@@ -57,47 +57,47 @@ public class ChemStructureManipulator {
 	 * @return : A processed molecule (AtomContainer)
 	 * @throws Exception 
 	 */
-	public static IAtomContainer preprocessContainer(IAtomContainer molecule)
-			throws Exception {
-
-		IAtomContainer molClone =  molecule.clone();
-
-		return sstandardizer.process(molClone);	
-	}
-	
 //	public static IAtomContainer preprocessContainer(IAtomContainer molecule)
-//			throws CDKException {
-//		
-//		AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(molecule);
-////		AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
-//		
-////	    Aromaticity aromaticity = new Aromaticity( ElectronDonation.cdk(), Cycles.cdkAromaticSet());
-//		Aromaticity aromaticity = new Aromaticity(ElectronDonation.daylight(), Cycles.or(Cycles.all(), Cycles.all(6)));
-//		
-//		for (IBond bond : molecule.bonds()) {
-//			if (bond.isAromatic() && bond.getOrder() == IBond.Order.UNSET) {
-//				bond.setFlag(CDKConstants.ISAROMATIC, true);
-//				bond.getAtom(0).setFlag(CDKConstants.ISAROMATIC, true);
-//				bond.getAtom(1).setFlag(CDKConstants.ISAROMATIC, true);
+//			throws Exception {
 //
-//			} 
-//		}
-////		AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(molecule);
-//		aromaticity.apply(molecule);
-////		Kekulization.kekulize(molecule);
-////		AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
-//		StructureDiagramGenerator sdg = new StructureDiagramGenerator();
-//		sdg.setMolecule(molecule);
-//		sdg.generateCoordinates();		
-//		IAtomContainer layedOutMol = sdg.getMolecule();
+//		IAtomContainer molClone =  molecule.clone();
 //
-////		StringWriter w2 = new StringWriter();
-////		MDLWriter mw2 = new MDLWriter(w2);
-////		mw2.write(layedOutMol);	
-////		System.out.println("After preprocessing\n" + w2.toString() + "\n\n");
-//
-//		return layedOutMol;
+//		return sstandardizer.process(molClone);	
 //	}
+	
+	public static IAtomContainer preprocessContainer(IAtomContainer molecule)
+			throws CDKException {
+		
+		AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(molecule);
+//		AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
+		
+//	    Aromaticity aromaticity = new Aromaticity( ElectronDonation.cdk(), Cycles.cdkAromaticSet());
+		Aromaticity aromaticity = new Aromaticity(ElectronDonation.daylight(), Cycles.or(Cycles.all(), Cycles.all(6)));
+		
+		for (IBond bond : molecule.bonds()) {
+			if (bond.isAromatic() && bond.getOrder() == IBond.Order.UNSET) {
+				bond.setFlag(CDKConstants.ISAROMATIC, true);
+				bond.getAtom(0).setFlag(CDKConstants.ISAROMATIC, true);
+				bond.getAtom(1).setFlag(CDKConstants.ISAROMATIC, true);
+
+			} 
+		}
+//		AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(molecule);
+		aromaticity.apply(molecule);
+//		Kekulization.kekulize(molecule);
+//		AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
+		StructureDiagramGenerator sdg = new StructureDiagramGenerator();
+		sdg.setMolecule(molecule);
+		sdg.generateCoordinates();		
+		IAtomContainer layedOutMol = sdg.getMolecule();
+
+//		StringWriter w2 = new StringWriter();
+//		MDLWriter mw2 = new MDLWriter(w2);
+//		mw2.write(layedOutMol);	
+//		System.out.println("After preprocessing\n" + w2.toString() + "\n\n");
+
+		return layedOutMol;
+	}
 	public static IAtomContainer standardizeMoleculeWithCopy(IAtomContainer molecule) throws Exception{
 		return  standardizeMoleculeWithCopy(molecule, true);
 	}

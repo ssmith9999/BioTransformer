@@ -781,7 +781,7 @@ public class HumanSuperBioTransformer {
 				 */	
 //				System.out.println("Predict Human Phase II metabolism");
 				products.addAtomContainer(molecule);
-				biotransformations.addAll(this.p2b.applyPhase2TransformationsChainAndReturnBiotransformations(products, true, true, true, 1, scoreThreshold));
+				biotransformations.addAll(this.p2b.applyPhase2TransformationsChainAndReturnBiotransformations(products, true, false, true, 1, scoreThreshold));
 				
 				
 			

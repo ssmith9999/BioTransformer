@@ -200,9 +200,10 @@ public class Phase2BTransformer extends Biotransformer{
 			
 			else{
 				if(ChemStructureExplorer.isBioTransformerValid(target) && (precheck == true && isPotentialPhase2SubstrateByReactionPatternMatching(target)) || precheck == false){
-					
+//					System.out.println("test 1");
 					if(this.getBioSystemName() == BioSystemName.HUMAN || this.getBioSystemName() == BioSystemName.GUTMICRO){
 						if(ChemStructureExplorer.isInvalidPhase2Metabolite(target)){
+//							System.out.println("test 2");
 							return biotransformations;
 						}
 					}
@@ -214,14 +215,16 @@ public class Phase2BTransformer extends Biotransformer{
 						
 						// System.out.println("Is this a polypenol or phenolic derivative? " + ChemStructureExplorer.isMetabolizablePolyphenolOrDerivative(target));
 						if(!ChemStructureExplorer.isMetabolizablePolyphenolOrDerivative(target)){
-	//						System.err.println("Applying " + conjugationType + " reactions.");
+//							System.err.println("Applying " + conjugationType + " reactions.");
 	//						biotransformations.addAll(applyReactionsAndReturnBiotransformations(target, this.reactionsByGroups.get(conjugationType), preprocess, filter, scoreThreshold));
 							biotransformations.addAll(this.metabolizeWithEnzymes(target, this.enzymesByreactionGroups.get(conjugationType), preprocess, filter, scoreThreshold));
+//							System.out.println(biotransformations.size());
 						} else {
 							
 							if(conjugationType == "Glucuronidation" || conjugationType == "Methylation" || conjugationType == "Sulfonation" || 
 									conjugationType == "Glycine Transfer"){
-	//							System.err.println("Applying " + conjugationType + " reactions.");
+//								System.out.println("test 3");
+//								System.err.println("Applying " + conjugationType + " reactions.");
 	//							biotransformations.addAll(applyReactionsAndReturnBiotransformations(target, this.reactionsByGroups.get(conjugationType), preprocess, filter, scoreThreshold));					
 								biotransformations.addAll(this.metabolizeWithEnzymes(target, this.enzymesByreactionGroups.get(conjugationType), preprocess, filter, scoreThreshold));
 							}
@@ -232,9 +235,11 @@ public class Phase2BTransformer extends Biotransformer{
 						for(Biotransformation bt : biotransformations){
 							boolean g = true;
 							for(IAtomContainer at : bt.getProducts().atomContainers() ){
+//								System.out.println("test 4");
 			//					at = ChemStructureManipulator.preprocessContainer(at);
 								if(ChemStructureExplorer.isInvalidPhase2Metabolite(at)){
 	//								biotransformations.remove(bt);
+//									System.out.println("test 5");
 									g =  false;									
 									break;
 								}
