@@ -21,14 +21,14 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.tools.CDKHydrogenAdder;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import ambit2.smarts.SMIRKSManager;
-import ambit2.tautomers.*;
-import ambit2.tautomers.processor.StructureStandardizer;
+//import ambit2.tautomers.*;
+//import ambit2.tautomers.processor.StructureStandardizer;
 import biotransformer.transformation.MReactionSets;
 import biotransformer.transformation.MetabolicReaction;
 
 public class ChemStructureManipulator {
 	protected static SMIRKSManager smrkMan = new SMIRKSManager(SilentChemObjectBuilder.getInstance());
-	protected static StructureStandardizer sstandardizer = new ambit2.tautomers.processor.StructureStandardizer();
+//	protected static StructureStandardizer sstandardizer = new ambit2.tautomers.processor.StructureStandardizer();
 	
 	public ChemStructureManipulator() {
 		// TODO Auto-generated constructor stub
@@ -38,13 +38,13 @@ public class ChemStructureManipulator {
 		smrkMan.setFlagProcessResultStructures(true);
 		smrkMan.setFlagAddImplicitHAtomsOnResultProcess(true);
 		
-		sstandardizer.setEnabled(true);
-		sstandardizer.setImplicitHydrogens(true);
-		sstandardizer.setGenerate2D(true);
-		sstandardizer.setNeutralise(false);
-//		sstandardizer.setGenerateStereofrom2D(true);
-		sstandardizer.setGenerateSMILES(true);	
-		sstandardizer.setGenerateTautomers(true);
+//		sstandardizer.setEnabled(true);
+//		sstandardizer.setImplicitHydrogens(true);
+//		sstandardizer.setGenerate2D(true);
+//		sstandardizer.setNeutralise(false);
+////		sstandardizer.setGenerateStereofrom2D(true);
+//		sstandardizer.setGenerateSMILES(true);	
+//		sstandardizer.setGenerateTautomers(true);
 	}
 	
 	/**
