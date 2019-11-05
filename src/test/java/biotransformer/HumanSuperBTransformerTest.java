@@ -62,7 +62,7 @@ public class HumanSuperBTransformerTest extends HumanSuperBioTransformer{
 //		acontainers.addAtomContainer(molecule2);
 		
 //		hsbt.predictAllHumanBiotransformationChainAndSaveToCSV(acontainers, 1, 0.5, "/Users/yandj/test-2-mols-allHuman-metabolites.csv", false);
-		hsbt.predictAllHumanBiotransformationChainAndSaveToSDF(acontainers, 1, 0.5, "data/test-2-mols-allHuman-metabolites.sdf", false);
+		hsbt.predictAllHumanBiotransformationChainAndSaveToSDF(acontainers, 1, 0.5, "../test-2-mols-allHuman-metabolites.sdf", false);
 
 		
 		//		Biotransformer b = new Biotransformer(BioSystemName.HUMAN);

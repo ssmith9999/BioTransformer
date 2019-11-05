@@ -32,7 +32,7 @@ public class PhaseIIBTTest extends Phase2BTransformer{
 //		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);		
 		ArrayList<Biotransformation> biotransformations = p2b.applyPhase2TransformationsChainAndReturnBiotransformations(mol, true, true, true, 1, 0.0);
 		System.out.println("Number of biotransformations: " + biotransformations.size());
-		p2b.saveBioTransformationProductsToSdf(biotransformations, "data/epicatechin_PhaseII_metabolites.sdf", false);	
+		p2b.saveBioTransformationProductsToSdf(biotransformations, "../epicatechin_PhaseII_metabolites.sdf", false);	
 	}
 
 }

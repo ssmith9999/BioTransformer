@@ -165,7 +165,7 @@ public class BioTransformerTest {
 //		System
 		
 //		buildSdfFromTSV("/Users/yandj/Projects/DB_data/FooDB/foodb_2017_06_29_csv/compounds_mini.txt");
-		buildSdfTSVViaFromRandomSelection("/Users/yandj/Projects/DB_data/FooDB/foodb_2017_06_29_csv/compounds_mini.txt", 50, 28771);
+		buildSdfTSVViaFromRandomSelection("../compounds_mini.txt", 50, 28771);
 	}
 	
 

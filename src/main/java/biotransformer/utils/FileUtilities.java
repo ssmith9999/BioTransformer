@@ -7,17 +7,17 @@
 package biotransformer.utils;
 
 import java.io.BufferedReader;
-import java.io.BufferedWriter;
+//import java.io.BufferedWriter;
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
-import java.io.OutputStreamWriter;
-import java.io.Writer;
-import java.nio.file.Path;
-import java.nio.file.Paths;
+//import java.io.OutputStreamWriter;
+//import java.io.Writer;
+//import java.nio.file.Path;
+//import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
@@ -25,7 +25,7 @@ import org.apache.commons.io.FilenameUtils;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.exception.InvalidSmilesException;
+//import org.openscience.cdk.exception.InvalidSmilesException;
 import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -41,8 +41,8 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.apache.commons.csv.CSVFormat;
 import org.apache.commons.csv.CSVPrinter;
 
-import biotransformer.transformation.Biotransformation;
-import biotransformer.transformation.MetabolicReaction;
+//import biotransformer.transformation.Biotransformation;
+//import biotransformer.transformation.MetabolicReaction;
  
 
 

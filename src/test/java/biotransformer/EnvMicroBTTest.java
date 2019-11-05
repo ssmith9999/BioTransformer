@@ -34,7 +34,7 @@ public class EnvMicroBTTest extends EnvMicroBTransformer{
 		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);
 		IAtomContainerSet filteredCompounds = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
 		filteredCompounds.addAtomContainer(mol);
-		em.simulateEnvMicrobialDegradationAndSaveToSDF(stac, true, true, 2, 1.0, "data", true);
+		em.simulateEnvMicrobialDegradationAndSaveToSDF(stac, true, true, 2, 1.0, "../test_env_microbial.sdf", true);
 
 	}
 	

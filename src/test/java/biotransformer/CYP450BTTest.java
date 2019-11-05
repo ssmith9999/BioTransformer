@@ -41,7 +41,7 @@ public class CYP450BTTest extends Cyp450BTransformer{
 		System.out.println(cyp450mets.size());
 		
 //		hCyp450.saveBioTransformationProductsToCSV(cyp450mets, "data/test_cyp450.csv", true);
-		hCyp450.saveBioTransformationProductsToSdf(cyp450mets, "data/test_cyp450.sdf", true);
+		hCyp450.saveBioTransformationProductsToSdf(cyp450mets, "../test_cyp450.sdf", true);
 
 
 		IAtomContainer acp = ChemStructureManipulator.preprocessContainer(ac);

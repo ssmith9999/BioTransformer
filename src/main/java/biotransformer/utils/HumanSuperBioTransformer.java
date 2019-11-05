@@ -6,32 +6,32 @@
 
 package biotransformer.utils;
 
-import java.io.FileNotFoundException;
+//import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.HashSet;
+//import java.util.Arrays;
+//import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.Map;
-import java.util.Set;
+//import java.util.Set;
 
-import org.apache.commons.lang3.StringUtils;
-import org.codehaus.jackson.JsonParseException;
-import org.codehaus.jackson.map.JsonMappingException;
+//import org.apache.commons.lang3.StringUtils;
+//import org.codehaus.jackson.JsonParseException;
+//import org.codehaus.jackson.map.JsonMappingException;
 import org.json.simple.parser.ParseException;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.inchi.InChIGenerator;
+//import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.smiles.SmilesParser;
-import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
+//import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 import biotransformer.biosystems.BioSystem.BioSystemName;
-import biotransformer.btransformers.Biotransformer;
+//import biotransformer.btransformers.Biotransformer;
 import biotransformer.btransformers.Cyp450BTransformer;
 import biotransformer.btransformers.ECBasedBTransformer;
 import biotransformer.btransformers.HGutBTransformer;
@@ -234,6 +234,8 @@ public class HumanSuperBioTransformer {
 //					 System.out.println(hGutSubstrates == null);
 //					 System.out.println(hGutSubstrates.getAtomContainerCount());
 					 ArrayList<Biotransformation> hGutBiots = new  ArrayList<Biotransformation>();
+					 
+//					 if ChemStructureExplorer.isMetabolizablePolyphenolOrDerivative
 					 hGutBiots.addAll(this.hgb.applyGutMicrobialMetabolismHydrolysisAndReductionChain(hGutSubstrates, true, true, 8, 0.1));
 					 System.out.println("Number of human gut biotransformations: " + hGutBiots.size());
 					 biotransformations.addAll(hGutBiots);

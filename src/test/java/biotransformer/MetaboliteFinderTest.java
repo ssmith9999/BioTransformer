@@ -35,10 +35,10 @@ public class MetaboliteFinderTest extends MetaboliteFinder {
 		masses.add("304.0941");
 		masses.add("342.0946");
 		
-		mft.findSuperbioMetabolites(atc, masses, 0.01, true, "data/epicatechin_metabolites_identification_by_mass.sdf", FinderOption.MASS);
+		mft.findSuperbioMetabolites(atc, masses, 0.01, true, "../epicatechin_metabolites_identification_by_mass.sdf", FinderOption.MASS);
 	
 		formulas.add("C11H12O3");
-		mft.findAllHumanMetabolites(atc, formulas, 0.01, 2, false, "data/epicatechin_metabolites_identification_by_formula.sdf", FinderOption.FORMULA);
+		mft.findAllHumanMetabolites(atc, formulas, 0.01, 2, false, "../epicatechin_metabolites_identification_by_formula.sdf", FinderOption.FORMULA);
 		
 	}
 

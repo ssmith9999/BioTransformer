@@ -27,13 +27,13 @@ import java.util.Map;
 import org.openscience.cdk.AtomContainerSet;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.aromaticity.Aromaticity;
-import org.openscience.cdk.aromaticity.ElectronDonation;
+//import org.openscience.cdk.aromaticity.Aromaticity;
+//import org.openscience.cdk.aromaticity.ElectronDonation;
 import org.openscience.cdk.exception.CDKException;
-import org.openscience.cdk.exception.InvalidSmilesException;
-import org.openscience.cdk.fragment.ExhaustiveFragmenter;
+//import org.openscience.cdk.exception.InvalidSmilesException;
+//import org.openscience.cdk.fragment.ExhaustiveFragmenter;
 import org.openscience.cdk.graph.ConnectivityChecker;
-import org.openscience.cdk.graph.Cycles;
+//import org.openscience.cdk.graph.Cycles;
 import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtom;
@@ -43,16 +43,16 @@ import org.openscience.cdk.interfaces.IBond;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.isomorphism.Pattern;
-import org.openscience.cdk.qsar.DescriptorValue;
+//import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.descriptors.molecular.ALOGPDescriptor;
-import org.openscience.cdk.qsar.descriptors.molecular.WeightDescriptor;
-import org.openscience.cdk.qsar.descriptors.molecular.XLogPDescriptor;
+//import org.openscience.cdk.qsar.descriptors.molecular.WeightDescriptor;
+//import org.openscience.cdk.qsar.descriptors.molecular.XLogPDescriptor;
 import org.openscience.cdk.qsar.result.IDescriptorResult;
 import org.openscience.cdk.ringsearch.RingSearch;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesGenerator;
 import org.openscience.cdk.smiles.SmilesParser;
-import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
+//import org.openscience.cdk.smiles.smarts.SMARTSQueryTool;
 import org.openscience.cdk.smiles.smarts.SmartsPattern;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
@@ -60,7 +60,7 @@ import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 import ambit2.smarts.query.SMARTSException;
 import ambit2.smarts.query.SmartsPatternCDK;
 import biotransformer.fingerprint.ChemStructureFingerprinter;
-import biotransformer.transformation.MReactionSets;
+//import biotransformer.transformation.MReactionSets;
 import biotransformer.transformation.MetabolicReaction;
 
 // import ambit2.structure2name.IUPACNameGenerator;
@@ -70,12 +70,12 @@ public class ChemStructureExplorer {
 
 	protected static IChemObjectBuilder 	builder 		= SilentChemObjectBuilder.getInstance();
 	protected static SmilesParser			smiParser		= new SmilesParser(builder);
-	public static SmilesGenerator 		smiGen			= SmilesGenerator.isomeric();
+	public static SmilesGenerator 			smiGen			= SmilesGenerator.isomeric();
 	public static InChIGeneratorFactory inchiGenFactory;
 	
 	
 	public ChemStructureExplorer() throws CDKException{
-		this.inchiGenFactory = InChIGeneratorFactory.getInstance();
+		ChemStructureExplorer.inchiGenFactory = InChIGeneratorFactory.getInstance();
 
 	}
 	

@@ -8,10 +8,10 @@ package biotransformer.utils;
 
 import java.io.FileOutputStream;
 import java.io.IOException;
-import java.nio.file.Paths;
+//import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
-import java.util.Map;
+//import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
 import org.json.simple.parser.ParseException;
@@ -19,7 +19,7 @@ import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 //import org.openscience.cdk.formula.MolecularFormulaChecker;
-import org.openscience.cdk.inchi.InChIGenerator;
+//import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
@@ -31,7 +31,7 @@ import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
 import biotransformer.btransformers.EnvMicroBTransformer;
 import biotransformer.transformation.Biotransformation;
 
-import org.openscience.cdk.inchi.InChIGenerator;
+//import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 
 //
