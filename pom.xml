@@ -11,7 +11,12 @@
 		<url>https://nexus.ideaconsult.net/content/repositories/snapshots</url>
 	</repository>
 </repositories>
-
+  <properties>
+    <jdk.version>8</jdk.version>
+    <maven.compiler.source>${jdk.version}</maven.compiler.source>
+    <maven.compiler.target>${jdk.version}</maven.compiler.target>
+    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+  </properties>
   <dependencies>
   	<dependency>
   		<groupId>org.openscience.cdk</groupId>
