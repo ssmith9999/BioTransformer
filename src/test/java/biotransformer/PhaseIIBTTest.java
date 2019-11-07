@@ -28,11 +28,19 @@ public class PhaseIIBTTest extends Phase2BTransformer{
 	public static void main(String[] args) throws Exception{
 		PhaseIIBTTest p2b = new PhaseIIBTTest(BioSystemName.HUMAN);
 		P2Filter p2f = new P2Filter();		
-		IAtomContainer mol = p2b.getSmiParser().parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
-//		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);		
+//		IAtomContainer mol = p2b.getSmiParser().parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
+////		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);		
+//		ArrayList<Biotransformation> biotransformations = p2b.applyPhase2TransformationsChainAndReturnBiotransformations(mol, true, true, true, 1, 0.0);
+//		System.out.println("Number of biotransformations: " + biotransformations.size());
+//		p2b.saveBioTransformationProductsToSdf(biotransformations, "../epicatechin_PhaseII_metabolites.sdf", false);	
+		IAtomContainer mol = p2b.getSmiParser().parseSmiles("CC(C)NO");
+//		IAtomContainer stac = ChemStructureManipulator.standardizeMoleculeWithCopy(mol, true);	
+//		System.out.println("isPotentialPhase2SubstrateByReactionPatternMatching: " + p2b.isPotentialPhase2SubstrateByReactionPatternMatching(mol));
 		ArrayList<Biotransformation> biotransformations = p2b.applyPhase2TransformationsChainAndReturnBiotransformations(mol, true, true, true, 1, 0.0);
 		System.out.println("Number of biotransformations: " + biotransformations.size());
-		p2b.saveBioTransformationProductsToSdf(biotransformations, "../epicatechin_PhaseII_metabolites.sdf", false);	
+		p2b.saveBioTransformationProductsToSdf(biotransformations, "../TEST_PhaseII_metabolites.sdf", false);	
+
+	
 	}
 
 }
