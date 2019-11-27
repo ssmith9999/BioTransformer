@@ -104,7 +104,7 @@ e-mail the following address: djoumbou@ualberta.ca
 Compiling and packaging BioTransformer with Maven:
 **************************************************
 
-To compile BioTransformer and package it into an executable .jar file, you need to have maven (v >3.6) installed. Then run:
-	cd biotransformer
-	./install-via-maven.sh
+1) To compile BioTransformer and package it into an executable .jar file, you need to have maven (v >3.6) installed. Then run:
+      cd biotransformer
+      ./install-via-maven.sh
 
