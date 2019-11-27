@@ -759,7 +759,11 @@ public class HGutBTransformer extends Biotransformer {
 //												System.out.println("Is a metabolizable polyphenol\n");
 								ArrayList<Biotransformation> acs = applyGutMicrobialReductionsChain(sc,
 										preprocess, filter, nr_of_steps, scoreThreshold);
-								reductionBiotransformations.addAll(acs);
+//								System.out.println(acs == null);
+								if(acs != null) {
+									reductionBiotransformations.addAll(acs);
+								}
+								
 							}
 						}
 						
