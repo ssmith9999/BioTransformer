@@ -22,7 +22,7 @@ mvn package
 
 #Moving jar file
 echo -e "Moving .jar file to bin/ ..."
-mv target/*.jar bin/
+mv target/*.jar ./
 
 echo "Done!"
 
