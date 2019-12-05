@@ -744,22 +744,27 @@ public class ECBasedBTransformer extends Biotransformer {
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		IAtomContainerSet containers = molecules;
 		int counter = 0;
-		while(nrOfSteps>0){
-			counter++;
-			ArrayList<Biotransformation> currentBiotransformations = this.simulateECBasedMetabolismStep(containers, preprocess, filter, scoreThreshold);
-			nrOfSteps--;
-			if(!currentBiotransformations.isEmpty()){
-				biotransformations.addAll(currentBiotransformations);
-				containers.removeAllAtomContainers();
-				containers = extractAtomContainer(currentBiotransformations);
-				
+		try {
+			while(nrOfSteps>0){
+				counter++;
+				ArrayList<Biotransformation> currentBiotransformations = this.simulateECBasedMetabolismStep(containers, preprocess, filter, scoreThreshold);
+				nrOfSteps--;
+				if(!currentBiotransformations.isEmpty()){
+					biotransformations.addAll(currentBiotransformations);
+					containers.removeAllAtomContainers();
+					containers = extractAtomContainer(currentBiotransformations);
+					
+				}
+				else{
+					break;
+				}
 			}
-			else{
-				break;
-			}
+	//		System.out.println("Stopped after " + counter + " steps.");
+			return biotransformations;
 		}
-//		System.out.println("Stopped after " + counter + " steps.");
-		return biotransformations;
+		catch(Exception e) {
+			throw e;
+		}
 	}
 
 	

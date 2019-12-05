@@ -21,7 +21,7 @@ echo -e "\n\nBuilding Package..."
 mvn package
 
 #Moving jar file
-echo -e "Moving .jar file to bin/ ..."
+echo -e "Moving .jar file to the root directory ..."
 mv target/*.jar ./
 
 echo "Done!"

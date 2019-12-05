@@ -57,12 +57,12 @@ public class HumanSuperBTransformerTest extends HumanSuperBioTransformer{
 		molecule.setProperty(CDKConstants.TITLE, "MOL1");
 //		IAtomContainer molecule2 = smiParser.parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
 //		molecule2.setProperty(CDKConstants.TITLE, "MOL2");
-		IAtomContainerSet acontainers = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-		acontainers.addAtomContainer(molecule);
+//		IAtomContainerSet acontainers = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+//		acontainers.addAtomContainer(molecule);
 //		acontainers.addAtomContainer(molecule2);
 		
 //		hsbt.predictAllHumanBiotransformationChainAndSaveToCSV(acontainers, 1, 0.5, "/Users/yandj/test-2-mols-allHuman-metabolites.csv", false);
-		hsbt.predictAllHumanBiotransformationChainAndSaveToSDF(acontainers, 1, 0.5, "../test-2-mols-allHuman-metabolites.sdf", false);
+//		hsbt.predictAllHumanBiotransformationChainAndSaveToSDF(acontainers, 1, 0.5, "../test-2-mols-allHuman-metabolites.sdf", false);
 //		ArrayList<Biotransformation> currentBiotransformations = hsbt.simulateOneStepAllHuman(acontainers,0.5);
 		
 		//		Biotransformer b = new Biotransformer(BioSystemName.HUMAN);
@@ -74,7 +74,7 @@ public class HumanSuperBTransformerTest extends HumanSuperBioTransformer{
 //		hsbt.simulateHumanSuperbioMetabolismAndSaveToCSV(molecule2, "data/epicatechin-superbio-3-sstandardizer.csv", false);
 //		hsbt.simulateHumanSuperbioMetabolismAndSaveToSDF(molecule2, "data/epicatechin-superbio.sdf", false);
 		
-//		hsbt.simulateHumanSuperbioMetabolismFromSDFtoSingleSDF("/Users/yandj/test.sdf", "/Users/yandj/test-multiple.sdf", true);		
+		hsbt.simulateHumanSuperbioMetabolismFromSDFtoSingleSDF("/home/yandj/test.sdf", "/home/yandj/test-multiple.sdf", true);		
 				
 	}
 

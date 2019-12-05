@@ -508,9 +508,16 @@ public class BiotransformerExecutable {
 							MetaboliteFinder mtf = new MetaboliteFinder();
 							IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 							IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-							
+							int index = 0;
 							for(IAtomContainer atc : containers.atomContainers()){
-								metabolites.add(mtf.findAllHumanMetabolites(atc, dmasses, massTolerance, nrOfSteps, annotate, opt));
+								index ++;
+								try {
+									metabolites.add(mtf.findAllHumanMetabolites(atc, dmasses, massTolerance, nrOfSteps, annotate, opt));
+								}
+								catch(Exception e) {
+									System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getLocalizedMessage());
+								}
+								
 							}
 							
 							if(oFormat.contentEquals("csv")){
@@ -552,11 +559,18 @@ public class BiotransformerExecutable {
 							MetaboliteFinder mtf = new MetaboliteFinder();
 							IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 							IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-							
+
+							int index = 0;
 							for(IAtomContainer atc : containers.atomContainers()){
-								metabolites.add(mtf.findAllEnvMicroMetabolites(atc, dmasses, massTolerance, nrOfSteps, annotate, opt));
-							}
-							
+								index ++;
+								try {
+									metabolites.add(mtf.findAllEnvMicroMetabolites(atc, dmasses, massTolerance, nrOfSteps, annotate, opt));
+								}
+								catch(Exception e) {
+									System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getLocalizedMessage());
+								}
+								
+							}							
 							if(oFormat.contentEquals("csv")){
 								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
 							}
@@ -597,11 +611,18 @@ public class BiotransformerExecutable {
 							MetaboliteFinder mtf = new MetaboliteFinder();
 							IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 							IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-							
+
+							int index = 0;
 							for(IAtomContainer atc : containers.atomContainers()){
-								metabolites.add(mtf.findSuperbioMetabolites(atc, dmasses, massTolerance, annotate, opt));
-							}
-							
+								index ++;
+								try {
+									metabolites.add(mtf.findSuperbioMetabolites(atc, dmasses, massTolerance, annotate, opt));
+								}
+								catch(Exception e) {
+									System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getLocalizedMessage());
+								}
+								
+							}							
 							if(oFormat.contentEquals("csv")){
 								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
 							}
@@ -632,8 +653,20 @@ public class BiotransformerExecutable {
 				else {
 					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 					if (containers.getAtomContainerCount()>0){
-						containers = FileUtilities.parseSdf(inputFileName);
-						biotransformations = cyp450bt.predictCyp450BiotransformationChain(containers, true, true, nrOfSteps, 0.5);
+						containers = FileUtilities.parseSdf(inputFileName);					
+						
+						int index = 0;
+						for(IAtomContainer atc : containers.atomContainers()){
+							index ++;
+							try {
+								biotransformations.addAll(cyp450bt.predictCyp450BiotransformationChain(atc, true, true, nrOfSteps, 0.5));
+							}
+							catch(Exception e) {
+								System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getLocalizedMessage());
+							}
+							
+						}						
+						
 					}				
 				}
 								
@@ -656,7 +689,23 @@ public class BiotransformerExecutable {
 					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 					if (containers.getAtomContainerCount()>0){
 						containers = FileUtilities.parseSdf(inputFileName);
-						biotransformations = ecbt.simulateECBasedMetabolismChain(containers, true, true, nrOfSteps, 0.5);
+//						biotransformations = ecbt.simulateECBasedMetabolismChain(containers, true, true, nrOfSteps, 0.5);
+						
+						int index = 0;
+						for(IAtomContainer atc : containers.atomContainers()){
+							index++;
+							System.err.println("Molecule " + index );
+							try {
+								biotransformations.addAll(ecbt.simulateECBasedMetabolismChain(atc, true, true, nrOfSteps, 0.5));
+//								throw new Exception();
+							}
+							catch(Exception e) {
+								System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getMessage());
+								continue;
+							}
+							
+						}	
+					
 					}				
 				}
 								
@@ -703,11 +752,27 @@ public class BiotransformerExecutable {
 				}
 				else {
 					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, phase2b.inchiGenFactory);
-					if (containers.getAtomContainerCount()>0){
-						containers = FileUtilities.parseSdf(inputFileName);
-						biotransformations = phase2b.applyPhase2TransformationsChainAndReturnBiotransformations(containers,
-								true, true, true, nrOfSteps, 0.5);
-					}				
+//					if (containers.getAtomContainerCount()>0){
+//						containers = FileUtilities.parseSdf(inputFileName);
+//						biotransformations = phase2b.applyPhase2TransformationsChainAndReturnBiotransformations(containers,
+//								true, true, true, nrOfSteps, 0.5);
+//					}				
+					
+					int index = 0;
+					for(IAtomContainer atc : containers.atomContainers()){
+						index++;
+						System.err.println("Molecule " + index );
+						try {
+							biotransformations.addAll(phase2b.applyPhase2TransformationsChainAndReturnBiotransformations(atc, true, true, true, nrOfSteps, 0.5));
+//							throw new Exception();
+						}
+						catch(Exception e) {
+							System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getMessage());
+							continue;
+						}
+						
+					}
+				
 				}
 								
 				if(oFormat.contentEquals("csv")){
@@ -787,8 +852,23 @@ public class BiotransformerExecutable {
 					ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 					IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
 					//biotransformations = ebt.applyEnvMicrobialTransformations(containers, true, true, 0.5);
-					biotransformations = ebt.simulateEnvMicrobialDegradation(containers, true, true, nrOfSteps, 0.5);
-							
+//					biotransformations = ebt.simulateEnvMicrobialDegradation(containers, true, true, nrOfSteps, 0.5);
+					
+					int index = 0;
+					for(IAtomContainer atc : containers.atomContainers()){
+						index++;
+						System.err.println("Molecule " + index );
+						try {
+							biotransformations.addAll(ebt.applyEnvMicrobialTransformationsChain(atc, true, true, nrOfSteps, 0.5));
+//							throw new Exception();
+						}
+						catch(Exception e) {
+							System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getMessage());
+							continue;
+						}
+						
+					}						
+					
 					if(oFormat.contentEquals("csv")){
 						ebt.saveBioTransformationProductsToCSV(biotransformations, outputF, annotate);
 					}

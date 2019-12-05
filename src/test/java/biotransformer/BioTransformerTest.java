@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
@@ -16,11 +17,13 @@ import java.util.Random;
 
 import org.apache.commons.io.FilenameUtils;
 import org.openscience.cdk.CDKConstants;
+import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.Reaction;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
 import org.openscience.cdk.interfaces.IAtomContainer;
+import org.openscience.cdk.interfaces.IAtomContainerSet;
 import org.openscience.cdk.interfaces.IChemObjectBuilder;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 import org.openscience.cdk.smiles.SmilesGenerator;
@@ -38,6 +41,7 @@ import biotransformer.transformation.MRPatterns.ReactionName;
 import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.FileUtilities;
 import biotransformer.utils.Statistics;
+import reactantpredictor.ReactantPred;
 
 
 public class BioTransformerTest {
@@ -53,7 +57,15 @@ public class BioTransformerTest {
 
 //		ArrayList<MetabolicReaction> customArray = new ArrayList<MetabolicReaction>(bt.bSystem.getReactionsHash().values()) ;
 //		System.out.println("customArray: " + customArray.size());
-//		IAtomContainer ac = bt.getSmiParser().parseSmiles("[H]OC1=C(O)C2=C(OC(=C(O[H])C2=O)C2=C([H])C(O[H])=C(O)C(O)=C2[H])C([H])=C1[H]");
+		IAtomContainer ac = bt.getSmiParser().parseSmiles("[H]OC1=C(O)C2=C(OC(=C(O[H])C2=O)C2=C([H])C(O[H])=C(O)C(O)=C2[H])C([H])=C1[H]");
+		
+//		ReactantPred rp = new ReactantPred();
+//		IAtomContainerSet inputMolecules = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+//		inputMolecules.addAtomContainer(ac);
+//		ArrayList<HashMap<String,String>> predictedResult = new ArrayList<HashMap<String,String>>();
+//		predictedResult = rp.initPreResults(predictedResult,inputMolecules.getAtomContainerCount());
+//		ArrayList<HashMap<String,String>>  res = rp.makePrediction("CYP1A2", System.getProperty("user.dir")+"/supportfiles/CYP1A2/model/1A2_RT.model", inputMolecules, "supportfiles/CYP1A2/supportfile.csv", predictedResult);
+//		System.out.println(res);
 //		System.out.println(bt.smiGen.create(ac));
 //		IAtomContainer stac = bt.standardizeMolecule(ac, true);
 //		System.out.println(bt.smiGen.create(stac));

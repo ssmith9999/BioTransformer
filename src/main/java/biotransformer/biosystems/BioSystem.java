@@ -8,6 +8,7 @@
 package biotransformer.biosystems;
 
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
@@ -31,6 +32,7 @@ import biotransformer.transformation.MRPatterns;
 import biotransformer.transformation.MReactionsFilter;
 import biotransformer.transformation.MetabolicPathway;
 import biotransformer.transformation.MetabolicReaction;
+import junit.framework.Test;
 import biotransformer.transformation.MRPatterns.ReactionName;
 import biotransformer.transformation.MetabolicPathway.MPathwayName;
 
@@ -57,16 +59,26 @@ public class BioSystem {
 
 	
 	
-//	public static void main (String[] args) throws JsonParseException, JsonMappingException, IOException{
-//		ObjectMapper mapper = new ObjectMapper();
-//		mapper.configure(Feature.ALLOW_COMMENTS, true);
-//		mapper.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
-////		mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
-//		 Biosystem bios = new Biosystem(BioSystemName.HUMAN, mapper);	 
-//		 System.out.println(bios.enzymes.get(0).getName());
-//		 System.out.println(bios.reactionsHash.keySet().size());
-//		 System.out.println(bios.metPathwaysHash);
-//	}
+	public static void main (String[] args) throws JsonParseException, JsonMappingException, IOException{
+////		ClassLoader loader = BioSystem.class.getClassLoader();
+////		System.err.println(loader.getResource("biosystems/BioSystem.class"));
+//		System.out.println(BioSystem.class.getSimpleName()+".class");
+//		System.out.println(BioSystem.class.getResource(BioSystem.class.getSimpleName()+".class"));
+//		System.out.println(System.getProperty("user.dir"));
+//		System.out.println(new File(".").getAbsolutePath());
+//		System.out.println(new File(".").getCanonicalPath());
+//		
+////		InputStream enzymes = BioSystem.class.getResourceAsStream("database/enzymes.json");
+//		
+////		ObjectMapper mapper = new ObjectMapper();
+////		mapper.configure(Feature.ALLOW_COMMENTS, true);
+////		mapper.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
+//////		mapper.configure(Feature.AUTO_CLOSE_SOURCE, true);
+////		 BioSystem bios = new BioSystem(BioSystemName.HUMAN, mapper);	 
+////		 System.out.println(bios.enzymes.get(0).getName());
+////		 System.out.println(bios.reactionsHash.keySet().size());
+////		 System.out.println(bios.metPathwaysHash);
+	}
 	
 	public BioSystem(BioSystemName bsName, ObjectMapper mapper) throws JsonParseException, JsonMappingException, IOException {
 		this.name 			= bsName;
@@ -107,12 +119,41 @@ public class BioSystem {
 //		File bioSystemsReactionORatios = new File("bioSystemsReactionORatios.json");
 //		File pathways = new File("pathways.json");
 //		File enzymes = new File(Thread.currentThread().getContextClassLoader().getResourceAsStream("file.txt").get);
-		File enzymes = new File("database/enzymes.json");
-		File biosystemEnzymes = new File("database/biosystemEnzymes.json");
-		File enzymeReactions = new File("database/enzymeReactions.json");
-		File metabolicReactions = new File("database/metabolicReactions.json");
-		File bioSystemsReactionORatios = new File("database/biosystemsReactionORatios.json");
-		File pathways = new File("database/pathways.json");
+		
+		
+//		String canPath = new File(".").getCanonicalPath();
+//		System.out.println("CAN PATH: "+ canPath);
+//		File enzymes = new File(canPath + "/database/enzymes.json");
+//		File biosystemEnzymes = new File(canPath + "/database/biosystemEnzymes.json");
+//		File enzymeReactions = new File(canPath + "/database/enzymeReactions.json");
+//		File metabolicReactions = new File(canPath + "/database/metabolicReactions.json");
+//		File bioSystemsReactionORatios = new File(canPath + "/database/biosystemsReactionORatios.json");
+//		File pathways = new File(canPath + "/database/pathways.json");
+	
+//		File enzymes = new File("database/enzymes.json");
+//		File biosystemEnzymes = new File("database/biosystemEnzymes.json");
+//		File enzymeReactions = new File( "database/enzymeReactions.json");
+//		File metabolicReactions = new File( "database/metabolicReactions.json");
+//		File bioSystemsReactionORatios = new File("database/biosystemsReactionORatios.json");
+//		File pathways = new File( "database/pathways.json");
+		
+		InputStream enzymes = BioSystem.class.getResourceAsStream("/enzymes.json");
+//		System.out.println("enzymes == null? " + (enzymes == null) );
+		InputStream biosystemEnzymes = BioSystem.class.getResourceAsStream("/biosystemEnzymes.json");
+		InputStream enzymeReactions = BioSystem.class.getResourceAsStream("/enzymeReactions.json");
+//		System.out.println("enzymes == null? " + (enzymes == null) );
+		InputStream metabolicReactions = BioSystem.class.getResourceAsStream("/metabolicReactions.json");
+		InputStream bioSystemsReactionORatios = BioSystem.class.getResourceAsStream("/biosystemsReactionORatios.json");
+		InputStream pathways = BioSystem.class.getResourceAsStream("/pathways.json");		
+			
+	
+//	InputStream enzymes = new FileInputStream("src/main/resources/database/enzymes.json");
+//	InputStream biosystemEnzymes = new FileInputStream("src/main/resources/database/biosystemEnzymes.json");
+//	InputStream enzymeReactions = new FileInputStream("src/main/resources/database/enzymesReactions.json");
+//	InputStream metabolicReactions = new FileInputStream("src/main/resources/database/metabolicReactions.json");
+//	InputStream bioSystemsReactionORatios = new FileInputStream("src/main/resources/database/bioSystemsReactionORatios.json");
+//	InputStream pathways = new FileInputStream("src/main/resources/database/pathways.json");
+		
 		
 		// Parsing the list of enzymes and their attributes
 		LinkedHashMap<String,Object> allEnzymes = (LinkedHashMap<String,Object>) mapper.readValue(enzymes, Map.class).get("enzymes");
