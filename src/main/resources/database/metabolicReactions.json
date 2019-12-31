@@ -4126,7 +4126,7 @@
         },
                                "HYDROLYSIS_OF_TERMINAL_14_LINKED_ALPHA_D_GLUCOSE_PATTERN1" : {
                 "commonName" : "Hydrolysis of terminal 1,4-linked alpha-D-glucose",
-                    "smirks" : "[#6]-[#8;X2][#6;A@H;H1X4R1]1[#8][#6;A@H;H1X4R1]([#6;A;H2X4R0][#8;A;H1X2])[#6;A;H1X4R1]([#8;A;H1X2])[#6;A@H;H1X4R1]([#8;A;H1X2])[#6;A;H1X4R1]1[#8;A;H1X2]>>[H][#8]-[#6].[H][#8;X2][#6;A@H;H1X4R1]1[#8][#6;A@H;H1X4R1]([#6;A;H2X4R0][#8;A;H1X2])[#6;A;H1X4R1]([#8;A;H1X2])[#6;A@H;H1X4R1]([#8;A;H1X2])[#6;A;H1X4R1]1[#8;A;H1X2]",
+                    "smirks" : "[#6:1]-[#8;X2][#6;A;H1X4R1;@]1[#8][#6;A;H1X4R1;@]([#6;A;H2X4R0][#8;A;H1X2])[#6;A;H1X4R1]([#8;A;H1X2])[#6;A;H1X4R1;@]([#8;A;H1X2])[#6;A;H1X4R1]1[#8;A;H1X2]>>[H][#8]-[#6:1].[H][#8;X2][#6;A;H1X4R1;@]1[#8][#6;A;H1X4R1;@]([#6;A;H2X4R0][#8;A;H1X2])[#6;A;H1X4R1]([#8;A;H1X2])[#6;A;H1X4R1;@]([#8;A;H1X2])[#6;A;H1X4R1]1[#8;A;H1X2]",
                     "smarts" : [
                 "[H][#8]C([H])([H])[C@@]1([H])[#8][C@]([H])([#8]-*)C([H])([#8][H])[C@@]([H])([#8][H])C1([H])[#8][H]"
             ],
@@ -8013,7 +8013,8 @@
                     "smarts" : [
                 "[#6;$([CX3](=[OX1])[#1]),$([CX2]#[NX1]),$([CX3](=[OX1])[#6]),$([NX3+1](=[OX1])[OX1-]),$([CX3](=[OX1])[OX2H1,OX1-]),$([CX3](=[OX1])[OX2][#6;!$(C=[O,N,S])])][#6;X3](-[#1,#6,#7])=[#6;X3]([#1,#6,#7])-[#1,#6,#7]"
             ],
-            "negativeSmarts" : [],
+            "negativeSmarts" : [
+            ],
                     "btmrID" : "BTMR1209"
         },
                                           "OXIDATION_OF_N_SUBSTITUTED_PYRROLIDINE_IMINIUM" : {

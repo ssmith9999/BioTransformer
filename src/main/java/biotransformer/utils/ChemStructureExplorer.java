@@ -712,7 +712,7 @@ public class ChemStructureExplorer {
 //	}
 	
 	
-	public boolean isPotentialPhaseIISubstrateByReactionPatternMatching(IAtomContainer substrate) throws Exception{
+	public static boolean isPotentialPhaseIISubstrateByReactionPatternMatching(IAtomContainer substrate) throws Exception{
 		boolean phaseII = false;
 		
 		if(containsCarbon(substrate)){
@@ -723,9 +723,9 @@ public class ChemStructureExplorer {
 			LinkedHashMap<String, String> sfeatures = ChemStructureFingerprinter.getPhaseIIfingerpint();
 			
 			
-			if(isGlutathioneConjugate(subs) || isAcylCoAConjugate(subs)){
-				
-			}else{
+//			if(isInvalidPhaseIISubstrateByExlcusion(subs)){
+//				
+//			}else{
 				for(String s : sfeatures.values()){
 					SmartsPattern pattern = SmartsPattern.create(s, builder);
 					if(pattern.matches(subs)){
@@ -733,12 +733,20 @@ public class ChemStructureExplorer {
 						break;
 					}			
 				}
-			}
+//			}
 			
 
 		}
 		
 		return phaseII;
+	}
+	
+	public static boolean isInvalidPhaseIISubstrateByExlcusion(IAtomContainer substrate) throws Exception{
+		return (ChemicalClassFinder.isEtherLipid(substrate) || ChemicalClassFinder.isGlyceroLipid(substrate) || 
+				ChemicalClassFinder.isGlycerophosphoLipid(substrate) || ChemicalClassFinder.isSphingoLipid(substrate)
+				||ChemicalClassFinder.isAcylCoAConjugate(substrate) || ChemicalClassFinder.isGlutathioneConjugate(substrate) || 
+				ChemicalClassFinder.isOligoOrPolysaccharide(substrate) || ChemicalClassFinder.isTetrapyrrole(substrate)
+				);
 	}
 
 	public static boolean isInvalidPhase2Metabolite(IAtomContainer mol) throws SMARTSException, CDKException, CloneNotSupportedException{
@@ -1198,47 +1206,10 @@ public class ChemStructureExplorer {
 		return bad;
 	}
 
-	public static boolean isGlycosylatedCompound(IAtomContainer molecule) throws SMARTSException {		
-		SmartsPatternCDK glucuronidePattern = new SmartsPatternCDK("[#8;R0]-[#6;R1]-1-[#8;R1]-[#6;R1](-[#6;R1](-[#8;R0])-[#6;R1](-[#8;R0])-[#6;R1]-1-[#8;R0])-[#6](-[#8])=O");
-		SmartsPatternCDK glycosylMoietyPattern = new SmartsPatternCDK("["
-				+ "$(CC1OC(O)C(O)C(O)C1O),"
-				+ "$(CC1OC(O)C(O)CC1O),"
-				+ "$([#6]!@-[#6]-1-[#8]-[#6](!@-[#8])-[#6](!@-[*,#1;OX2H1,$(NC(=O)C)])-[#6](!@-[#8])-[#6]-1!@-[#8]),"
-				+ "$([#6]!@-[#6]-1-[#8]-[#6](!@-[#8])-[#6](!@-[OX2H1,$(NC(=O)C)])-[#6]-[#6]-1!@-[#8])"
-				+ "]"
-				);
-		
-		glucuronidePattern.match(molecule);
-		glycosylMoietyPattern.match(molecule);		
-		boolean isGlycosylated = glucuronidePattern.hasSMARTSPattern(molecule)>0 || glycosylMoietyPattern.hasSMARTSPattern(molecule)>0 ;
-			
-		return isGlycosylated;
-	}
-	
-	public static boolean isSulfatedCompound(IAtomContainer molecule) throws SMARTSException {
-		SmartsPatternCDK sulfatedRadicalPattern = new SmartsPatternCDK("[#6]-[#8;X2]S([#8;A;X2H1,X1-])(=[O;X1])=[O;X1]");	
-		return sulfatedRadicalPattern.hasSMARTSPattern(molecule)>0;	
-	}
-		
-	public static boolean isGlutathioneConjugate(IAtomContainer molecule) throws SMARTSException{
-		SmartsPatternCDK glutathioneConjugatePattern = new SmartsPatternCDK("[H][#7]([#6;A;H2X4][#6](-[#8])=O)-[#6](=O)[#6;A;H1X4]([#6;A;H2X4][#16][#6,#8,#16;A])[#7]([H])-[#6](=O)[#6;A;H2X4][#6;A;H2X4][#6;A;H1X4]([#7])[#6](-[#8])=O");	
-		return glutathioneConjugatePattern.hasSMARTSPattern(molecule)>0;	
-	}
-	
-	public static boolean isAcylCoAConjugate(IAtomContainer molecule) throws SMARTSException{
-		SmartsPatternCDK glutathioneConjugatePattern = new SmartsPatternCDK("[#6;R0]-[#6;R0](=O)-[#16]-[#6]-[#6]-[#7]-[#6](=O)-[#6]-[#6]-[#7]-[#6](=O)-[#6](-[#8])C([#6])([#6])[#6]-[#8]P([#8])(=O)[#8]P([#8])(=O)[#8]-[#6]-[#6]-1-[#8]-[#6](-[#6](-[#8])-[#6]-1-[#8]P([#8])([#8])=O)-[#7]-1-[#6]=[#7]-[#6]-2=[#6]-1-[#7]=[#6]-[#7]=[#6]-2-[#7]");	
-		return glutathioneConjugatePattern.hasSMARTSPattern(molecule)>0;	
-	}
-	
-	public static boolean isGlycinatedCompound(IAtomContainer molecule) throws SMARTSException {
-		SmartsPatternCDK glycinatedRadicalPattern = new SmartsPatternCDK("[#6][#7;A;H1X3][#6;A;H2X4][#6;X3]([#8;A;X2H1,X1-])=[O;X1]");	
-		return glycinatedRadicalPattern.hasSMARTSPattern(molecule)>0;	
-	}	
-
 	public static boolean isPhaseIPolyphenolCandidateOrDerivative(IAtomContainer molecule) throws SMARTSException, CDKException, CloneNotSupportedException{
 		boolean ppc = false;
 		
-		if(!(isGlycosylatedCompound(molecule) || isSulfatedCompound(molecule) || isGlycinatedCompound(molecule))
+		if(!(ChemicalClassFinder.isGlycosylatedCompound(molecule) || ChemicalClassFinder.isSulfatedCompound(molecule) || ChemicalClassFinder.isGlycinatedCompound(molecule))
 				&& ChemStructureExplorer.isMetabolizablePolyphenolOrDerivative(molecule)) {
 			ppc = true;
 		}
@@ -1673,7 +1644,23 @@ public class ChemStructureExplorer {
 //		mammalianCofactors.put("", new String[]{});
 	
 	}
+	private static LinkedHashMap<String, String[] > PolyhenolDeadEndAglyconeMetabolites;
+	static{
+		mammalianCofactors = new LinkedHashMap<String, String[]>();
+		mammalianCofactors.put("YCIMNLLNPGFGHC", new String[]{"catechol","OC1=CC=CC=C1O"});
+		mammalianCofactors.put("WQGWDDDVZFFDIG", new String[]{"benzene‐1,2,3‐triol","OC1=CC=CC(O)=C1O"});
+		mammalianCofactors.put("WPYMKLBDIGXBTP", new String[]{"benzoic acid","OC(=O)C1=CC=CC=C1"});
+		mammalianCofactors.put("QCDYQQDYXPDABM", new String[]{"phloroglucinol","OC1=CC(O)=CC(O)=C1"});
+		mammalianCofactors.put("", new String[]{"",""});
+//		mammalianCofactors.put("", new String[]{});
+//		mammalianCofactors.put("", new String[]{});
+//		mammalianCofactors.put("", new String[]{});
+//		mammalianCofactors.put("", new String[]{});
+//		mammalianCofactors.put("", new String[]{});
+//		mammalianCofactors.put("", new String[]{});
+//		mammalianCofactors.put("", new String[]{});
 	
+	}	
 //	static{
 //		standardAminoAcids.put("QNAYBMKLOCPYGJ-UHFFFAOYNA-N", new String[]{"alanine","CC(N)C(O)=O"});
 //		standardAminoAcids.put("ODKSFYDXXFIFQN-UHFFFAOYNA-N", new String[]{"arginine","NC(CCCNC(N)=N)C(O)=O"});

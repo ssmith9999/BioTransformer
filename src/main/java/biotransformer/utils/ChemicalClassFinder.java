@@ -40,7 +40,10 @@ public class ChemicalClassFinder {
 		UNFUNCTIONALIZED_SATURATED_FATTY_ACID,
 		GLYCEROL_3_PHOSPHATE_INOSITOL,
 		C23_BILE_ACID, C24_BILE_ACID,
-		SULFATE_ESTER
+		SULFATE_ESTER, STILBENOID, CURCUMINOID,
+		TETRAPYRROLE, COENZYME_A_DERIVATIVE,SACCHARIDE,
+		GLYCOSYLATED_COMPOUND, SULFATED_COMPOUND, GLUTATHIONE_CONJUGATE, 
+		ACYL_CoA_CONJUGATE, GLYCINATED_COMPOUND, OLIGO_OR_POLYSACCHARIDE
 		
 	}
 	
@@ -183,6 +186,70 @@ public class ChemicalClassFinder {
 		});
 		chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).put("negativeSmarts", new String[]{
 		});
+		chemicalClassDefinitions.put(ChemicalClassName.STILBENOID, new LinkedHashMap<String, String[]>());		
+		chemicalClassDefinitions.get(ChemicalClassName.STILBENOID).put("smarts", new String[]{
+				"["
+				+ "$([#6;R0](=[#6;R0]/[#6;R1]-1=[#6;R1]-[#6;R1]=[#6;R1]-[#6;R1]=[#6;R1]1)[#6;R1]-1=[#6;R1]-[#6;R1]=[#6;R1]-[#6;R1]=[#6;R1]1)"
+				+ "]"
+		});		
+		chemicalClassDefinitions.get(ChemicalClassName.STILBENOID).put("negativeSmarts", new String[]{
+		});		
+		
+		chemicalClassDefinitions.put(ChemicalClassName.CURCUMINOID, new LinkedHashMap<String, String[]>());		
+		chemicalClassDefinitions.get(ChemicalClassName.CURCUMINOID).put("smarts", new String[]{
+				"["
+				+ "$([#8]~[#6](~[#6;R0]~[#6]~[#6;R1]-1=[#6;R1]-[#6](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)~[#6]~[#6](~[#8])~[#6;R0]~[#6]~[#6;R1]-1=[#6;R1]-[#6;R1](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)"
+				+ ",$([#8]~[#6](~[#6;R0]~[#6]-[#6;R1]-1=[#6;R1]-[#6;R1](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)~[#6]~[#6](~[#8])~[#6;R0]~[#6]-[#6;R1]-1=[#6;R1]-[#6;R1](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)"
+				+ ",$([#8]~[#6](~[#6;R0]~[#6]-[#6;R1]-1=[#6;R1]-[#6;R1](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)~[#6]~[#6](~[#8])~[#6;R0]~[#6]-[#6;R1]-1=[#6;R1]-[#6;R1](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)"
+				+ ",$([#8]~[#6](~[#6]~[#6;R0]-[#6;R1]-1=[#6;R1]-[#6;R1](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)~[#6]~[#6](~[#8])~[#6;R0]~[#6]-[#6;R1]-1=[#6;R1]-[#6;R1](-[#8]-[#6])=[#6;R1](-[#8])-[#6;R1]=[#6;R1]-1)"
+				+ "]"
+		});		
+		chemicalClassDefinitions.get(ChemicalClassName.CURCUMINOID).put("negativeSmarts", new String[]{
+		});		
+	
+		chemicalClassDefinitions.put(ChemicalClassName.TETRAPYRROLE, new LinkedHashMap<String, String[]>());		
+		chemicalClassDefinitions.get(ChemicalClassName.TETRAPYRROLE).put("smarts", new String[]{
+				"["
+				+ "$([#6]-1-[#6]-[#7]=[#6](-[#6]-1)\\[#6]=[#6]-1\\[#6]-[#6]-[#6](=[#7]-1)-[#6]-1-[#6]-[#6]-[#6](\\[#6]=[#6]-2\\[#6]-[#6]-[#6]=[#7]-2)=[#7]-1)"
+				+ ",$([#6](~c1cccn1)~c1ccc(~[#6]~c2ccc(~[#6]~c3cccn3)n2)n1)"
+				+ ",$([#6](~[#6]~1~[#6]~[#6]~[#6]~[#7]~1)~[#6]~1~[#6]~[#6]~[#6](~[#6]~[#6]~2~[#6]~[#6]~[#6](~[#6]~[#6]~3~[#6]~[#6]~[#6]~[#7]~3)~[#7]~2)~[#7]~1)"
+				+ ",$([#6]-1-[#6]-[#7+]=[#6](-[#6]-1)-[#6]-1=[#6]-2-[#7]\\[#6](=[#6]/[#6]-3=[#7+]/[#6](/[#6]-[#6]3)=[#6]\\[#6]-3=[#6]-[#6]=[#6]-[#7]3)-[#6]=[#6]-2-[#6]-[#6]-1)"
+				+ "]"
+		});		
+		chemicalClassDefinitions.get(ChemicalClassName.TETRAPYRROLE).put("negativeSmarts", new String[]{
+		});
+	
+
+		chemicalClassDefinitions.put(ChemicalClassName.COENZYME_A_DERIVATIVE, new LinkedHashMap<String, String[]>());		
+		chemicalClassDefinitions.get(ChemicalClassName.COENZYME_A_DERIVATIVE).put("smarts", new String[]{
+				"["
+				+ "$([#8]-,=[#6](-[#6]-,=[#6]-[#7]-,=[#6](-,=[#8])-[#6](-[#8])-,=C([#6])([#6])-,=[#6]-,=[#8]P([#8;A;X2H1,X1-])(=O)[#8]P([#8;A;X2H1,X1-])(=O)[#8]-[#6]-[#6]-1-[#8]-[#6](-[#7]~2~[#6]~[#7]~[#6]~3~[#6]~2~[#7]~[#6]~[#7]~[#6]~3-[#7])-[#6]([#8;A;X2H1,X1-])-[#6]-1-[#8]P([#8;A;X2H1,X1-])([#8;A;X2H1,X1-])=O)-,=[#7]-[#6]-,=[#6]-[#16])"
+				+ "]"
+		});		
+		chemicalClassDefinitions.get(ChemicalClassName.COENZYME_A_DERIVATIVE).put("negativeSmarts", new String[]{
+		});
+		
+		chemicalClassDefinitions.put(ChemicalClassName.SACCHARIDE, new LinkedHashMap<String, String[]>());		
+		chemicalClassDefinitions.get(ChemicalClassName.SACCHARIDE).put("smarts", new String[]{
+				"["
+				+ "$([#6]-[#8;R0][#6;A;H1X4R1]1[#8][#6;A;H1X4R1]([#6;R0][#8,#7,#16;A])[#6;A;H1X4R1]([#8,#7,#16;A])[#6;A;H1X4R1]([#8,#7,#16;A])[#6;A;H1X4R1]1[#8,#7,#16;A])"
+				+ ",$([#6]-[#8;R0][#6;A;H1X4R1]1[#8][#6;A;H1X4R1]([#6;R0][#8,#7,#16;A])[#6;A;H1X4R1]([#8,#7,#16;A])[#6;A;H1X4R1]1[#8,#7,#16;A])"
+//				+ "$()"
+//				+ ",$()"
+				+ "]"
+		});		
+		chemicalClassDefinitions.get(ChemicalClassName.SACCHARIDE).put("negativeSmarts", new String[]{
+		});		
+		
+//		chemicalClassDefinitions.put(ChemicalClassName., new LinkedHashMap<String, String[]>());		
+//		chemicalClassDefinitions.get(ChemicalClassName.).put("smarts", new String[]{
+//				"["
+//				+ "$()"
+//				+ "]"
+//		});		
+//		chemicalClassDefinitions.get(ChemicalClassName.).put("negativeSmarts", new String[]{
+//		});			
+
 		
 //		chemicalClassDefinitions.put(ChemicalClassName.GLYCEROPHOSPHOLIPID, "");
 //		chemicalClassDefinitions.put(ChemicalClassName.OMEGA_HYDROXYLATED_FATTY_ACID, "");
@@ -190,7 +257,27 @@ public class ChemicalClassFinder {
 //		chemicalClassDefinitions.put(ChemicalClassName.UNSATURATED_FATTY_ACID, "");
 	
 	}
-	
+
+	public static boolean compoundMatchesClassSmartsDefinitions(IAtomContainer molecule, ChemicalClassName className) throws SMARTSException{	
+		
+		boolean b = true;
+		
+		for(String smart : chemicalClassDefinitions.get(className).get("smarts")){
+			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+				b = false;
+				break;
+			}
+		}					
+		for(String negativeSmart : chemicalClassDefinitions.get(className).get("negativeSmarts")){
+			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+			if(npattern.hasSMARTSPattern(molecule)>0){
+				b = false;
+				break;
+			}
+		}	
+		return b;
+	}
 	
 	public static ChemicalClassName findChemicalClass(IAtomContainer molecule) throws SMARTSException, CloneNotSupportedException, CDKException{
 		ChemicalClassName chemClass = null;
@@ -218,24 +305,28 @@ public class ChemicalClassFinder {
 						cc.getKey() == ChemicalClassName.ETHER_LIPID || 
 						cc.getKey() == ChemicalClassName.SPHINGOLIPID ||
 						cc.getKey() == ChemicalClassName.C24_BILE_ACID ||
-						cc.getKey() == ChemicalClassName.C23_BILE_ACID){
+						cc.getKey() == ChemicalClassName.C23_BILE_ACID ||
+						cc.getKey() == ChemicalClassName.CURCUMINOID ||
+						cc.getKey() == ChemicalClassName.STILBENOID ||
+						cc.getKey() == ChemicalClassName.SACCHARIDE){
 					
-					boolean b = true;
+//					boolean b = true;
+					boolean b = compoundMatchesClassSmartsDefinitions(molecule, cc.getKey());
 					
-					for(String smart : chemicalClassDefinitions.get(cc.getKey()).get("smarts")){
-						SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-						if(!(pattern.hasSMARTSPattern(molecule)>0)){
-							b = false;
-							break;
-						}
-					}					
-					for(String negativeSmart : chemicalClassDefinitions.get(cc.getKey()).get("negativeSmarts")){
-						SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-						if(npattern.hasSMARTSPattern(molecule)>0){
-							b = false;
-							break;
-						}
-					}
+//					for(String smart : chemicalClassDefinitions.get(cc.getKey()).get("smarts")){
+//						SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//						if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//							b = false;
+//							break;
+//						}
+//					}					
+//					for(String negativeSmart : chemicalClassDefinitions.get(cc.getKey()).get("negativeSmarts")){
+//						SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//						if(npattern.hasSMARTSPattern(molecule)>0){
+//							b = false;
+//							break;
+//						}
+//					}
 					
 					if(b == true){
 						chemClass = cc.getKey();
@@ -246,11 +337,70 @@ public class ChemicalClassFinder {
 		
 
 		
-		
-		
 		return chemClass;
 	}
 	
+
+	public static ArrayList<ChemicalClassName> AssignChemicalClasses(IAtomContainer molecule) throws SMARTSException, CloneNotSupportedException, CDKException{
+		ArrayList<ChemicalClassName> chemClasses = new ArrayList<ChemicalClassName>();
+//		IAtomContainer molecule = mol.clone();
+//		AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(molecule);
+//		AtomContainerManipulator.convertImplicitToExplicitHydrogens(molecule);
+		
+		if(isAlphaHydroxyFattyAcid(molecule)){
+			chemClasses.add(ChemicalClassName.ALPHA_HYDROXYLATED_FATTY_ACID) ;
+		}
+		if(isBetaHydroxyFattyAcid(molecule)){
+			chemClasses.add(ChemicalClassName.BETA_HYDROXYLATED_FATTY_ACID);
+		} 
+		if(isOmegaHydroxyFattyAcid(molecule)){
+			chemClasses.add(ChemicalClassName.OMEGA_HYDROXYLATED_FATTY_ACID);
+		}
+		if(isUnsaturatedFattyAcid(molecule)){
+			chemClasses.add(ChemicalClassName.UNSATURATED_FATTY_ACID);
+		}
+		if(isFattyAcid(molecule)){
+			chemClasses.add(ChemicalClassName.FATTY_ACID);
+		}			
+		if(isGlycosylatedCompound(molecule)){
+			chemClasses.add(ChemicalClassName.GLYCOSYLATED_COMPOUND);
+		} 
+		if(isSulfatedCompound(molecule)){
+			chemClasses.add(ChemicalClassName.SULFATED_COMPOUND);
+		} 
+		if(isGlutathioneConjugate(molecule)){
+			chemClasses.add(ChemicalClassName.GLUTATHIONE_CONJUGATE);
+		} 
+		if(isAcylCoAConjugate(molecule)){
+			chemClasses.add(ChemicalClassName.ACYL_CoA_CONJUGATE);
+		} 
+		if(isGlycinatedCompound(molecule)){
+			chemClasses.add(ChemicalClassName.GLYCINATED_COMPOUND);
+		} 
+		for(Map.Entry<ChemicalClassName, LinkedHashMap<String, String[]>> cc : chemicalClassDefinitions.entrySet()){
+			if( 
+					cc.getKey() == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL || 
+					cc.getKey() == ChemicalClassName.GLYCEROLIPID || 
+					cc.getKey() == ChemicalClassName.GLYCEROPHOSPHOLIPID ||
+					cc.getKey() == ChemicalClassName.ETHER_LIPID || 
+					cc.getKey() == ChemicalClassName.SPHINGOLIPID ||
+					cc.getKey() == ChemicalClassName.C24_BILE_ACID ||
+					cc.getKey() == ChemicalClassName.C23_BILE_ACID ||
+					cc.getKey() == ChemicalClassName.CURCUMINOID ||
+					cc.getKey() == ChemicalClassName.STILBENOID ||
+					cc.getKey() == ChemicalClassName.SACCHARIDE){
+
+				if(compoundMatchesClassSmartsDefinitions(molecule, cc.getKey())) {
+					chemClasses.add(cc.getKey());
+				}
+					
+			}
+		}
+			
+		return chemClasses;
+	}
+	
+
 	
 	public static boolean isUnsubstitutedSatudatedFattyAcid(IAtomContainer molecule){	
 		
@@ -309,43 +459,43 @@ public class ChemicalClassFinder {
 	}
 	public static boolean isEtherLipid(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.ETHER_LIPID);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.ETHER_LIPID).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.ETHER_LIPID).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}	
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.ETHER_LIPID).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.ETHER_LIPID).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}	
 		return b;
 	}	
 
 	public static boolean isGlyceroLipid(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.GLYCEROLIPID);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROLIPID).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROLIPID).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROLIPID).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROLIPID).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}
 		
 		return b;
 
@@ -353,22 +503,22 @@ public class ChemicalClassFinder {
 	
 	public static boolean isGlycerophosphoLipid(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.GLYCEROPHOSPHOLIPID);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROPHOSPHOLIPID).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROPHOSPHOLIPID).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROPHOSPHOLIPID).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROPHOSPHOLIPID).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}
 		
 		return b;
 
@@ -376,22 +526,22 @@ public class ChemicalClassFinder {
 	
 	public static boolean isSphingoLipid(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.SPHINGOLIPID);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.SPHINGOLIPID).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.SPHINGOLIPID).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.SPHINGOLIPID).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.SPHINGOLIPID).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}
 		
 		return b;
 
@@ -399,22 +549,22 @@ public class ChemicalClassFinder {
 
 	public static boolean isGlycerol_3_PhosphateInositol(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}
 		
 		return b;
 
@@ -422,22 +572,22 @@ public class ChemicalClassFinder {
 
 	public static boolean isC23BileAcid(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.C23_BILE_ACID);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.C23_BILE_ACID).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.C23_BILE_ACID).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.C23_BILE_ACID).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.C23_BILE_ACID).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}
 		
 		return b;
 
@@ -445,22 +595,22 @@ public class ChemicalClassFinder {
 	
 	public static boolean isC24BileAcid(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.C24_BILE_ACID);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.C24_BILE_ACID).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.C24_BILE_ACID).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.C24_BILE_ACID).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.C24_BILE_ACID).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}
 		
 		return b;
 
@@ -469,26 +619,97 @@ public class ChemicalClassFinder {
 	
 	public static boolean isSulfateEster(IAtomContainer molecule) throws SMARTSException{	
 		
-		boolean b = true;
+		boolean b = compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.SULFATE_ESTER);
 		
-		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).get("smarts")){
-			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
-			if(!(pattern.hasSMARTSPattern(molecule)>0)){
-				b = false;
-				break;
-			}
-		}					
-		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).get("negativeSmarts")){
-			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
-			if(npattern.hasSMARTSPattern(molecule)>0){
-				b = false;
-				break;
-			}
-		}	
+//		for(String smart : chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).get("smarts")){
+//			SmartsPatternCDK pattern = new SmartsPatternCDK(smart);	
+//			if(!(pattern.hasSMARTSPattern(molecule)>0)){
+//				b = false;
+//				break;
+//			}
+//		}					
+//		for(String negativeSmart : chemicalClassDefinitions.get(ChemicalClassName.SULFATE_ESTER).get("negativeSmarts")){
+//			SmartsPatternCDK npattern = new SmartsPatternCDK(negativeSmart);	
+//			if(npattern.hasSMARTSPattern(molecule)>0){
+//				b = false;
+//				break;
+//			}
+//		}	
 		return b;
 	}
+
+	public static boolean isTetrapyrrole(IAtomContainer molecule) throws SMARTSException{	
+		
+		return compoundMatchesClassSmartsDefinitions(molecule, ChemicalClassName.TETRAPYRROLE);
+	}		
 	
+	public static boolean isOligoOrPolysaccharide(IAtomContainer molecule) throws SMARTSException, CDKException{	
+		boolean is_oligo_or_poly_saccahride = false;
+		
+//		if( ChemStructureExplorer.checkConnectivity(molecule).getAtomContainerCount()==1 ) {
+			
+			SmartsPatternCDK patterns = new SmartsPatternCDK(chemicalClassDefinitions.get(ChemicalClassName.SACCHARIDE).get("smarts")[0]);
+			SmartsPatternCDK negativePatterns = null;
+			if(chemicalClassDefinitions.get(ChemicalClassName.SACCHARIDE).get("negativeSmarts").length>0) {
+				negativePatterns = new SmartsPatternCDK(chemicalClassDefinitions.get(ChemicalClassName.SACCHARIDE).get("negativeSmarts")[0]);
+				negativePatterns.match(molecule);
+			}
+					
+			patterns.match(molecule);
+			if(patterns.getUniqueMatchingAtoms().size() > 2) {
+				if(negativePatterns == null) {
+					is_oligo_or_poly_saccahride = true;
+				}
+				else if(negativePatterns.hasSMARTSPattern(molecule)<=0) {
+					is_oligo_or_poly_saccahride = true;
+				}
+			}
+//			if(patterns.hasSMARTSPattern(molecule)>0) {
+//				is_oligo_or_poly_saccahride = true;
+//			}
+//		}
+		
+		return is_oligo_or_poly_saccahride;
+		
+	}		
+
 	
+	public static boolean isGlycosylatedCompound(IAtomContainer molecule) throws SMARTSException {		
+		SmartsPatternCDK glucuronidePattern = new SmartsPatternCDK("[#8;R0]-[#6;R1]-1-[#8;R1]-[#6;R1](-[#6;R1](-[#8;R0])-[#6;R1](-[#8;R0])-[#6;R1]-1-[#8;R0])-[#6](-[#8])=O");
+		SmartsPatternCDK glycosylMoietyPattern = new SmartsPatternCDK("["
+				+ "$(CC1OC(O)C(O)C(O)C1O),"
+				+ "$(CC1OC(O)C(O)CC1O),"
+				+ "$([#6]!@-[#6]-1-[#8]-[#6](!@-[#8])-[#6](!@-[*,#1;OX2H1,$(NC(=O)C)])-[#6](!@-[#8])-[#6]-1!@-[#8]),"
+				+ "$([#6]!@-[#6]-1-[#8]-[#6](!@-[#8])-[#6](!@-[OX2H1,$(NC(=O)C)])-[#6]-[#6]-1!@-[#8])"
+				+ "]"
+				);
+		
+		glucuronidePattern.match(molecule);
+		glycosylMoietyPattern.match(molecule);		
+		boolean isGlycosylated = glucuronidePattern.hasSMARTSPattern(molecule)>0 || glycosylMoietyPattern.hasSMARTSPattern(molecule)>0 ;
+			
+		return isGlycosylated;
+	}
+	
+	public static boolean isSulfatedCompound(IAtomContainer molecule) throws SMARTSException {
+		SmartsPatternCDK sulfatedRadicalPattern = new SmartsPatternCDK("[#6]-[#8;X2]S([#8;A;X2H1,X1-])(=[O;X1])=[O;X1]");	
+		return sulfatedRadicalPattern.hasSMARTSPattern(molecule)>0;	
+	}
+		
+	public static boolean isGlutathioneConjugate(IAtomContainer molecule) throws SMARTSException{
+		SmartsPatternCDK glutathioneConjugatePattern = new SmartsPatternCDK("[H][#7]([#6;A;H2X4][#6](-[#8])=O)-[#6](=O)[#6;A;H1X4]([#6;A;H2X4][#16][#6,#8,#16;A])[#7]([H])-[#6](=O)[#6;A;H2X4][#6;A;H2X4][#6;A;H1X4]([#7])[#6](-[#8])=O");	
+		return glutathioneConjugatePattern.hasSMARTSPattern(molecule)>0;	
+	}
+	
+	public static boolean isAcylCoAConjugate(IAtomContainer molecule) throws SMARTSException{
+		SmartsPatternCDK glutathioneConjugatePattern = new SmartsPatternCDK("[#6;R0]-[#6;R0](=O)-[#16]-[#6]-[#6]-[#7]-[#6](=O)-[#6]-[#6]-[#7]-[#6](=O)-[#6](-[#8])C([#6])([#6])[#6]-[#8]P([#8])(=O)[#8]P([#8])(=O)[#8]-[#6]-[#6]-1-[#8]-[#6](-[#6](-[#8])-[#6]-1-[#8]P([#8])([#8])=O)-[#7]-1-[#6]=[#7]-[#6]-2=[#6]-1-[#7]=[#6]-[#7]=[#6]-2-[#7]");	
+		return glutathioneConjugatePattern.hasSMARTSPattern(molecule)>0;	
+	}
+	
+	public static boolean isGlycinatedCompound(IAtomContainer molecule) throws SMARTSException {
+		SmartsPatternCDK glycinatedRadicalPattern = new SmartsPatternCDK("[#6][#7;A;H1X3][#6;A;H2X4][#6;X3]([#8;A;X2H1,X1-])=[O;X1]");	
+		return glycinatedRadicalPattern.hasSMARTSPattern(molecule)>0;	
+	}	
 	
 	
 	public static void main(String[] args) throws SMARTSException, CloneNotSupportedException, CDKException{

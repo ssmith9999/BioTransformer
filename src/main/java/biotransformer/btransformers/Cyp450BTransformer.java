@@ -38,6 +38,7 @@ import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.FileUtilities;
 import biotransformer.utils.Utilities;
+import biotransformer.utils.ChemicalClassFinder.ChemicalClassName;
 import reactantpredictor.ReactantPred;
 
 
@@ -88,14 +89,24 @@ public class Cyp450BTransformer extends Biotransformer {
 			if(ChemStructureExplorer.isCompoundInorganic(substrate) || ChemStructureExplorer.isMixture(substrate)){
 				throw new IllegalArgumentException(substrate.getProperty("InChIKey")+ "\nThe substrate must be: 1) organic, and; 2) not a mixture.");
 			} else if(ChemStructureExplorer.isBioTransformerValid(substrate)){
-				
-				if (ChemicalClassFinder.isEtherLipid(substrate) || ChemicalClassFinder.isGlyceroLipid(substrate) || 
-						ChemicalClassFinder.isGlycerophosphoLipid(substrate) ||
-						ChemicalClassFinder.isSphingoLipid(substrate) || ChemicalClassFinder.isGlycerol_3_PhosphateInositol(substrate)
-						|| ChemicalClassFinder.isC24BileAcid(substrate) || ChemicalClassFinder.isC23BileAcid(substrate)){
-					
-				}
-				else{
+//				ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(substrate);
+//				System.err.println("will compute chemClasses.");
+//				
+//				if (ChemStructureExplorer.getMajorIsotopeMass(substrate) > 1500.0 || 
+//						chemClasses.contains(ChemicalClassName.GLYCOSYLATED_COMPOUND) ||
+//						chemClasses.contains(ChemicalClassName.GLUTATHIONE_CONJUGATE) ||
+//						chemClasses.contains(ChemicalClassName.SULFATED_COMPOUND) ||
+//						chemClasses.contains(ChemicalClassName.ACYL_CoA_CONJUGATE) ||
+//						chemClasses.contains(ChemicalClassName.TETRAPYRROLE) ||
+//						chemClasses.contains(ChemicalClassName.SACCHARIDE) ||
+//						chemClasses.contains(ChemicalClassName.ETHER_LIPID) ||
+//						chemClasses.contains(ChemicalClassName.GLYCEROLIPID) ||
+//						chemClasses.contains(ChemicalClassName.GLYCEROPHOSPHOLIPID) ||
+//						chemClasses.contains(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL) ||
+//						chemClasses.contains(ChemicalClassName.SPHINGOLIPID)){
+//					
+//				}
+//				else{
 					EnzymeName[] cyp450s =  {EnzymeName.CYP1A2, EnzymeName.CYP2A6, EnzymeName.CYP2B6, EnzymeName.CYP2C8, 
 							EnzymeName.CYP2C9, EnzymeName.CYP2C19, EnzymeName.CYP2D6, EnzymeName.CYP2E1, EnzymeName.CYP3A4};
 					
@@ -109,7 +120,7 @@ public class Cyp450BTransformer extends Biotransformer {
 	////					System.out.println("Predicting metabolism for " + en.name());
 	//					biotransformations.addAll(this.metabolizeWithEnzyme(substrate, en, preprocess, filter, threshold));
 	//				}
-				}			
+//				}			
 				
 			}
 			return biotransformations;
@@ -130,13 +141,22 @@ public class Cyp450BTransformer extends Biotransformer {
 			if(ChemStructureExplorer.isCompoundInorganic(substrate) || ChemStructureExplorer.isMixture(substrate)){
 				throw new IllegalArgumentException(substrate.getProperty("InChIKey")+ "\nThe substrate must be: 1) organic, and; 2) not a mixture.");
 			} else if(ChemStructureExplorer.isBioTransformerValid(substrate)) {
+//				ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(substrate);
 				
-				if (ChemicalClassFinder.isEtherLipid(substrate) || ChemicalClassFinder.isGlyceroLipid(substrate) || 
-						ChemicalClassFinder.isGlycerophosphoLipid(substrate) ||
-						ChemicalClassFinder.isSphingoLipid(substrate) || ChemicalClassFinder.isGlycerol_3_PhosphateInositol(substrate)
-						|| ChemicalClassFinder.isC24BileAcid(substrate) || ChemicalClassFinder.isC23BileAcid(substrate)){	
-				}
-				else{
+//				if (ChemStructureExplorer.getMajorIsotopeMass(substrate) > 1500.0 || 
+//						chemClasses.contains(ChemicalClassName.GLYCOSYLATED_COMPOUND) ||
+//						chemClasses.contains(ChemicalClassName.GLUTATHIONE_CONJUGATE) ||
+//						chemClasses.contains(ChemicalClassName.SULFATED_COMPOUND) ||
+//						chemClasses.contains(ChemicalClassName.ACYL_CoA_CONJUGATE) ||
+//						chemClasses.contains(ChemicalClassName.TETRAPYRROLE) ||
+//						chemClasses.contains(ChemicalClassName.SACCHARIDE) ||
+//						chemClasses.contains(ChemicalClassName.ETHER_LIPID) ||
+//						chemClasses.contains(ChemicalClassName.GLYCEROLIPID) ||
+//						chemClasses.contains(ChemicalClassName.GLYCEROPHOSPHOLIPID) ||
+//						chemClasses.contains(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL) ||
+//						chemClasses.contains(ChemicalClassName.SPHINGOLIPID)){	
+//				}
+//				else{
 					ArrayList<Enzyme> cyp450Enzymes = new ArrayList<Enzyme>();
 					for(int i = 0; i < enzymeNames.size(); i++){
 						cyp450Enzymes.add(this.bSystem.getEnzymeHash().get(enzymeNames.get(i)));
@@ -144,7 +164,7 @@ public class Cyp450BTransformer extends Biotransformer {
 					
 					biotransformations = this.metabolizeWithEnzymes(substrate, cyp450Enzymes, preprocess, filter, threshold);
 	
-				}			
+//				}			
 				
 			}
 			return biotransformations;
@@ -193,7 +213,7 @@ public class Cyp450BTransformer extends Biotransformer {
 			if(!currentBiotransformations.isEmpty()){
 				biotransformations.addAll(currentBiotransformations);
 				containers.removeAllAtomContainers();
-				containers = extractAtomContainer(currentBiotransformations);				
+				containers = extractProductsFromBiotransformations(currentBiotransformations);				
 			}
 			else{
 				break;

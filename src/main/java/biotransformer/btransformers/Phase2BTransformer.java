@@ -321,7 +321,7 @@ public class Phase2BTransformer extends Biotransformer{
 			if(!currentProducts.isEmpty()){
 				products.addAll(currentProducts);
 				containers.removeAllAtomContainers();
-				containers = extractAtomContainer(currentProducts);
+				containers = extractProductsFromBiotransformations(currentProducts);
 				for(IAtomContainer a : containers.atomContainers()){
 					
 //					if(ChemStructureExplorer.isCompoundInorganic(a)) {
@@ -557,7 +557,7 @@ public class Phase2BTransformer extends Biotransformer{
 			// WATCH OUT: CERAMIDES CAN BE GLUCURONIDATED - SEE http://cancerres.aacrjournals.org/content/59/22/5768.long
 			if(ChemicalClassFinder.isEtherLipid(substrate) || ChemicalClassFinder.isGlyceroLipid(substrate) || 
 					ChemicalClassFinder.isGlycerophosphoLipid(substrate) || ChemicalClassFinder.isSphingoLipid(substrate)
-					|| ChemStructureExplorer.isAcylCoAConjugate(substrate)){
+					|| ChemicalClassFinder.isAcylCoAConjugate(substrate)){
 				//do nothing - phaseII = false
 			}
 			else

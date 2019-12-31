@@ -462,7 +462,7 @@ public class MetaboliteFinder{
 			ArrayList<Biotransformation> currentBioT = this.ebt.applyEnvMicrobialTransformations(currentCompounds, true, true, 0.5);
 			
 //			System.out.println("currentBioT: " + currentBioT.size());
-			IAtomContainerSet extractedCompounds = this.ebt.extractAtomContainerWithTransformationData(currentBioT, annotate);
+			IAtomContainerSet extractedCompounds = this.ebt.extractProductsFromBiotransformationsWithTransformationData(currentBioT, annotate);
 			allBiotransformations.addAll(currentBioT);
 			currentCompounds.removeAllAtomContainers();
 			currentCompounds.add(ChemStructureExplorer.uniquefy(extractedCompounds));

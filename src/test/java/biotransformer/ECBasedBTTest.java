@@ -40,7 +40,7 @@ public class ECBasedBTTest extends ECBasedBTransformer{
 
 		ArrayList<Biotransformation> biotransformations = em.simulateECBasedPhaseIMetabolismStep(stmol, true, true, 0.5);
 		System.out.println("Nr. of biotransformations: " + biotransformations.size());
-		IAtomContainerSet acMetabolites = em.extractAtomContainer(biotransformations);
+		IAtomContainerSet acMetabolites = em.extractProductsFromBiotransformations(biotransformations);
 		System.out.println("Nr. of metabolites: " + acMetabolites.getAtomContainerCount());
 		for(IAtomContainer c : acMetabolites.atomContainers()){
 //			System.out.println();

@@ -57,7 +57,7 @@ public class HGutBTTest extends HGutBTransformer{
 ////		}
 //		em.saveBioTransformationProductsToSdf(biotransformations, "data/test-new-hgut.sdf");
 		
-		ArrayList<Biotransformation> biotransformations = em.applyGutMicrobialMetabolismHydrolysisAndReductionChain(mols, true, true, 1, 0.5);
+		ArrayList<Biotransformation> biotransformations = em.applyGutMicrobialMetabolismHydrolysisAndRedoxChain(mols, true, true, 1, 0.5);
 		em.saveBioTransformationProductsToSdf(biotransformations, "../test-new-hgut.sdf");
 	
 	}	

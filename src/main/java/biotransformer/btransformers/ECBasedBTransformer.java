@@ -645,7 +645,7 @@ public class ECBasedBTransformer extends Biotransformer {
 			if(!currentBiotransformations.isEmpty()){
 				biotransformations.addAll(currentBiotransformations);
 				containers.removeAllAtomContainers();
-				containers = extractAtomContainer(currentBiotransformations);
+				containers = extractProductsFromBiotransformations(currentBiotransformations);
 				
 			}
 			else{
@@ -752,7 +752,7 @@ public class ECBasedBTransformer extends Biotransformer {
 				if(!currentBiotransformations.isEmpty()){
 					biotransformations.addAll(currentBiotransformations);
 					containers.removeAllAtomContainers();
-					containers = extractAtomContainer(currentBiotransformations);
+					containers = extractProductsFromBiotransformations(currentBiotransformations);
 					
 				}
 				else{

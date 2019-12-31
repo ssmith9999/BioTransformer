@@ -40,6 +40,11 @@ public class MReactionsFilter {
 //					{ReactionName.
 //							});	
 			
+			btPriorityHash.put(ReactionName.HYDROLYSIS_OF_TERMINAL_14_LINKED_ALPHA_D_GLUCOSE_PATTERN1, new ReactionName[] 
+			{ReactionName.D_GLYCOSIDE_HYDROLYSIS,
+					ReactionName.GLYCOSIDE_HYDROLYSIS,
+					});				
+			
 			// Zhou, S.F. et al. (2009); Substrates, Inducers, Inhibitors and Structure-Activity Relationships of 
 			// Human Cytochrome P450 2C9 and Implications in Drug Development; Current Medicinal Chemistry, 2009, 16, 3480-3675
 			btPriorityHash.put(ReactionName.EPOXIDE_HYDROLYSIS, new ReactionName[] 
@@ -1809,6 +1814,10 @@ public class MReactionsFilter {
 //					{ReactionName.HYDROLYSIS_OF_CARBOXYLIC_ACID_ESTER_PATTERN1, ReactionName.HYDROLYSIS_OF_CARBOXYLIC_ACID_ESTER_PATTERN2
 //					});
 			
+			btPriorityHash.put(ReactionName.HYDROLYSIS_OF_TERMINAL_14_LINKED_ALPHA_D_GLUCOSE_PATTERN1, new ReactionName[] 
+			{ReactionName.D_GLYCOSIDE_HYDROLYSIS,
+					ReactionName.GLYCOSIDE_HYDROLYSIS,
+					});	
 			btPriorityHash.put(ReactionName.AROMATIC_OH_GLUCURONIDATION, new ReactionName[] 
 					{ReactionName.ALKYL_OH_GLUCURONIDATION
 							});	

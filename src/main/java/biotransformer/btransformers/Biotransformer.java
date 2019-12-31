@@ -79,6 +79,8 @@ import biotransformer.transformation.MetabolicPathway.MPathwayName;
 import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemdbRest;
+import biotransformer.utils.ChemicalClassFinder;
+import biotransformer.utils.ChemicalClassFinder.ChemicalClassName;
 import biotransformer.utils.FileUtilities;
 import biotransformer.utils.Utilities;
 //import weka.core.pmml.jaxbbindings.Targets;
@@ -586,7 +588,7 @@ public class Biotransformer {
 				
 				products.addAll(currentProducts);
 				containers.removeAllAtomContainers();
-				containers = extractAtomContainer(currentProducts);
+				containers = extractProductsFromBiotransformations(currentProducts);
 //				for(IAtomContainer a : containers.atomContainers()){
 //					a = this.standardizeMolecule(a);
 //					AtomContainerManipulator.convertImplicitToExplicitHydrogens(a);				
@@ -799,7 +801,9 @@ public class Biotransformer {
 //		System.out.println(this.smiGen.create(clonedSub));
 		if(this.bSystem.getEnzymeHash().containsKey(EnzymeName.valueOf(enzyme.getName()))){
 			ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
-			if(this.esspredictor.isValidSubstrate(clonedSub, EnzymeName.valueOf(enzyme.getName()))){
+			ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(clonedSub);
+//			System.err.println("chemClasses :"+ chemClasses);	
+			if(this.esspredictor.isValidSubstrate( clonedSub, EnzymeName.valueOf(enzyme.getName()), chemClasses)){
 //				System.out.println(enzyme.getName());
 				biotransformations = this.applyReactionsAndReturnBiotransformations(substrate, enzyme.getReactionSet(), preprocess, filter, threshold);
 //				System.out.println(biotransformations.size());
@@ -836,7 +840,7 @@ public class Biotransformer {
 			if(!currentProducts.isEmpty()){
 				biotransformations.addAll(currentProducts);
 				containers.removeAllAtomContainers();
-				containers = extractAtomContainer(currentProducts);
+				containers = extractProductsFromBiotransformations(currentProducts);
 			}
 			else {
 				break;
@@ -917,10 +921,12 @@ public class Biotransformer {
 			}
 			else{
 //				starget = standardizeMoleculeWithCopy(target, false);
-				AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(target);
-				AtomContainerManipulator.convertImplicitToExplicitHydrogens(target);
+				AtomContainerManipulator.percieveAtomTypesAndConfigureAtoms(starget);
+				AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
 				
 			}
+			
+			
 			
 			InChIGenerator gen0 = this.inchiGenFactory.getInChIGenerator(target);
 			
@@ -933,9 +939,12 @@ public class Biotransformer {
 			
 //			System.out.println(target.getProperty("InChI"));
 //			System.out.println("SMILES: " + this.smiGen.create(starget));
-					
+			
+			ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(starget);
+//			System.err.println("chemClasses :"+ chemClasses);
+			
 			for(Enzyme enz : enzymes){
-				if(esspredictor.isValidSubstrate(starget, EnzymeName.valueOf(enz.getName()))){
+				if(esspredictor.isValidSubstrate(starget, EnzymeName.valueOf(enz.getName()), chemClasses)){
 					metabolizingEnzymes.add(enz);
 //					System.out.println(enz.getName());
 				}
@@ -1099,7 +1108,7 @@ public class Biotransformer {
 				if(!currentProducts.isEmpty()){
 					results.addAll(currentProducts);
 					containers.removeAllAtomContainers();
-					containers = extractAtomContainer(currentProducts);
+					containers = extractProductsFromBiotransformations(currentProducts);
 				}
 				else{
 					break;
@@ -1302,7 +1311,7 @@ public class Biotransformer {
 			if(partialBiotransf.size()>0){
 				biotransformations.addAll(partialBiotransf);
 				startingSet.removeAllAtomContainers();
-				startingSet = this.extractAtomContainer(partialBiotransf);
+				startingSet = this.extractProductsFromBiotransformations(partialBiotransf);
 				
 				for(IAtomContainer a : startingSet.atomContainers()){
 //					biotransformations.addAll(applyReactionAtOnceAndReturnBiotransformations(standardizeMoleculeWithCopy(a),
@@ -1326,7 +1335,7 @@ public class Biotransformer {
 		return smiParser;
 	}
 
-	public IAtomContainerSet extractAtomContainer(ArrayList<Biotransformation> biotransformations) throws Exception{
+	public IAtomContainerSet extractProductsFromBiotransformations(ArrayList<Biotransformation> biotransformations) throws Exception{
 		IAtomContainerSet acontainers = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
 		LinkedHashMap<String, IAtomContainer> hMap = new LinkedHashMap<String, IAtomContainer>();
 		int metaboliteID = 0;
@@ -1351,7 +1360,7 @@ public class Biotransformer {
 	}
 	
 	
-	public IAtomContainerSet extractAtomContainerWithTransformationData(ArrayList<Biotransformation> biotransformations, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
+	public IAtomContainerSet extractProductsFromBiotransformationsWithTransformationData(ArrayList<Biotransformation> biotransformations, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
 		ArrayList<Biotransformation> uniqueBiotransformations = Utilities.selectUniqueBiotransformations(biotransformations);
 		IAtomContainerSet acontainers = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
 		LinkedHashMap<String, IAtomContainer> hMap = new LinkedHashMap<String, IAtomContainer>();
@@ -1592,16 +1601,16 @@ public class Biotransformer {
 		
 	}
 
-	public IAtomContainerSet extractAtomContainerWithTransformationData(ArrayList<Biotransformation> biotransformations, LinkedHashMap<String, MetabolicReaction> customReactionHash) throws Exception{
-		return extractAtomContainerWithTransformationData(biotransformations, customReactionHash, false);
+	public IAtomContainerSet extractProductsFromBiotransformationsWithTransformationData(ArrayList<Biotransformation> biotransformations, LinkedHashMap<String, MetabolicReaction> customReactionHash) throws Exception{
+		return extractProductsFromBiotransformationsWithTransformationData(biotransformations, customReactionHash, false);
 	}
 
-	public IAtomContainerSet extractAtomContainerWithTransformationData(ArrayList<Biotransformation> biotransformations, boolean annotate) throws Exception{
-		return  extractAtomContainerWithTransformationData(biotransformations, this.reactionsHash, annotate);
+	public IAtomContainerSet extractProductsFromBiotransformationsWithTransformationData(ArrayList<Biotransformation> biotransformations, boolean annotate) throws Exception{
+		return  extractProductsFromBiotransformationsWithTransformationData(biotransformations, this.reactionsHash, annotate);
 	}
 	
-	public IAtomContainerSet extractAtomContainerWithTransformationData(ArrayList<Biotransformation> biotransformations) throws Exception{
-		return  extractAtomContainerWithTransformationData(biotransformations, this.reactionsHash, false);
+	public IAtomContainerSet extractProductsFromBiotransformationsWithTransformationData(ArrayList<Biotransformation> biotransformations) throws Exception{
+		return  extractProductsFromBiotransformationsWithTransformationData(biotransformations, this.reactionsHash, false);
 
 	}
 	
@@ -1622,7 +1631,7 @@ public class Biotransformer {
 	}
 	
 	public void saveBioTransformationProductsToSdf(ArrayList<Biotransformation> biotransformations, String outputFileName, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
-		IAtomContainerSet uniqueSetOfProducts = extractAtomContainerWithTransformationData(biotransformations, customReactionHash, annotate);
+		IAtomContainerSet uniqueSetOfProducts = extractProductsFromBiotransformationsWithTransformationData(biotransformations, customReactionHash, annotate);
 		SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputFileName));		
 		sdfWriter.write(uniqueSetOfProducts);
 		sdfWriter.close();
@@ -1652,7 +1661,7 @@ public class Biotransformer {
 	
 	public void saveBioTransformationProductsToCSV(ArrayList<Biotransformation> biotransformations, String outputFileName, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
 		try{
-			IAtomContainerSet products = extractAtomContainerWithTransformationData(biotransformations, customReactionHash, annotate);
+			IAtomContainerSet products = extractProductsFromBiotransformationsWithTransformationData(biotransformations, customReactionHash, annotate);
 			FileUtilities.saveAtomContainerSetToCSV(products, outputFileName);			
 		}
 		catch (Exception e) {
@@ -1664,7 +1673,7 @@ public class Biotransformer {
 	
 	public void saveBioTransformationProductsToSDF(ArrayList<Biotransformation> biotransformations, String outputFileName, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
 		try{
-			IAtomContainerSet products = extractAtomContainerWithTransformationData(biotransformations, customReactionHash, annotate);
+			IAtomContainerSet products = extractProductsFromBiotransformationsWithTransformationData(biotransformations, customReactionHash, annotate);
 			FileUtilities.saveAtomContainerSetToSDF(products, outputFileName);			
 		}
 		catch (Exception e) {
@@ -1764,7 +1773,7 @@ public class Biotransformer {
 				if(!currentProducts.isEmpty()){		
 					biotransformations.addAll(currentProducts);
 					containers.removeAllAtomContainers();
-					containers = extractAtomContainer(currentProducts);
+					containers = extractProductsFromBiotransformations(currentProducts);
 				}
 				else{
 					break;

@@ -50,6 +50,57 @@ public class ESSpecificityPredictor {
 	}
 	
 	public boolean isValidCyp450Substrate(IAtomContainer substrate, EnzymeName enz) throws Exception{
+//		
+//		// ADD testing condition for scenario where an enzyme is not in the biosystem.	
+//		if(!(enz.toString().contains("CYP1A2") || enz.toString().contains("CYP2A6") || enz.toString().contains("CYP2B6")
+//				|| enz.toString().contains("CYP2C8") || enz.toString().contains("CYP2C9") || enz.toString().contains("CYP2C19")
+//				|| enz.toString().contains("CYP2D6") || enz.toString().contains("CYP2E1") || enz.toString().contains("CYP3A4"))){
+//			
+//			throw new IllegalArgumentException(enz.toString() + " is not a valid CYP isozyme for this system. The selected isozyme must"
+//					+ "be either of the following: CYP1A2, CYP2A6, CYP2B6, CYP2C8, CYP2C9, CYP2C19, CYP2D6, CYP2E1, or CYP3A4.");
+//		} else if(!ChemStructureExplorer.isMixture(substrate)){
+//			boolean validCyp450 = false;
+////			ChemicalClassName chemClassName = ChemicalClassFinder.findChemicalClass(substrate);
+//			ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(substrate);
+//			System.err.println("chemClasses :"+ chemClasses);
+//			
+//			if(!( ChemStructureExplorer.getMajorIsotopeMass(substrate) > 1500.0 || 
+//					chemClasses.contains(ChemicalClassName.GLYCOSYLATED_COMPOUND) ||
+//					chemClasses.contains(ChemicalClassName.GLUTATHIONE_CONJUGATE) ||
+//					chemClasses.contains(ChemicalClassName.SULFATED_COMPOUND) ||
+//					chemClasses.contains(ChemicalClassName.ACYL_CoA_CONJUGATE) ||
+//					chemClasses.contains(ChemicalClassName.TETRAPYRROLE) ||
+//					chemClasses.contains(ChemicalClassName.SACCHARIDE) ||
+//					chemClasses.contains(ChemicalClassName.ETHER_LIPID) ||
+//					chemClasses.contains(ChemicalClassName.GLYCEROLIPID) ||
+//					chemClasses.contains(ChemicalClassName.GLYCEROPHOSPHOLIPID) ||
+//					chemClasses.contains(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL) ||
+//					chemClasses.contains(ChemicalClassName.SPHINGOLIPID) )) {
+//				
+//				if(this.bSys.name.toString() == "HUMAN"){
+//							
+//					ReactantPred rp = new ReactantPred();
+//					IAtomContainerSet inputMolecules = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+//					inputMolecules.addAtomContainer(substrate);
+//					ArrayList<HashMap<String,String>> predictedResult = new ArrayList<HashMap<String,String>>();
+//					predictedResult = rp.initPreResults(predictedResult,inputMolecules.getAtomContainerCount());
+//					ArrayList<HashMap<String,String>>  res = rp.makeMultiPrediction(enz.toString(), inputMolecules, predictedResult);
+//	
+//					validCyp450 = (res.get(0).get(enz.toString().replace("CYP", "")) == "R");
+//				}
+//			}
+//			// use CYP450 predictor
+//			return validCyp450;
+//		}
+//		else{
+//			return false;
+//		}
+		ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(substrate);
+		return isValidCyp450Substrate(substrate, enz, chemClasses);
+	}
+	
+	
+	public boolean isValidCyp450Substrate(IAtomContainer substrate, EnzymeName enz, ArrayList<ChemicalClassName> chemClasses) throws Exception{
 		
 		// ADD testing condition for scenario where an enzyme is not in the biosystem.	
 		if(!(enz.toString().contains("CYP1A2") || enz.toString().contains("CYP2A6") || enz.toString().contains("CYP2B6")
@@ -60,13 +111,20 @@ public class ESSpecificityPredictor {
 					+ "be either of the following: CYP1A2, CYP2A6, CYP2B6, CYP2C8, CYP2C9, CYP2C19, CYP2D6, CYP2E1, or CYP3A4.");
 		} else if(!ChemStructureExplorer.isMixture(substrate)){
 			boolean validCyp450 = false;
-			ChemicalClassName chemClassName = ChemicalClassFinder.findChemicalClass(substrate);
+//			System.err.println(chemClasses);
 			
-			if(!( ChemStructureExplorer.getMajorIsotopeMass(substrate) > 1500.0 || ChemStructureExplorer.isGlycosylatedCompound(substrate) || ChemStructureExplorer.isGlutathioneConjugate(substrate)
-					|| ChemStructureExplorer.isSulfatedCompound(substrate) || ChemStructureExplorer.isAcylCoAConjugate(substrate) || 
-					chemClassName == ChemicalClassName.ETHER_LIPID || chemClassName == ChemicalClassName.GLYCEROLIPID  || 
-					chemClassName == ChemicalClassName.GLYCEROPHOSPHOLIPID || chemClassName == ChemicalClassName.SPHINGOLIPID ||
-					chemClassName == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL)) {
+			if(!( ChemStructureExplorer.getMajorIsotopeMass(substrate) > 1500.0 || 
+					chemClasses.contains(ChemicalClassName.GLYCOSYLATED_COMPOUND) ||
+					chemClasses.contains(ChemicalClassName.GLUTATHIONE_CONJUGATE) ||
+					chemClasses.contains(ChemicalClassName.SULFATED_COMPOUND) ||
+					chemClasses.contains(ChemicalClassName.ACYL_CoA_CONJUGATE) ||
+					chemClasses.contains(ChemicalClassName.TETRAPYRROLE) ||
+					chemClasses.contains(ChemicalClassName.SACCHARIDE) ||
+					chemClasses.contains(ChemicalClassName.ETHER_LIPID) ||
+					chemClasses.contains(ChemicalClassName.GLYCEROLIPID) ||
+					chemClasses.contains(ChemicalClassName.GLYCEROPHOSPHOLIPID) ||
+					chemClasses.contains(ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL) ||
+					chemClasses.contains(ChemicalClassName.SPHINGOLIPID) )) {
 				
 				if(this.bSys.name.toString() == "HUMAN"){
 							
@@ -98,8 +156,7 @@ public class ESSpecificityPredictor {
 //			
 //		}
 		
-		AtomContainerManipulator.convertImplicitToExplicitHydrogens(substrate);
-		
+//		AtomContainerManipulator.convertImplicitToExplicitHydrogens(substrate);	
 		
 		// phenolic hydroxysteroid
 		Pattern smp = SmartsPattern.create(
@@ -114,13 +171,48 @@ public class ESSpecificityPredictor {
 	
 	public boolean isValidSubstrate(IAtomContainer substrate, EnzymeName enz) throws Exception {
 		
+//		boolean validSubstrate = false;
+//		
+//		
+//		if(  (enz.toString().contains("CYP1A2") || enz.toString().contains("CYP2A6") || enz.toString().contains("CYP2B6")
+//				|| enz.toString().contains("CYP2C8") || enz.toString().contains("CYP2C9") || enz.toString().contains("CYP2C19")
+//				|| enz.toString().contains("CYP2D6") || enz.toString().contains("CYP2E1") || enz.toString().contains("CYP3A4"))){
+//			
+//			
+//			return isValidCyp450Substrate(substrate, enz);
+//		} 
+//		
+//		else if(enz.toString().contentEquals("EC_2_8_2_2")){
+//			return isValid_EC_2_8_2_2_substrate(substrate,false);
+//		}
+//		
+//		else{
+//			
+//			/* This will apply to the enzyme for which we do not have machine-learning prediction models. Specific substrate specificity
+//			 * prediction methods can be implemented for specific enzymes, if the rules take into consideration more than the pattern matching.
+//			 * For instance, for some molecules, one could incorporate the LogP.
+//			 */
+////			if(this.bSys.getEnzymeHash().containsKey(enz)){
+////				validSubstrate = isPotentialSubstrateByReactionPatternMatching(substrate, enz);
+////			}
+//			validSubstrate =  true;
+//		}
+//		return validSubstrate;
+		ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(substrate);
+		return isValidSubstrate(substrate, enz, chemClasses);
+	}
+
+	public boolean isValidSubstrate(IAtomContainer substrate, EnzymeName enz, ArrayList<ChemicalClassName> chemClasses) throws Exception {
+		
 		boolean validSubstrate = false;
 		
 		
 		if(  (enz.toString().contains("CYP1A2") || enz.toString().contains("CYP2A6") || enz.toString().contains("CYP2B6")
 				|| enz.toString().contains("CYP2C8") || enz.toString().contains("CYP2C9") || enz.toString().contains("CYP2C19")
 				|| enz.toString().contains("CYP2D6") || enz.toString().contains("CYP2E1") || enz.toString().contains("CYP3A4"))){
-			return isValidCyp450Substrate(substrate, enz);
+			
+			
+			return isValidCyp450Substrate(substrate, enz, chemClasses);
 		} 
 		
 		else if(enz.toString().contentEquals("EC_2_8_2_2")){
@@ -140,7 +232,6 @@ public class ESSpecificityPredictor {
 		}
 		return validSubstrate;		
 	}
-	
 	
 	
 	

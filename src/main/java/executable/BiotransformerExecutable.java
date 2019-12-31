@@ -9,6 +9,7 @@ import org.apache.commons.cli.CommandLine;
 import org.apache.commons.cli.CommandLineParser;
 import org.apache.commons.cli.DefaultParser;
 import org.apache.commons.cli.HelpFormatter;
+import org.apache.commons.cli.MissingArgumentException;
 import org.apache.commons.cli.Option;
 import org.apache.commons.cli.Options;
 import org.apache.commons.cli.ParseException;
@@ -320,8 +321,9 @@ public class BiotransformerExecutable {
 		boolean annotate = false;
 		String masses = null;
 		String formulas = null;
-		String metadata_input = null;		
-		Double massTolerance = 0.01;
+		String metadata_input = null;
+		Double defaultMassToleranceThreshold = 0.01;
+		Double massToleranceThreshold = null;
 		String task = null;
 		FinderOption opt = null;
 		String iFormat = null;
@@ -367,17 +369,17 @@ public class BiotransformerExecutable {
 			if(commandLine.getOptionValue("k") != null){
 				task = commandLine.getOptionValue("k").trim();
 				if( !(task.contentEquals("pred") || task.contentEquals("cid")) ){
-					throw new IllegalArgumentException("You entered an invalid task. Enter either 'pred' (prediction) or 'cid' (compound identification)");
+					throw new IllegalArgumentException("Invalid task(\"" +  task + "\") entered. Enter either 'pred' (prediction) or 'cid' (compound identification)");
 				}				
 			}
 			else {
-				throw new IllegalArgumentException("Task type is missing. You must select either 'pred' (prediction) or 'cid' (compound identification)");
+				throw new IllegalArgumentException("\n\tThe task type is missing. You must select either 'pred' (prediction) or 'cid' (compound identification)");
 			}
 
 			if(commandLine.getOptionValue("m") != null){
 				masses = commandLine.getOptionValue("m").trim();
 				if(masses.length() == 0){
-					throw new IllegalArgumentException("You did not enter any mass.");
+					throw new MissingArgumentException("\n\tPlease enter a list of monoisotopic masses.");
 				}			
 //				System.out.println("MASS: " + masses);
 			}
@@ -385,26 +387,49 @@ public class BiotransformerExecutable {
 			if(commandLine.getOptionValue("f") != null){
 				formulas = commandLine.getOptionValue("f").trim();
 				if(formulas.length() == 0){
-					throw new IllegalArgumentException("You did not enter any formula.");
+					throw new MissingArgumentException("\n\tPlease enter a list of chemical formulas.");
 				}			
 //				System.out.println("MASS: " + masses);
 			}
 			
 //			System.out.println("ANNOTATE: " + annotate);
 			if(task.contentEquals("cid")){
-				if(masses != null && formulas != null){
-					throw new IllegalArgumentException("You must enter either masses or formulas, not both");
-				}	
-				else if(masses == null && formulas == null){
-					throw new IllegalArgumentException("Identification metadata are missing. Please add a list of masses (-m) or a list of formulas (-r)");
+				if(commandLine.getOptionValue("t") != null){
+					if(commandLine.getOptionValue("t").trim().length() == 0){
+						throw new MissingArgumentException("\n\tThe option '-t' was used but the mass tolerance threshold is missing. Add a value or omit '-t' to use the default value (" + defaultMassToleranceThreshold +")");
+					}
+					else{
+						massToleranceThreshold = Double.valueOf(commandLine.getOptionValue("t").trim());	
+//						System.out.println("massTolerance: " + massTolerance);
+					}
+				}
+					
+				if(masses == null && formulas == null){
+					throw new IllegalArgumentException("\n\tIdentification metadata are missing. Please add a list of masses (-m) or a list of formulas (-r)");
+				}
+				else if(formulas != null) {
+					if(masses != null) {
+						throw new IllegalArgumentException("\tList of masses and formulas provided. Please exclusively provide either a list of masses (-m) or a list of formulas (-r)");											
+					}
+					else if(massToleranceThreshold != null) {
+						throw new IllegalArgumentException("\n\tA mass tolerance threshold is accepted only for mass-based, and not formula-based identification tasks. Please remove this argument.");											
+						
+					}
+					opt = FinderOption.FORMULA;
+					metadata_input = formulas;
+//					System.out.println(opt + "\t" + metadata_input);
+					/**
+					 * Here, there user has not provided a mass threshold tolerance, but we set it to the default, just to avoid the NullPointerException
+					 * The massToleranceThreshold argument will not be used for the FORMULA option.
+					 */
+					massToleranceThreshold = defaultMassToleranceThreshold;
 				}
 				else if(masses != null){
 					opt = FinderOption.MASS;
 					metadata_input = masses;
-				}
-				else if(formulas != null){
-					opt = FinderOption.FORMULA;
-					metadata_input = formulas;
+					if(massToleranceThreshold == null) {
+						massToleranceThreshold = defaultMassToleranceThreshold;
+					}
 				}
 			}
 			
@@ -415,15 +440,7 @@ public class BiotransformerExecutable {
 			}
 			
 		
-			if(commandLine.getOptionValue("t") != null){
-				if(commandLine.getOptionValue("t").trim().length() == 0){
-					throw new IllegalArgumentException("You did not enter any mass tolerance. The parameter will be set to the default value (0.01)");
-				}
-				else{
-					massTolerance = Double.valueOf(commandLine.getOptionValue("t").trim());	
-//					System.out.println("massTolerance: " + massTolerance);
-				}
-			}
+
 
 			
 			final String biotransformerType = commandLine.getOptionValue("b");		
@@ -438,7 +455,7 @@ public class BiotransformerExecutable {
 				inputFileName = commandLine.getOptionValue("imol");
 //				containers = FileUtils.parseSdf(inputFileName);
 				if(inputFileName == null){
-					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
+					throw new MissingOptionException("\n\tPlease specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
 				}
 //				if(outputF == null){
 //					throw new MissingOptionException("A destination folder must be specified when your query molecules are provided in a file (Molfile or SDF). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
@@ -449,27 +466,27 @@ public class BiotransformerExecutable {
 				inputFileName = commandLine.getOptionValue("isdf");
 //				containers = FileUtils.parseSdf(inputFileName);
 				if(inputFileName == null){
-					throw new MissingOptionException("You must be specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
+					throw new MissingOptionException("\n\tPlease specify an input file name (Molfile or SDF). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
 				}
 			}
 			else {
-				throw new IllegalArgumentException("You entered an invalid input format option(" + iFormat + "). It must be one of 'ismi','imol', or 'isdf'. Type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help for help.");
+				throw new IllegalArgumentException("\n\tInvalid input format option(" + iFormat + ") entered. It must be one of 'ismi','imol', or 'isdf'. Type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help for help.");
 			}
 
 			if(oFormat.contentEquals("csv")){
 				outputF = commandLine.getOptionValue("ocsv");
 				if(outputF == null){
-					throw new MissingOptionException("You must be specify an output file name (CSV). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
+					throw new MissingOptionException("\n\tPlease specify an output file name (CSV). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
 				}
 			}			
 			else if(oFormat.contentEquals("sdf")){
 				outputF = commandLine.getOptionValue("osdf");
 				if(outputF == null){
-					throw new MissingOptionException("You must be specify an output file name (SDF). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
+					throw new MissingOptionException("\n\tPlease specify an output file name (SDF). For more information, type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help.");
 				}
 			}
 			else {
-				throw new IllegalArgumentException("You entered an invalid output format option(" + oFormat + "). It must be one of 'ocsv' or 'osdf'. Type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help for help.");
+				throw new IllegalArgumentException("\n\tInvalid output format option(" + oFormat + ") entered. It must be one of 'ocsv' or 'osdf'. Type java -jar biotransformer-" + Version.current.replace(".", "-") +".jar --help for help.");
 			}
 			
 //			System.out.println("TASK: "+ task.contentEquals("cid"));
@@ -481,12 +498,12 @@ public class BiotransformerExecutable {
 //					System.out.println("IDENTIFICATION TASK");
 					if(biotransformerType.contentEquals("allHuman")){
 						
-						String[] mArr = masses.trim().split(";");
-						ArrayList<String> dmasses = new ArrayList<String>();
+						String[] mArr = metadata_input.trim().split(";");
+						ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
 						
 						for(int k = 0; k < mArr.length; k++){
 							try{
-								dmasses.add(mArr[k].trim());
+								dmassesOrFormulas.add(mArr[k].trim());
 							}
 							catch(Exception e){
 								System.err.println(e.getMessage());
@@ -498,10 +515,10 @@ public class BiotransformerExecutable {
 							MetaboliteFinder mtf = new MetaboliteFinder();
 							
 							if(oFormat.contentEquals("csv")){
-								mtf.findAllHumanMetabolitesToCSV(singleInput, dmasses, massTolerance, nrOfSteps, annotate, outputF, opt);
+								mtf.findAllHumanMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
 							}
 							else if(oFormat.contentEquals("sdf")){
-								mtf.findAllHumanMetabolites(singleInput, dmasses, massTolerance, nrOfSteps, annotate, outputF, opt);
+								mtf.findAllHumanMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
 							}
 						}
 						else {
@@ -512,7 +529,7 @@ public class BiotransformerExecutable {
 							for(IAtomContainer atc : containers.atomContainers()){
 								index ++;
 								try {
-									metabolites.add(mtf.findAllHumanMetabolites(atc, dmasses, massTolerance, nrOfSteps, annotate, opt));
+									metabolites.add(mtf.findAllHumanMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, opt));
 								}
 								catch(Exception e) {
 									System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getLocalizedMessage());
@@ -532,12 +549,12 @@ public class BiotransformerExecutable {
 						
 					}
 					else if(biotransformerType.contentEquals("env")){
-						String[] mArr = masses.trim().split(" ");
-						ArrayList<String> dmasses = new ArrayList<String>();
+						String[] mArr = metadata_input.trim().split(";");
+						ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
 						
 						for(int k = 0; k < mArr.length; k++){
 							try{
-								dmasses.add(mArr[k].trim());
+								dmassesOrFormulas.add(mArr[k].trim());
 							}
 							catch(Exception e){
 								System.err.println(e.getMessage());
@@ -549,10 +566,10 @@ public class BiotransformerExecutable {
 							MetaboliteFinder mtf = new MetaboliteFinder();
 							
 							if(oFormat.contentEquals("csv")){
-								mtf.findAllEnvMicroMetabolitesToCSV(singleInput, dmasses, massTolerance, nrOfSteps, annotate, outputF, opt);
+								mtf.findAllEnvMicroMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
 							}
 							else if(oFormat.contentEquals("sdf")){
-								mtf.findAllEnvMicroMetabolites(singleInput, dmasses, massTolerance, nrOfSteps, annotate, outputF, opt);
+								mtf.findAllEnvMicroMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
 							}
 						}
 						else {
@@ -564,7 +581,7 @@ public class BiotransformerExecutable {
 							for(IAtomContainer atc : containers.atomContainers()){
 								index ++;
 								try {
-									metabolites.add(mtf.findAllEnvMicroMetabolites(atc, dmasses, massTolerance, nrOfSteps, annotate, opt));
+									metabolites.add(mtf.findAllEnvMicroMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, opt));
 								}
 								catch(Exception e) {
 									System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getLocalizedMessage());
@@ -583,12 +600,13 @@ public class BiotransformerExecutable {
 					}
 
 					else if(biotransformerType.contentEquals("superbio")){
-						String[] mArr = masses.trim().split(" ");
-						ArrayList<String> dmasses = new ArrayList<String>();
+//						System.out.println(opt + "\t\t\t" + metadata_input);
+						String[] mArr = metadata_input.trim().split(";");
+						ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
 						
 						for(int k = 0; k < mArr.length; k++){
 							try{
-								dmasses.add(mArr[k].trim());
+								dmassesOrFormulas.add(mArr[k].trim());
 							}
 							catch(Exception e){
 								System.err.println(e.getMessage());
@@ -599,10 +617,10 @@ public class BiotransformerExecutable {
 							MetaboliteFinder mtf = new MetaboliteFinder();
 							
 							if(oFormat.contentEquals("csv")){
-								mtf.findSuperbioMetabolitesToCSV(singleInput, dmasses, massTolerance, annotate, outputF, opt);
+								mtf.findSuperbioMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, annotate, outputF, opt);
 							}
 							else if(oFormat.contentEquals("sdf")){
-								mtf.findSuperbioMetabolites(singleInput, dmasses, massTolerance, annotate, outputF, opt);
+								mtf.findSuperbioMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, annotate, outputF, opt);
 							}
 							
 							
@@ -616,7 +634,7 @@ public class BiotransformerExecutable {
 							for(IAtomContainer atc : containers.atomContainers()){
 								index ++;
 								try {
-									metabolites.add(mtf.findSuperbioMetabolites(atc, dmasses, massTolerance, annotate, opt));
+									metabolites.add(mtf.findSuperbioMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, annotate, opt));
 								}
 								catch(Exception e) {
 									System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getLocalizedMessage());
@@ -635,11 +653,11 @@ public class BiotransformerExecutable {
 						}					
 					}				
 					else{
-						throw new IllegalArgumentException("For metabolite identification, the biotransformer type must be either allHuman, superbio, or env.");
+						throw new IllegalArgumentException("\n\tFor metabolite identification, the biotransformer type must be either allHuman, superbio, or env.");
 					}	
 				}
 				else{
-					throw new IllegalArgumentException("For metabolite identification, you must enter a list of masses, and/or molecular formulas");
+					throw new IllegalArgumentException("\n\tFor metabolite identification, you must enter a list of masses, and/or molecular formulas");
 				}
 				
 			}
@@ -724,14 +742,25 @@ public class BiotransformerExecutable {
 							
 				ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 				if (singleInput !=null){
-					biotransformations = hgut.applyGutMicrobialMetabolismHydrolysisAndReductionChain(singleInput, true, true, nrOfSteps, 0.5);
+					biotransformations = hgut.simulateGutMicrobialMetabolism(singleInput, true, true, nrOfSteps, 0.5);
 				}
-				else {
-					
-					
+				else {			
 					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, hgut.inchiGenFactory);					
 					if (containers.getAtomContainerCount()>0){
-						biotransformations = hgut.applyGutMicrobialMetabolismHydrolysisAndReductionChain(containers, true, true, nrOfSteps, 0.5);
+						int index = 0;
+						for(IAtomContainer atc : containers.atomContainers()){
+							index++;
+							System.err.println("Molecule " + index );
+							try {
+								biotransformations.addAll(hgut.simulateGutMicrobialMetabolism(atc, true, true, nrOfSteps, 0.5));
+//								throw new Exception();
+							}
+							catch(Exception e) {
+								System.err.println("BioTransformer failed on molecule " + index + "\n" + e.getMessage());
+								continue;
+							}
+							
+						}	
 					}				
 				}
 //				System.out.println("No. of biotransformations: " + biotransformations.size());		
@@ -751,13 +780,7 @@ public class BiotransformerExecutable {
 							true, true, true, nrOfSteps, 0.5);
 				}
 				else {
-					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, phase2b.inchiGenFactory);
-//					if (containers.getAtomContainerCount()>0){
-//						containers = FileUtilities.parseSdf(inputFileName);
-//						biotransformations = phase2b.applyPhase2TransformationsChainAndReturnBiotransformations(containers,
-//								true, true, true, nrOfSteps, 0.5);
-//					}				
-					
+					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, phase2b.inchiGenFactory);					
 					int index = 0;
 					for(IAtomContainer atc : containers.atomContainers()){
 						index++;
@@ -791,6 +814,7 @@ public class BiotransformerExecutable {
 				HumanSuperBioTransformer hsbt = new HumanSuperBioTransformer();
 				if (singleInput !=null){
 					
+					
 					if(oFormat.contentEquals("csv")){
 						hsbt.simulateHumanSuperbioMetabolismAndSaveToCSV(singleInput, outputF, annotate);
 					}
@@ -823,7 +847,7 @@ public class BiotransformerExecutable {
 					}
 				}
 				else {
-					ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+//					ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 					IAtomContainerSet containers = FileUtilities.parseSdfAndAddTitles(inputFileName, hsbt.getInChIGenFactory());
 					System.out.println(containers.getAtomContainerCount());
 					
