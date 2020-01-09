@@ -834,7 +834,7 @@ public class HumanSuperBioTransformer {
 		while(nrOfSteps>0){
 			
 			counter++;
-			System.out.println("\nStep: " + counter + "\n");
+			// System.out.println("\nStep: " + counter + "\n");
 			ArrayList<Biotransformation> currentBiotransformations = simulateOneStepAllHuman(containers, threshold);
 			nrOfSteps--;
 			if(!currentBiotransformations.isEmpty()){
@@ -859,7 +859,7 @@ public class HumanSuperBioTransformer {
 		while(nrOfSteps>0){
 			
 			counter++;
-			System.out.println("\nStep: " + counter + "\n");
+			// System.out.println("\nStep: " + counter + "\n");
 			ArrayList<Biotransformation> currentBiotransformations = simulateOneStepAllHuman(containers, threshold);
 			nrOfSteps--;
 			if(!currentBiotransformations.isEmpty()){
