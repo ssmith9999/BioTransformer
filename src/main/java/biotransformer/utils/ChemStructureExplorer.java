@@ -45,6 +45,10 @@ import org.openscience.cdk.interfaces.IMolecularFormula;
 import org.openscience.cdk.isomorphism.Pattern;
 //import org.openscience.cdk.qsar.DescriptorValue;
 import org.openscience.cdk.qsar.descriptors.molecular.ALOGPDescriptor;
+import org.openscience.cdk.qsar.descriptors.molecular.HBondAcceptorCountDescriptor;
+import org.openscience.cdk.qsar.descriptors.molecular.HBondDonorCountDescriptor;
+import org.openscience.cdk.qsar.descriptors.molecular.RotatableBondsCountDescriptor;
+import org.openscience.cdk.qsar.descriptors.molecular.XLogPDescriptor;
 //import org.openscience.cdk.qsar.descriptors.molecular.WeightDescriptor;
 //import org.openscience.cdk.qsar.descriptors.molecular.XLogPDescriptor;
 import org.openscience.cdk.qsar.result.IDescriptorResult;
@@ -56,6 +60,8 @@ import org.openscience.cdk.smiles.SmilesParser;
 import org.openscience.cdk.smiles.smarts.SmartsPattern;
 import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
+
+import com.google.common.base.Objects;
 
 import ambit2.smarts.query.SMARTSException;
 import ambit2.smarts.query.SmartsPatternCDK;
@@ -72,6 +78,11 @@ public class ChemStructureExplorer {
 	protected static SmilesParser			smiParser		= new SmilesParser(builder);
 	public static SmilesGenerator 			smiGen			= SmilesGenerator.isomeric();
 	public static InChIGeneratorFactory inchiGenFactory;
+	public static HBondAcceptorCountDescriptor hbaDCountDescriptor = new HBondAcceptorCountDescriptor();
+	public static HBondDonorCountDescriptor hbdCountDescriptor 	= new HBondDonorCountDescriptor();
+	public static RotatableBondsCountDescriptor rbCountDescriptor		= new RotatableBondsCountDescriptor();
+	public static XLogPDescriptor xLogpDescriptor = new XLogPDescriptor();
+
 	
 	
 	public ChemStructureExplorer() throws CDKException{
@@ -135,8 +146,12 @@ public class ChemStructureExplorer {
 //			atc.setProperty("InChI", gen0.getInchi());
 //			atc.setProperty("InChIKey", gen0.getInchiKey());			
 			atc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(atc));
-			atc.setProperty("Major Isotope Mass", physchemprops.get("Major Isotope Mass"));
-			atc.setProperty("ALogP", physchemprops.get("ALogP"));
+			
+			for(String p : physchemprops.keySet()) {
+				atc.setProperty(p, physchemprops.get(p));
+			}
+//			atc.setProperty("Major Isotope Mass", physchemprops.get("Major Isotope Mass"));
+//			atc.setProperty("ALogP", physchemprops.get("ALogP"));
 
 			results.put("atomContainer", atc);
 			
@@ -160,8 +175,11 @@ public class ChemStructureExplorer {
 //			atc.setProperty("InChI", gen0.getInchi());
 //			atc.setProperty("InChIKey", gen0.getInchiKey());
 			atc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(atc));
-			atc.setProperty("Major Isotope Mass", physchemprops.get("Major Isotope Mass"));
-			atc.setProperty("ALogP", physchemprops.get("ALogP"));
+			for(String p : physchemprops.keySet()) {
+				atc.setProperty(p, physchemprops.get(p));
+			}
+//			atc.setProperty("Major Isotope Mass", physchemprops.get("Major Isotope Mass"));
+//			atc.setProperty("ALogP", physchemprops.get("ALogP"));
 
 			results.put("atomContainer", atc);
 			
@@ -1387,16 +1405,15 @@ public class ChemStructureExplorer {
 	public static LinkedHashMap<String, String> computePhysicoChemicalProperties(IAtomContainer molecule) throws CDKException {
 		LinkedHashMap<String, String> properties = new LinkedHashMap<String, String> ();
 		
-//		IDescriptorResult xlogp 		= null;
+		IDescriptorResult xlogp 		= null;
 		IDescriptorResult alogp 		= null;
 		IDescriptorResult weight 	= null;
 		Double majorIsotopeMass 	= null;
 		
-//		XLogPDescriptor XLogp = new XLogPDescriptor();
-//		xlogp = XLogp.calculate(molecule).getValue();
 		
-		ALOGPDescriptor ALogp = new ALOGPDescriptor();
-		alogp = ALogp.calculate(molecule).getValue();
+		xlogp = xLogpDescriptor.calculate(molecule).getValue();
+		ALOGPDescriptor aLogpDescriptor = new ALOGPDescriptor();
+		alogp = aLogpDescriptor.calculate(molecule).getValue();
 
 		
 		// Calculate the weight of specified element type in the supplied
@@ -1408,11 +1425,19 @@ public class ChemStructureExplorer {
 		
 //		DescriptorValue pka = PKASmartsDescriptor
 		
+		IDescriptorResult hbaCount 	= hbaDCountDescriptor.calculate(molecule).getValue();
+		IDescriptorResult hbdCount 	= hbdCountDescriptor.calculate(molecule).getValue();
+		IDescriptorResult rbCount	= rbCountDescriptor.calculate(molecule).getValue();
 		
-//		properties.put("XLogP", xlogp.toString());
+		
+
 		properties.put("Major Isotope Mass" , majorIsotopeMass.toString());
 		properties.put("ALogP", alogp.toString().split(",")[0]);
-		
+		properties.put("XLogP", xlogp.toString());		
+//		properties.put("hbaCount", hbaCount.toString());
+//		properties.put("hbdCount", hbdCount.toString());
+//		properties.put("rbCount", rbCount.toString());
+//		System.out.println("properties: " + properties);
 //		properties.put("Molecular weight" , weight.toString());
 		return properties;
 		
@@ -1687,7 +1712,138 @@ public class ChemStructureExplorer {
 //	}
 	
 	
+	public static int lipinskiViolations(IAtomContainer molecule, double mass, double xlogp, int hbaCount, int hbdCount) {
+		// Tice Rules; https://doi.org/10.1002/1526-4998(200101)57:1<3::AID-PS269>3.0.CO;2-6
+		
+		int lViolations = 0;
+		if(mass>500.0) {
+			lViolations++;
+		}
+		// CDK does not offer Moriguchi's mlog calculation capabilities. 
+		// R Guha recommends using XLogP instead of ALogP (http://blog.rguha.net/?p=896).
+		if(xlogp>5.0) {
+			lViolations++;
+		}
+		if(hbaCount>10) {
+			lViolations++;
+		}
+		if(hbdCount>5) {
+			lViolations++;
+		}
+		return lViolations;
+	}
+
+	public static int postEmmergencyHerbicideLikenessViolations(IAtomContainer molecule, double mass, double alogp, int hbaCount, int hbdCount, int rbCount) {
+		// Tice Rules; https://doi.org/10.1002/1526-4998(200101)57:1<3::AID-PS269>3.0.CO;2-6
+		int iViolations = 0;
+		if(mass<150.0 && mass>500.0) {
+			iViolations++;
+		}
+		if(alogp>5.0) {
+			iViolations++;
+		}
+		if(hbaCount<2 && hbaCount>12) {
+			iViolations++;
+		}
+		if(hbdCount>3) {
+			iViolations++;
+		}		
+		if(rbCount>12) {
+			iViolations++;
+		}
+		
+		return iViolations;
+	}
+	
+	public static int insecticideLikenessViolations(IAtomContainer molecule, double mass, double alogp, int hbaCount, int hbdCount, int rbCount) {
+		// Tice Rules; https://doi.org/10.1002/1526-4998(200101)57:1<3::AID-PS269>3.0.CO;2-6
+		int pehViolations = 0;
+		
+		if(mass<150.0 && mass>500.0) {
+			pehViolations++;
+		}
+		if(alogp<0.0 && alogp>6.5) {
+			pehViolations++;
+		}
+		if(hbaCount<1 && hbaCount>8) {
+			pehViolations++;
+		}
+		if(hbdCount>2) {
+			pehViolations++;
+		}		
+		if(rbCount>12.0) {
+			pehViolations++;
+		}		
+		return pehViolations;
+	}	
+	
+	public static int mddrDrugLikenessViolations(IAtomContainer molecule, int rigidBondCount, int ringCount, int rbCount) {
+		//  Oprea,T.I. J. Comput. Aid. Mol. Des. 2000, 14, 251.
+		int mddrdliolations = 0;
+		
+		if(rigidBondCount<3) {
+			mddrdliolations++;
+		}
+		if(rigidBondCount<18) {
+			mddrdliolations++;
+		}
+		if(rbCount<6) {
+			mddrdliolations++;
+		}
+	
+		return mddrdliolations;
+	}	
+	public static LinkedHashMap<String,Integer> calculateLikenessViolations(IAtomContainer molecule) throws CDKException {
+		LinkedHashMap<String, Integer> violations = new LinkedHashMap<String, Integer> ();
+		String mass = molecule.getProperty("Major Isotope Mass");
+		String hbaCount = molecule.getProperty("hbaCount");
+		String hbdCount = molecule.getProperty("hbdCount");
+		String rbCount  = molecule.getProperty("rbCount");
+		String alogp  	= molecule.getProperty("ALogP") ;
+		String xlogp	= molecule.getProperty("XLogP");
+
+		double mass_;
+		if(Objects.equal(mass, null)) {
+			mass_ =  Double.valueOf(getMajorIsotopeMass(molecule));
+		}else {
+			mass_ = Double.valueOf(mass);
+		}
+
+		
+		if(Objects.equal(alogp, null)) {
+			ALOGPDescriptor aLogpDescriptor = new ALOGPDescriptor();
+			alogp = aLogpDescriptor.calculate(molecule).getValue().toString().split(",")[0];
+		}		
+		if(Objects.equal(xlogp, null)) {
+			xlogp = xLogpDescriptor.calculate(molecule).getValue().toString();
+		}	
+		if(Objects.equal(hbaCount, null)) {
+			hbaCount = hbaDCountDescriptor.calculate(molecule).getValue().toString();
+//			System.err.println("hbaCount: new");
+		}		
+		if(Objects.equal(hbdCount, null)) {
+			hbdCount = hbdCountDescriptor.calculate(molecule).getValue().toString();
+//			System.err.println("hbdCount: new");
+		}	
+		if(Objects.equal(rbCount, null)) {
+			rbCount = rbCountDescriptor.calculate(molecule).getValue().toString();
+//			System.err.println("rbCount: new");
+		}		
+//		System.err.println("hbaCount: "+ hbaCount);
+////		System.err.println("int hbaCount: "+ Integer.valueOf(hbaCount));
+//		System.err.println("hbdCount: "+ hbdCount);
+//		System.err.println("rbCount: "+ rbCount);
+		violations.put("Lipinski_Violations", lipinskiViolations(molecule, mass_, Double.valueOf(xlogp), Integer.valueOf(hbaCount), Integer.valueOf(hbdCount)));
+		violations.put("Insecticide_Likeness_Violations", insecticideLikenessViolations(molecule, mass_, Double.valueOf(alogp), Integer.valueOf(hbaCount), Integer.valueOf(hbdCount),  Integer.valueOf(rbCount)));
+		violations.put("Post_Em_Herbicide_Likeness_Violations", insecticideLikenessViolations(molecule, mass_, Double.valueOf(alogp), Integer.valueOf(hbaCount), Integer.valueOf(hbdCount),  Integer.valueOf(rbCount)));
+		
+		return violations;
+	}
 	
 	
-	
+//	public int agLikenessViolations(IAtomContainer molecule) {
+//		int aViolations = 0;
+//		
+//		return aViolations;
+//	}		
 }

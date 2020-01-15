@@ -1395,12 +1395,16 @@ public class Biotransformer {
 //							
 //							properties.put("SMILES", this.smiGen.create(hash_ac));
 //						}
-						
+							
 						properties.put("Synonyms", hash_ac.getProperty("Synonyms"));
 						properties.put("PUBCHEM_CID", hash_ac.getProperty("PUBCHEM_CID"));
 						properties.put("Molecular formula", hash_ac.getProperty("Molecular formula"));	
-						properties.put("Major Isotope Mass", hash_ac.getProperty("Major Isotope Mass"));	
+						properties.put("Major Isotope Mass", hash_ac.getProperty("Major Isotope Mass"));
 						properties.put("ALogP", hash_ac.getProperty("ALogP"));
+						properties.put("Lipinski_Violations", hash_ac.getProperty("Lipinski_Violations"));
+						properties.put("Insecticide_Likeness_Violations", hash_ac.getProperty("Insecticide_Likeness_Violations"));
+						properties.put("Post_Em_Herbicide_Likeness_Violations", hash_ac.getProperty("Post_Em_Herbicide_Likeness_Violations"));
+						
 						properties.put("Metabolite ID", hash_ac.getProperty("Metabolite ID"));
 						properties.put(CDKConstants.TITLE, hash_ac.getProperty(CDKConstants.TITLE));						
 					}
@@ -1444,15 +1448,25 @@ public class Biotransformer {
 						{
 							refProps.put("Molecular formula", ChemStructureExplorer.getMolecularFormula(ac));	
 						}
-						
+
 						if(ac.getProperty("Molecular formula") !=null){
 							refProps.put("Major Isotope Mass", ac.getProperty("Major Isotope Mass"));						
 							refProps.put("ALogP", ac.getProperty("ALogP"));									
+							refProps.put("Lipinski_Violations", ac.getProperty("Lipinski_Violations"));
+							refProps.put("Insecticide_Likeness_Violations", ac.getProperty("Insecticide_Likeness_Violations"));
+							refProps.put("Post_Em_Herbicide_Likeness_Violations", ac.getProperty("Post_Em_Herbicide_Likeness_Violations"));
+
 						}
 						else {
 							LinkedHashMap<String, String> physchem = ChemStructureExplorer.computePhysicoChemicalProperties(ac);
 							refProps.put("Major Isotope Mass", physchem.get("Major Isotope Mass"));	
 							refProps.put("ALogP", physchem.get("ALogP"));	
+
+							LinkedHashMap<String, Integer> violations = ChemStructureExplorer.calculateLikenessViolations(ac);
+							refProps.put("Lipinski_Violations", String.format("%s", violations.get("Lipinski_Violations")));
+							refProps.put("Insecticide_Likeness_Violations", String.format("%s", violations.get("Insecticide_Likeness_Violations")));
+							refProps.put("Post_Em_Herbicide_Likeness_Violations", String.format("%s", violations.get("Post_Em_Herbicide_Likeness_Violations")));
+
 						}
 							
 						metaboliteID++;
@@ -1542,12 +1556,23 @@ public class Biotransformer {
 							
 							if(substrate.getProperty("Major Isotope Mass") !=null){
 								refProps.put("Major Isotope Mass", substrate.getProperty("Major Isotope Mass"));						
-								refProps.put("ALogP", substrate.getProperty("ALogP"));									
+								refProps.put("ALogP", substrate.getProperty("ALogP"));
+								refProps.put("Lipinski_Violations", substrate.getProperty("Lipinski_Violations"));
+								refProps.put("Insecticide_Likeness_Violations", substrate.getProperty("Insecticide_Likeness_Violations"));
+								refProps.put("Post_Em_Herbicide_Likeness_Violations", substrate.getProperty("Post_Em_Herbicide_Likeness_Violations"));
+
 							}
 							else {
 								LinkedHashMap<String, String> physchem = ChemStructureExplorer.computePhysicoChemicalProperties(substrate);							
 								refProps.put("Major Isotope Mass", String.format("%.8s", Double.valueOf(physchem.get("Major Isotope Mass"))));	
 								refProps.put("Major Isotope Mass", String.format("%.8s", Double.valueOf(physchem.get("Major Isotope Mass"))));	
+								
+								LinkedHashMap<String, Integer> violations = ChemStructureExplorer.calculateLikenessViolations(substrate);
+								refProps.put("Lipinski_Violations", String.format("%s", violations.get("Lipinski_Violations")));
+								refProps.put("Insecticide_Likeness_Violations", String.format("%s", violations.get("Insecticide_Likeness_Violations")));
+								refProps.put("Post_Em_Herbicide_Likeness_Violations", String.format("%s", violations.get("Post_Em_Herbicide_Likeness_Violations")));
+
+							
 							}					
 						
 							tt = (String) substrate.getProperty(CDKConstants.TITLE);
@@ -1628,6 +1653,11 @@ public class Biotransformer {
 //				acontainers.addAtomContainer(a);
 //			}
 		}
+		
+//		for(IAtomContainer atomC : acontainers.atomContainers()) {
+//			ChemStructureExplorer.calculateLikenessViolations(atomC);
+//			atomC
+//		}
 		return acontainers;
 //		return ChemStructureExplorer.uniquefy(acontainers);
 		
