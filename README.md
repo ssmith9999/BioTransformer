@@ -18,7 +18,7 @@ Executable .jar files can be created automatically using Maven, as described in 
 ***************************************************************************************************
 
 Usage:
-java -jar biotransformer-1-1-2.jar -k <BioTransformer Task> -b <BioTransformer Option> [-ismi, -imol, or -isdf <Input file>] 
+java -jar biotransformer-1.1.2.jar -k <BioTransformer Task> -b <BioTransformer Option> [-ismi, -imol, or -isdf <Input file>] 
        [-imol, or -isdf <Output>] [-s <Number of steps>] [-a <Annotate>] [-m <Masses>] [-r <Masses>] [-f <Formulas>]
 
 This is the version 1.0.9 of BioTransformer. BioTransformer is a software
@@ -88,17 +88,17 @@ Examples:
 
 1) To predict the biotransformation of a molecule from an SDF input using the human super transformer (option superbio) and annotate the metabolites with names and database IDs (from PubChem), run
 
-      java -jar biotransformer-1-1-2.jar -k pred -b superbio -isdf -i #{input file name} -osdf #{output file} -a.
+      java -jar biotransformer-1.1.2.jar -k pred -b superbio -isdf -i #{input file name} -osdf #{output file} -a.
 
 2) To predict the 2-step biotransformation of Thymol (a monoterpene) using the human super transformer (option allHuman) using the SMILES input and saving to a CSV file, run
 
-      java -jar biotransformer-1-1-2.jar  -k pred -b allHuman -ismi "CC(C)C1=CC=C(C)C=C1O" -ocsv #{replace with output file name} -s 2
+      java -jar biotransformer-1.1.2.jar  -k pred -b allHuman -ismi "CC(C)C1=CC=C(C)C=C1O" -ocsv #{replace with output file name} -s 2
 
 Currently, the outputfile is SDF per default.
 
 3) Identify all human metabolites (max depth = 2) of Epicatechin ("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1") with masses 292.0946 Da and 304.0946 Da, with a mass tolerance of 0.01 Da. Provide an annotation (Common name, synonyms, and PubChem CID), when available.
 
-      java -jar biotransformer-1-1-2.jar  -k cid -b allHuman -ismi "O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1" -osdf #{replace with output file name} -s 2 -m "292.0946;304.0946" -t 0.01 -a
+      java -jar biotransformer-1.1.2.jar  -k cid -b allHuman -ismi "O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1" -osdf #{replace with output file name} -s 2 -m "292.0946;304.0946" -t 0.01 -a
     
     - DO NOT forget the quotes around the SMILES string or the list of masses.
 

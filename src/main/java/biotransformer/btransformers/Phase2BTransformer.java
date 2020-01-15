@@ -373,6 +373,7 @@ public class Phase2BTransformer extends Biotransformer{
 				InChIGenerator gen0 = factory.getInChIGenerator(target);
 				target.setProperty("InChI", gen0.getInchi());
 				target.setProperty("InChIKey", gen0.getInchiKey());
+				target.setProperty("SMILES", this.smiGen.create(target));
 				ChemStructureExplorer.addPhysicoChemicalProperties(target);
 				target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 			}
@@ -407,6 +408,7 @@ public class Phase2BTransformer extends Biotransformer{
 								InChIGenerator gen = factory.getInChIGenerator(pc);
 								pc.setProperty("InChI", gen.getInchi());
 								pc.setProperty("InChIKey", gen.getInchiKey());	
+								pc.setProperty("SMILES", this.smiGen.create(pc));
 							}					
 							ChemStructureExplorer.addPhysicoChemicalProperties(pc);
 							pc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(pc));

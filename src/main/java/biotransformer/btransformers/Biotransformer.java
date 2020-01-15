@@ -101,7 +101,8 @@ public class Biotransformer {
 	protected MReactionsFilter mRFilter;
 	protected LinkedHashMap<String, Double> reactionORatios;
 	protected IChemObjectBuilder 	builder = SilentChemObjectBuilder.getInstance();
-	public SmilesGenerator smiGen 		= new SmilesGenerator().isomeric();
+	public SmilesGenerator smiGen 		= new SmilesGenerator().isomeric(); 
+	
 	protected SmilesParser	smiParser		= new SmilesParser(builder);
 	public InChIGeneratorFactory inchiGenFactory;
 	public LinkedHashMap<String, ArrayList<MetabolicReaction>>	reactionsByGroups 
@@ -476,6 +477,7 @@ public class Biotransformer {
 		InChIGenerator gen0 = this.inchiGenFactory.getInChIGenerator(target);
 		target.setProperty("InChI", gen0.getInchi());
 		target.setProperty("InChIKey", gen0.getInchiKey());
+		target.setProperty("SMILES", this.smiGen.create(target));
 		ChemStructureExplorer.addPhysicoChemicalProperties(target);
 		target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 	
@@ -514,6 +516,7 @@ public class Biotransformer {
 //					System.out.println(gen.getInchi());
 					pc.setProperty("InChI", gen.getInchi());
 					pc.setProperty("InChIKey", gen.getInchiKey());
+					pc.setProperty("SMILES", this.smiGen.create(pc));
 					pc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(pc));
 					ChemStructureExplorer.addPhysicoChemicalProperties(pc);
 					prod.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
@@ -933,6 +936,7 @@ public class Biotransformer {
 			if(target.getProperty("InChI") == null || ((String) target.getProperty("InChI")).trim().length()==0){
 				target.setProperty("InChI", gen0.getInchi());
 				target.setProperty("InChIKey", gen0.getInchiKey());
+				target.setProperty("SMILES", this.smiGen.create(target));
 				ChemStructureExplorer.addPhysicoChemicalProperties(target);
 				target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 			}
@@ -1031,6 +1035,7 @@ public class Biotransformer {
 								InChIGenerator gen = this.inchiGenFactory.getInChIGenerator(pc);
 								pc.setProperty("InChI", gen.getInchi());
 								pc.setProperty("InChIKey", gen.getInchiKey());
+								pc.setProperty("SMILES", this.smiGen.create(pc));
 								}catch (CDKException c){
 									System.err.println(c.getLocalizedMessage());
 								}
@@ -1151,6 +1156,7 @@ public class Biotransformer {
 		InChIGenerator gen0 = this.inchiGenFactory.getInChIGenerator(target);
 		target.setProperty("InChI", gen0.getInchi());
 		target.setProperty("InChIKey", gen0.getInchiKey());
+		target.setProperty("SMILES", this.smiGen.create(target));
 		target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 		//			System.out.println(i.name);
 //		boolean match_constraints = ChemStructureExplorer.compoundMatchesReactionConstraints(reaction, starget);
@@ -1194,6 +1200,7 @@ public class Biotransformer {
 					InChIGenerator gen = this.inchiGenFactory.getInChIGenerator(pc);
 					pc.setProperty("InChI", gen.getInchi());
 					pc.setProperty("InChIKey", gen.getInchiKey());
+					pc.setProperty("SMILES", this.smiGen.create(pc));
 					pc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(pc));
 					prods.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 				}
@@ -1381,6 +1388,14 @@ public class Biotransformer {
 //						}
 						properties.put("InChI", hash_ac.getProperty("InChI"));
 						properties.put("InChIKey", hash_ac.getProperty("InChIKey"));
+						
+//						if(hash_ac.getProperty("SMILES") != null) {
+							properties.put("SMILES", hash_ac.getProperty("SMILES"));
+//						}else {
+//							
+//							properties.put("SMILES", this.smiGen.create(hash_ac));
+//						}
+						
 						properties.put("Synonyms", hash_ac.getProperty("Synonyms"));
 						properties.put("PUBCHEM_CID", hash_ac.getProperty("PUBCHEM_CID"));
 						properties.put("Molecular formula", hash_ac.getProperty("Molecular formula"));	
@@ -1411,6 +1426,14 @@ public class Biotransformer {
 						
 						refProps.put("InChI", ac.getProperty("InChI"));
 						refProps.put("InChIKey", ac.getProperty("InChIKey"));
+						
+//						if(hash_ac.getProperty("SMILES") != null) {
+							refProps.put("SMILES", hash_ac.getProperty("SMILES"));
+//						}else {
+//							
+//							refProps.put("SMILES", this.smiGen.create(hash_ac));
+//						}
+						
 						refProps.put("Synonyms", synonyms);
 						refProps.put("PUBCHEM_CID", pubchemCID);
 						
@@ -1501,6 +1524,14 @@ public class Biotransformer {
 							substrate = b.getSubstrates().getAtomContainer(0).clone();
 							LinkedHashMap<Object, Object> refProps = new LinkedHashMap<Object, Object>();
 							
+							if(substrate.getProperty("SMILES") != null) {
+								refProps.put("SMILES", ac.getProperty("SMILES"));
+							}else {
+								
+								refProps.put("SMILES", this.smiGen.create(substrate));
+							}							
+							
+							
 							if(substrate.getProperty("Molecular formula") !=null){
 								refProps.put("Molecular formula", ac.getProperty("Molecular formula"));	
 							}
@@ -1578,7 +1609,8 @@ public class Biotransformer {
 							hMap.put((String) substrate.getProperty("InChIKey"), substrate);
 						}
 //						System.out.println("TT is: " + tt);
-						properties.put("Precursor ID", substrate.getProperty(CDKConstants.TITLE));				
+						properties.put("Precursor ID", substrate.getProperty(CDKConstants.TITLE));	
+						properties.put("Precursor SMILES", substrate.getProperty("SMILES"));
 						properties.put("Precursor InChI", substrate.getProperty("InChI"));
 						properties.put("Precursor InChIKey", substrate.getProperty("InChIKey"));
 						properties.put("Precursor ALogP", substrate.getProperty("ALogP"));

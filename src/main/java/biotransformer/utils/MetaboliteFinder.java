@@ -612,6 +612,7 @@ public class MetaboliteFinder{
 		
 		props.put("InChI", (String) leafCompound.getProperty("InChI"));
 		props.put("InChIKey", (String) leafCompound.getProperty("InChIKey"));
+		
 		props.put("Molecular formula", (String) leafCompound.getProperty("Molecular formula"));
 		props.put("Major Isotope Mass", (String) leafCompound.getProperty("Major Isotope Mass"));
 		
