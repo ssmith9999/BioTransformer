@@ -936,10 +936,15 @@ public class Biotransformer {
 			if(target.getProperty("InChI") == null || ((String) target.getProperty("InChI")).trim().length()==0){
 				target.setProperty("InChI", gen0.getInchi());
 				target.setProperty("InChIKey", gen0.getInchiKey());
-				target.setProperty("SMILES", this.smiGen.create(target));
 				ChemStructureExplorer.addPhysicoChemicalProperties(target);
 				target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 			}
+			
+			if(target.getProperty("SMILES") == null) {
+				target.setProperty("SMILES", this.smiGen.create(AtomContainerManipulator.removeHydrogens(target)));
+//				System.err.println(this.smiGen.create(AtomContainerManipulator.removeHydrogens(target)));			
+			}
+
 			
 //			System.out.println(target.getProperty("InChI"));
 //			System.out.println("SMILES: " + this.smiGen.create(starget));
@@ -1035,7 +1040,7 @@ public class Biotransformer {
 								InChIGenerator gen = this.inchiGenFactory.getInChIGenerator(pc);
 								pc.setProperty("InChI", gen.getInchi());
 								pc.setProperty("InChIKey", gen.getInchiKey());
-								pc.setProperty("SMILES", this.smiGen.create(pc));
+								pc.setProperty("SMILES", this.smiGen.create(AtomContainerManipulator.removeHydrogens(pc)));
 								}catch (CDKException c){
 									System.err.println(c.getLocalizedMessage());
 								}
