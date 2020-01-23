@@ -928,8 +928,7 @@ public class Biotransformer {
 				AtomContainerManipulator.convertImplicitToExplicitHydrogens(starget);
 				
 			}
-			
-			
+						
 			
 			InChIGenerator gen0 = this.inchiGenFactory.getInChIGenerator(target);
 			
@@ -942,7 +941,7 @@ public class Biotransformer {
 			
 			if(target.getProperty("SMILES") == null) {
 				target.setProperty("SMILES", this.smiGen.create(AtomContainerManipulator.removeHydrogens(target)));
-//				System.err.println(this.smiGen.create(AtomContainerManipulator.removeHydrogens(target)));			
+//				System.err.println("target SMILES: " + this.smiGen.create(AtomContainerManipulator.removeHydrogens(target)));			
 			}
 
 			
@@ -1395,6 +1394,8 @@ public class Biotransformer {
 						properties.put("InChIKey", hash_ac.getProperty("InChIKey"));
 						
 //						if(hash_ac.getProperty("SMILES") != null) {
+//							System.out.println( "hMap.containsKey(" + ikey +"): " + hMap.containsKey(ikey));
+//							System.out.println( "SMILES: " + hash_ac.getProperty("SMILES"));
 							properties.put("SMILES", hash_ac.getProperty("SMILES"));
 //						}else {
 //							
@@ -1437,6 +1438,9 @@ public class Biotransformer {
 						refProps.put("InChIKey", ac.getProperty("InChIKey"));
 						
 //						if(hash_ac.getProperty("SMILES") != null) {
+//							System.out.println( "hMap.containsKey(" + ikey +"): " + hMap.containsKey(ikey));
+//							System.out.println( "SMILES: " + hash_ac.getProperty("SMILES"));
+
 							refProps.put("SMILES", hash_ac.getProperty("SMILES"));
 //						}else {
 //							
@@ -1540,12 +1544,17 @@ public class Biotransformer {
 						String tt = null;
 						
 						if (substrate == null){
+//							System.out.println( "Substrate is NULL");
 							substrate = b.getSubstrates().getAtomContainer(0).clone();
 							LinkedHashMap<Object, Object> refProps = new LinkedHashMap<Object, Object>();
 							
 							if(substrate.getProperty("SMILES") != null) {
-								refProps.put("SMILES", ac.getProperty("SMILES"));
+//								System.out.println( "substrate.getProperty('SMILES') != null : " + substrate.getProperty("SMILES") != null );
+//								System.out.println( "SMILES: " + substrate.getProperty("SMILES"));
+								refProps.put("SMILES", substrate.getProperty("SMILES"));
 							}else {
+//								System.out.println( "substrate.getProperty('SMILES') != null : " + substrate.getProperty("SMILES") != null );
+//								System.out.println( "SMILES: " + this.smiGen.create(substrate));
 								
 								refProps.put("SMILES", this.smiGen.create(substrate));
 							}							
@@ -1638,6 +1647,9 @@ public class Biotransformer {
 							substrate.addProperties(refProps);
 							hMap.put((String) substrate.getProperty("InChIKey"), substrate);
 						}
+//						System.out.println( "Substrate's SMILES: " + substrate.getProperty("SMILES"));
+
+						
 //						System.out.println("TT is: " + tt);
 						properties.put("Precursor ID", substrate.getProperty(CDKConstants.TITLE));	
 						properties.put("Precursor SMILES", substrate.getProperty("SMILES"));
