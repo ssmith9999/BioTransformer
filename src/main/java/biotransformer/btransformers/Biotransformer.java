@@ -96,6 +96,10 @@ import reactantpredictor.ReactantPred;
 
 public class Biotransformer {
 
+	public enum bType {
+		ALLHUMAN, CYP450, ECBASED, ENV, HGUT, PHASEII, SUPERBIO
+	}
+	
 	protected SMIRKSManager smrkMan;
 	public BioSystem bSystem;
 	protected MReactionsFilter mRFilter;
@@ -1487,7 +1491,9 @@ public class Biotransformer {
 						
 						properties = (LinkedHashMap<Object, Object>) refProps.clone();				
 					}
-
+//					b.display();
+//					System.out.println("b.getReactionType(): " + b.getReactionType());
+//					System.out.println("customReactionHash.get(b.getReactionType().toString()): " + customReactionHash.get(b.getReactionType().toString()));
 					String reactionName = customReactionHash.get(b.getReactionType().toString()).getComonName();
 					if (reactionName.length() == 0){
 						reactionName = customReactionHash.get(b.getReactionType().toString()).toString();
@@ -1753,7 +1759,7 @@ public class Biotransformer {
 	public void saveBioTransformationProductsToSDF(ArrayList<Biotransformation> biotransformations, String outputFileName, LinkedHashMap<String, MetabolicReaction> customReactionHash, boolean annotate) throws Exception{
 		try{
 			IAtomContainerSet products = extractProductsFromBiotransformationsWithTransformationData(biotransformations, customReactionHash, annotate);
-			FileUtilities.saveAtomContainerSetToSDF(products, outputFileName);			
+			FileUtilities.saveAtomContainerSetToSDF(products, outputFileName);	
 		}
 		catch (Exception e) {
 			e.printStackTrace();
