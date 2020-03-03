@@ -273,7 +273,15 @@ public class BiotransformerExecutable {
 				+ "the condition that they must give appropriate credit, provide links to the license, and indicate if changes were made. Furthermore, "
 				+ "the above copyright notice and this permission notice must be included. Use and re-distribution of the these resources, in whole or in part, "
 				+ "for commercial purposes requires explicit permission of the authors. We ask that all users of the BioTransformer software tool, the BioTransformer web server, "
-				+ "or BioTransformerDB to cite the BioTransformer reference in any resulting publications, and to acknowledge the authors.";
+				+ "or BioTransformerDB to cite the BioTransformer reference in any resulting publications, and to acknowledge the authors."
+				+ "\n\n"
+				+ "Important Notice:\n"
+				+ "-----------------\n"
+				+ "\t\tBioTransformer's environmental microbial degradation module uses data from the EAWAG's Biodegradation and Biocatalysis Database, which is licensed by EnviPath (https://envipath.com/license/)"
+				+ "under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). Therefore users of the environmental microbial degradation "
+				+ "module must cite the following paper:\n"
+				+ "\tenviPath–The environmental contaminant biotransformation pathway resource. J Wicker, T Lorsbach, M Gütlein, E Schmid, D Latino, S Kramer, K Fenner. Nucleic Acids Research, gkv1229 (full text)."
+				+ "\n\nTo use the environmental microbial module for commercial purposes, users must request an apropriate license from EnviPath.";
 		
 //		String footer = "* While the superbio option runs a set number of transformation steps in a pre-defined order (e.g. deconjugation first, then Oxidation/reduction, etc.), "
 //				+ "the allHuman option predicts all possible metabolites from any applicable reaction(Oxidation, reduction, (de-)conjudation) at each step."
