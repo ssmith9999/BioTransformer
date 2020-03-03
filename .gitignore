@@ -4,6 +4,7 @@
 *.xml
 *.txt
 *.log
+!changes_history.txt
 target/
 data/
 bin
