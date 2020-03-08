@@ -44,7 +44,7 @@ public class HGutBTTest extends HGutBTransformer{
 //		
 ////		ArrayList<Biotransformation> biotransformations = em.simulateGutMicrobialMetabolism(mol2, true, true, 2, 0.0);
 //		ArrayList<Biotransformation> biotransformations = em.applyGutMicrobialMetabolismHydrolysisAndReductionChain(mols, true, true, 8, 0.5);
-//		IAtomContainerSet acMetabolites = em.extractAtomContainer(biotransformations);
+//		IAtomContainerSet acMetabolites = em.extractProductsFromBiotransformations(biotransformations);
 //		
 //		for(IAtomContainer a : acMetabolites.atomContainers()){
 //			System.out.println(em.smiGen.create(a));

@@ -82,7 +82,7 @@ public class BioTransformerTest {
 //			System.out.println("\n");
 //		}
 //		System.out.println("A total of " + acBiotransormations.size() + " transformations.");
-//		IAtomContainerSet acMetabolites = bt.extractAtomContainer(acBiotransormations);
+//		IAtomContainerSet acMetabolites = bt.extractProductsFromBiotransformations(acBiotransormations);
 //		System.out.println("A total of " + acMetabolites.getAtomContainerCount() + " metabolites.");
 		
 //		IAtomContainer a = bt.smiParser.parseSmiles("[H]OC1=C(O[H])C([H])=C2C(=O)OC3=C(C2=C1)C(=C([H])C(O[H])=C3O[H])C(O)=O");

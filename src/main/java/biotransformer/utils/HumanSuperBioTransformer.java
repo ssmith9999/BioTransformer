@@ -412,7 +412,7 @@ public class HumanSuperBioTransformer {
 
 			}
 		 
-		IAtomContainerSet a = this.extractAtomContainer(biotransformations);
+		IAtomContainerSet a = this.extractProductsFromBiotransformations(biotransformations);
 		System.out.println("Number of predicted compounds: " +  ChemStructureExplorer.uniquefy(a).getAtomContainerCount());
 		 
 		 System.out.println("Number of predicted biotransformations: " + biotransformations.size());
@@ -950,12 +950,12 @@ public class HumanSuperBioTransformer {
 	
 	}
 	
-	public IAtomContainerSet extractAtomContainer(ArrayList<Biotransformation> biotransformations) throws Exception{
+	public IAtomContainerSet extractProductsFromBiotransformations(ArrayList<Biotransformation> biotransformations) throws Exception{
 		return this.ecb.extractProductsFromBiotransformations(biotransformations);
 	}
 	
 
-	public IAtomContainerSet extractAtomContainerWithTransformationData(ArrayList<Biotransformation> biotransformations, boolean annotate) throws Exception{
+	public IAtomContainerSet extractProductsFromBiotransformationsWithTransformationData(ArrayList<Biotransformation> biotransformations, boolean annotate) throws Exception{
 		return this.ecb.extractProductsFromBiotransformationsWithTransformationData(biotransformations, this.combinedReactionsHash, annotate);
 	}
 	

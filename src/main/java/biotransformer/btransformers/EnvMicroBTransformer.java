@@ -120,7 +120,7 @@ public class EnvMicroBTransformer extends Biotransformer {
 				return biotransformations;
 			}
 			else {
-				throw new IllegalArgumentException("\n\n" + target.getProperty("InChIKey")+ "\n\n"
+				throw new IllegalArgumentException("\n\n" + this.smiGen.create(target) + "\n\n"
 						+ "For the prediction of environmental microbial metabolism, the compound must: "
 						+ "1) be organic; 2) not be a mixture; 3) not be a cofactor or dead end compound, and 4) have a molecular mass of 1000 Da. or less.\nFor more"
 						+ " information, consult the following link: http://eawag-bbd.ethz.ch/predict/notbepredicted.html#Unknowncomp\n\n\n");
@@ -208,7 +208,7 @@ public class EnvMicroBTransformer extends Biotransformer {
 			}
 						
 			else {
-				throw new IllegalArgumentException(target.getProperty("InChIKey")+ "\n"
+				throw new IllegalArgumentException(this.smiGen.create(target) + "\n"
 						+ "For the prediction of environmental microbial metabolism, the compound must: "
 						+ "1) be organic; 2) not be a mixture; 3) not be a cofactor or dead end compound, and 4) have a mmolecular mass of 1000 Da. or less.\nFor more"
 						+ " information, consult the following link: http://eawag-bbd.ethz.ch/predict/notbepredicted.html#Unknowncomp");
@@ -341,7 +341,7 @@ public class EnvMicroBTransformer extends Biotransformer {
 					}	
 				}
 			}else{
-				throw new IllegalArgumentException(target.getProperty("InChIKey")+ "\n"
+				throw new IllegalArgumentException(this.smiGen.create(target)+ "\n"
 						+ "For the prediction of environmental microbial metabolism, the compound must:"
 						+ "1) be organic; 2) not be a mixture; 3) not be a cofactor or dead end compound, and 4) have a mmolecular mass of 1000 Da. or less.\nFor more"
 						+ " information, consult the following link: http://eawag-bbd.ethz.ch/predict/notbepredicted.html#Unknowncomp");				

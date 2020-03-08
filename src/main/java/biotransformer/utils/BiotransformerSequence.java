@@ -9,6 +9,7 @@ import org.openscience.cdk.DefaultChemObjectBuilder;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
+import org.openscience.cdk.smiles.SmilesGenerator;
 
 import biotransformer.biosystems.BioSystem.BioSystemName;
 import biotransformer.btransformers.Biotransformer;
@@ -94,6 +95,8 @@ public class BiotransformerSequence {
 					btransformers.put(step.getKey(), new EnvMicroBTransformer());
 				}
 				currentBiots = ((EnvMicroBTransformer) btransformers.get(step.getKey())).applyEnvMicrobialTransformationsChain(startingCompound, true, true, step.getValue(), this.scoreThreshold);
+//				System.out.println("Number of env. biotransformations: " + currentBiots.size());
+
 			}			
 			else if(step.getKey() == bType.HGUT) {
 				if(btransformers.get(step.getKey()) == null) {
@@ -120,10 +123,25 @@ public class BiotransformerSequence {
 //			b.display();
 //		}
 		
-		return biotransformations;
+		return Utilities.selectUniqueBiotransformations(biotransformations);
 	}
 	
 
-
+	public ArrayList<Biotransformation> runSequence(IAtomContainerSet startingCompounds, double scoreThreshold) throws Exception{
+		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+		SmilesGenerator smiGen 		= new SmilesGenerator().isomeric(); 
+		for(IAtomContainer starting_ac : startingCompounds.atomContainers()) {
+//			System.out.println(smiGen.create(starting_ac));
+			try {
+				biotransformations.addAll(runSequence(starting_ac, scoreThreshold));
+			}
+			catch (Exception e) {
+				System.out.println(e);
+			}
+			
+		}
+		
+		return Utilities.selectUniqueBiotransformations(biotransformations);
+	}
 	
 }

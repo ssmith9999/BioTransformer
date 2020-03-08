@@ -51,7 +51,7 @@ public class CYP450BTTest extends Cyp450BTransformer{
 //
 //		ArrayList<Biotransformation> bts = hCyp450.metabolizeWithEnzyme(acp, EnzymeName.CYP1A2, false, false, 0.0);
 //
-//		IAtomContainerSet acMetabolites = hCyp450.extractAtomContainer(bts);
+//		IAtomContainerSet acMetabolites = hCyp450.extractProductsFromBiotransformations(bts);
 //		for(IAtomContainer c : acMetabolites.atomContainers()){
 //			System.out.println(hCyp450.smiGen.isomeric().create(c));
 //		}

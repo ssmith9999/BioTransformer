@@ -38,6 +38,7 @@ import biotransformer.utils.FileUtilities;
 import biotransformer.utils.HumanSuperBioTransformer;
 import biotransformer.utils.MetaboliteFinder;
 import biotransformer.utils.MetaboliteFinder.FinderOption;
+import biotransformer.utils.UniversalBioTransformer;
 import biotransformer.utils.BiotransformerSequence;
 import biotransformer.version.Version;
 
@@ -266,7 +267,7 @@ public class BiotransformerExecutable {
 				+ "\n	- DO NOT forget the quotes around the SMILES string or the list of masses"
 				+ "\n"
 				+ "4) Simulate an order sequence of metabolism of Atrazine (\"CCNC1=NC(=NC(=N1)Cl)NC(C)C\"), starting with two steps of Cyp450 oxidation, followed by one step of conjugation."
-				+ "\n java -jar biotransformer-1.1.3.jar -ismi \"CCNC1=NC(=NC(=N1)Cl)NC(C)C\" -osdf ~/atrazine-sequence.sdf -k pred -q \"cyp450:2; phaseII:1\"\n"
+				+ "\n java -jar biotransformer-1.1.4.jar -ismi \"CCNC1=NC(=NC(=N1)Cl)NC(C)C\" -osdf ~/atrazine-sequence.sdf -k pred -q \"cyp450:2; phaseII:1\"\n"
 				+ "\nTo report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
 				+ "BioTransformer is offered to the public as a freely acessible software package under the GNU License GPL v2.1.Users are free"
 				+ " to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material unfer "
@@ -551,8 +552,175 @@ public class BiotransformerExecutable {
 				
 				if(metadata_input != null){
 //					System.out.println("IDENTIFICATION TASK");
-					if(biotransformerType.contentEquals("allHuman")){
-						
+					
+					if(biotransformerType != null) {
+						if(biotransformerType.contentEquals("allHuman")){
+							
+							String[] mArr = metadata_input.trim().split(";");
+							ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
+							
+							for(int k = 0; k < mArr.length; k++){
+								try{
+									dmassesOrFormulas.add(mArr[k].trim());
+								}
+								catch(Exception e){
+									System.err.println(e.getMessage());
+								}
+							}
+							
+							
+							if (singleInput !=null){
+								MetaboliteFinder mtf = new MetaboliteFinder();
+								number_of_molecules++;
+								System.out.println("\n\nMolecule no. " + number_of_molecules);
+								if(oFormat.contentEquals("csv")){
+									mtf.findAllHumanMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
+								}
+								else if(oFormat.contentEquals("sdf")){
+									mtf.findAllHumanMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
+								}
+							}
+							else {
+								MetaboliteFinder mtf = new MetaboliteFinder();
+								IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+								IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+	
+								for(IAtomContainer atc : containers.atomContainers()){
+									number_of_molecules++;
+									System.out.println("\n\nMolecule no. " + number_of_molecules);
+									try {
+										metabolites.add(mtf.findAllHumanMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, opt));
+									}
+									catch(Exception e) {
+										System.err.println("BioTransformer failed on molecule " + number_of_molecules + "\n" + e.getLocalizedMessage());
+									}
+									
+								}
+								
+								if(oFormat.contentEquals("csv")){
+									FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
+								}
+								else if(oFormat.contentEquals("sdf")){							
+									SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
+									sdfWriter.write(metabolites);
+									sdfWriter.close();
+								}
+							}	
+							
+						}
+						else if(biotransformerType.contentEquals("env")){
+							String[] mArr = metadata_input.trim().split(";");
+							ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
+							
+							for(int k = 0; k < mArr.length; k++){
+								try{
+									dmassesOrFormulas.add(mArr[k].trim());
+								}
+								catch(Exception e){
+									System.err.println(e.getMessage());
+								}
+							}
+							
+							
+							if (singleInput !=null){
+								number_of_molecules++;
+								System.out.println("\n\nMolecule no. " + number_of_molecules);
+								MetaboliteFinder mtf = new MetaboliteFinder();
+								
+								if(oFormat.contentEquals("csv")){
+									mtf.findAllEnvMicroMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
+								}
+								else if(oFormat.contentEquals("sdf")){
+									mtf.findAllEnvMicroMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
+								}
+							}
+							else {
+								MetaboliteFinder mtf = new MetaboliteFinder();
+								IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+								IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+	
+								for(IAtomContainer atc : containers.atomContainers()){
+									number_of_molecules++;
+									System.out.println("\n\nMolecule no. " + number_of_molecules);
+									try {
+										metabolites.add(mtf.findAllEnvMicroMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, opt));
+									}
+									catch(Exception e) {
+										System.err.println("BioTransformer failed on molecule " + number_of_molecules + "\n" + e.getLocalizedMessage());
+									}
+									
+								}							
+								if(oFormat.contentEquals("csv")){
+									FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
+								}
+								else if(oFormat.contentEquals("sdf")){							
+									SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
+									sdfWriter.write(metabolites);
+									sdfWriter.close();
+								}
+							}					
+						}
+	
+						else if(biotransformerType.contentEquals("superbio")){
+	//						System.out.println(opt + "\t\t\t" + metadata_input);
+							String[] mArr = metadata_input.trim().split(";");
+							ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
+							
+							for(int k = 0; k < mArr.length; k++){
+								try{
+									dmassesOrFormulas.add(mArr[k].trim());
+								}
+								catch(Exception e){
+									System.err.println(e.getMessage());
+								}
+							}
+								
+							if (singleInput !=null){
+								number_of_molecules++;
+								System.out.println("\n\nMolecule no. " + number_of_molecules);
+								MetaboliteFinder mtf = new MetaboliteFinder();
+								
+								if(oFormat.contentEquals("csv")){
+									mtf.findSuperbioMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, annotate, outputF, opt);
+								}
+								else if(oFormat.contentEquals("sdf")){
+									mtf.findSuperbioMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, annotate, outputF, opt);
+								}
+								
+								
+							}
+							else {
+								MetaboliteFinder mtf = new MetaboliteFinder();
+								IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
+								IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+	
+								for(IAtomContainer atc : containers.atomContainers()){
+									number_of_molecules++;
+									System.out.println("\n\nMolecule no. " + number_of_molecules);
+									try {
+										metabolites.add(mtf.findSuperbioMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, annotate, opt));
+									}
+									catch(Exception e) {
+										System.err.println("BioTransformer failed on molecule " + number_of_molecules + "\n" + e.getLocalizedMessage());
+									}
+									
+								}							
+								if(oFormat.contentEquals("csv")){
+									FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
+								}
+								else if(oFormat.contentEquals("sdf")){							
+									SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
+									sdfWriter.write(metabolites);
+									sdfWriter.close();
+								}
+	
+							}					
+						}
+						else{
+							throw new IllegalArgumentException("\n\tFor metabolite identification, the biotransformer type must be either allHuman, superbio, or env.");
+						}
+					}
+					else if(biotransformerSeqeuence != null) {
 						String[] mArr = metadata_input.trim().split(";");
 						ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
 						
@@ -563,159 +731,52 @@ public class BiotransformerExecutable {
 							catch(Exception e){
 								System.err.println(e.getMessage());
 							}
-						}
-						
-						
+						}		
+						IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+						MetaboliteFinder mtf = new MetaboliteFinder();
 						if (singleInput !=null){
-							MetaboliteFinder mtf = new MetaboliteFinder();
 							number_of_molecules++;
-							System.out.println("\n\nMolecule no. " + number_of_molecules);
-							if(oFormat.contentEquals("csv")){
-								mtf.findAllHumanMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
-							}
-							else if(oFormat.contentEquals("sdf")){
-								mtf.findAllHumanMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
-							}
+							
+							metabolites.add(mtf.findMetabolitesFromSequence(singleInput, 
+									biotransformerSeqeuence, dmassesOrFormulas, massToleranceThreshold, annotate, opt));
+
+							successful_predictions++;
 						}
 						else {
-							MetaboliteFinder mtf = new MetaboliteFinder();
 							IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
-							IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-
-							for(IAtomContainer atc : containers.atomContainers()){
-								number_of_molecules++;
-								System.out.println("\n\nMolecule no. " + number_of_molecules);
-								try {
-									metabolites.add(mtf.findAllHumanMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, opt));
-								}
-								catch(Exception e) {
-									System.err.println("BioTransformer failed on molecule " + number_of_molecules + "\n" + e.getLocalizedMessage());
-								}
+							if (containers.getAtomContainerCount()>0){
+								containers = FileUtilities.parseSdf(inputFileName);					
 								
-							}
-							
-							if(oFormat.contentEquals("csv")){
-								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
-							}
-							else if(oFormat.contentEquals("sdf")){							
-								SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
-								sdfWriter.write(metabolites);
-								sdfWriter.close();
-							}
-						}	
+//								int index = 0;
+								for(IAtomContainer atc : containers.atomContainers()){
+//									index ++;
+									number_of_molecules++;
+									System.out.println("\n\nMolecule no. " + number_of_molecules);
+									try {
+										 metabolites.add(mtf.findMetabolitesFromSequence(atc, 
+													biotransformerSeqeuence, dmassesOrFormulas, massToleranceThreshold, annotate, opt));
+										successful_predictions++;
+									}
+									catch(Exception e) {
+										System.err.println("BioTransformer failed on molecule " + number_of_molecules + "\n" + e.getLocalizedMessage());
+									}
+									
+								}						
+								
+							}				
+						}
+					
+						
+						if(oFormat.contentEquals("csv")){
+							FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
+						}
+						else if(oFormat.contentEquals("sdf")){							
+							SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
+							sdfWriter.write(metabolites);
+							sdfWriter.close();
+						}					
 						
 					}
-					else if(biotransformerType.contentEquals("env")){
-						String[] mArr = metadata_input.trim().split(";");
-						ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
-						
-						for(int k = 0; k < mArr.length; k++){
-							try{
-								dmassesOrFormulas.add(mArr[k].trim());
-							}
-							catch(Exception e){
-								System.err.println(e.getMessage());
-							}
-						}
-						
-						
-						if (singleInput !=null){
-							number_of_molecules++;
-							System.out.println("\n\nMolecule no. " + number_of_molecules);
-							MetaboliteFinder mtf = new MetaboliteFinder();
-							
-							if(oFormat.contentEquals("csv")){
-								mtf.findAllEnvMicroMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
-							}
-							else if(oFormat.contentEquals("sdf")){
-								mtf.findAllEnvMicroMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, outputF, opt);
-							}
-						}
-						else {
-							MetaboliteFinder mtf = new MetaboliteFinder();
-							IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
-							IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-
-							for(IAtomContainer atc : containers.atomContainers()){
-								number_of_molecules++;
-								System.out.println("\n\nMolecule no. " + number_of_molecules);
-								try {
-									metabolites.add(mtf.findAllEnvMicroMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, nrOfSteps, annotate, opt));
-								}
-								catch(Exception e) {
-									System.err.println("BioTransformer failed on molecule " + number_of_molecules + "\n" + e.getLocalizedMessage());
-								}
-								
-							}							
-							if(oFormat.contentEquals("csv")){
-								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
-							}
-							else if(oFormat.contentEquals("sdf")){							
-								SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
-								sdfWriter.write(metabolites);
-								sdfWriter.close();
-							}
-						}					
-					}
-
-					else if(biotransformerType.contentEquals("superbio")){
-//						System.out.println(opt + "\t\t\t" + metadata_input);
-						String[] mArr = metadata_input.trim().split(";");
-						ArrayList<String> dmassesOrFormulas = new ArrayList<String>();
-						
-						for(int k = 0; k < mArr.length; k++){
-							try{
-								dmassesOrFormulas.add(mArr[k].trim());
-							}
-							catch(Exception e){
-								System.err.println(e.getMessage());
-							}
-						}
-							
-						if (singleInput !=null){
-							number_of_molecules++;
-							System.out.println("\n\nMolecule no. " + number_of_molecules);
-							MetaboliteFinder mtf = new MetaboliteFinder();
-							
-							if(oFormat.contentEquals("csv")){
-								mtf.findSuperbioMetabolitesToCSV(singleInput, dmassesOrFormulas, massToleranceThreshold, annotate, outputF, opt);
-							}
-							else if(oFormat.contentEquals("sdf")){
-								mtf.findSuperbioMetabolites(singleInput, dmassesOrFormulas, massToleranceThreshold, annotate, outputF, opt);
-							}
-							
-							
-						}
-						else {
-							MetaboliteFinder mtf = new MetaboliteFinder();
-							IAtomContainerSet containers = FileUtilities.parseSdf(inputFileName);
-							IAtomContainerSet metabolites = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
-
-							for(IAtomContainer atc : containers.atomContainers()){
-								number_of_molecules++;
-								System.out.println("\n\nMolecule no. " + number_of_molecules);
-								try {
-									metabolites.add(mtf.findSuperbioMetabolites(atc, dmassesOrFormulas, massToleranceThreshold, annotate, opt));
-								}
-								catch(Exception e) {
-									System.err.println("BioTransformer failed on molecule " + number_of_molecules + "\n" + e.getLocalizedMessage());
-								}
-								
-							}							
-							if(oFormat.contentEquals("csv")){
-								FileUtilities.saveAtomContainerSetToCSV(metabolites, outputF);
-							}
-							else if(oFormat.contentEquals("sdf")){							
-								SDFWriter sdfWriter = new SDFWriter(new FileOutputStream(outputF));		
-								sdfWriter.write(metabolites);
-								sdfWriter.close();
-							}
-
-						}					
-					}				
-					else{
-						throw new IllegalArgumentException("\n\tFor metabolite identification, the biotransformer type must be either allHuman, superbio, or env.");
-					}	
 				}
 				else{
 					throw new IllegalArgumentException("\n\tFor metabolite identification, you must enter a list of masses, and/or molecular formulas");
@@ -1074,7 +1135,7 @@ public class BiotransformerExecutable {
 							
 						}				
 					}
-					HumanSuperBioTransformer hsbt = new HumanSuperBioTransformer();
+					UniversalBioTransformer hsbt = new UniversalBioTransformer();
 					System.out.println("Format: " + oFormat);
 					if(oFormat.contentEquals("csv")){
 						System.out.println("saving to "+ outputF);
