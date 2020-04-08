@@ -1,10 +1,16 @@
+v1.1.5
+======
+
+1) Fixed a bug in the BioTransformerExecutable class to resolve a NullPointerException occurring when running the sequence option using SD files.
+
+
 v1.1.4
 ======
 1) Added capabilities to identify metabolites (-cid) upon running a user-specified, ordered sequence of biotransformation steps.
 2) Created a universal biotransformer that facilitates the simulation of biotransformation sequences
 3) Solved an issue that resulted to empty results when running biotransformer sequences containing environmental microbial degradation modules.
 4) Renamed a few functions
-5) Updated the pom file, regenerted the Java Documentation
+5) Updated the pom file, regenerated the Java Documentation
 
 v1.1.3
 ======

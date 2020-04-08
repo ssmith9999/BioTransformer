@@ -1122,9 +1122,9 @@ public class BiotransformerExecutable {
 							for(IAtomContainer atc : containers.atomContainers()){
 //								index ++;
 								number_of_molecules++;
-								System.out.println("\n\nMolecule no. " + number_of_molecules);
+								System.out.println("\n\nMolecule no. " + number_of_molecules + ": " + atc.getProperty(CDKConstants.TITLE));
 								try {
-									biotransformations.addAll(biotransformerSeqeuence.runSequence(singleInput, scoreThreshold));
+									biotransformations.addAll(biotransformerSeqeuence.runSequence(atc, scoreThreshold));
 									successful_predictions++;
 								}
 								catch(Exception e) {
