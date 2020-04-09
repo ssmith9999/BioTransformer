@@ -1,3 +1,11 @@
+# Important Notice
+***************************************************************************************************
+
+BioTransformer's environmental microbial degradation module uses data from the EAWAG's Biodegradation and Biocatalysis Database, which is licensed by [EnviPath](https://envipath.com/license/) under the [Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International](https://creativecommons.org/licenses/by-nc-sa/4.0/). Therefore users of the environmental microbial degradation module must cite the EnviPath paper below (See Cite section).
+To use the environmental microbial module for commercial purposes, users must request an appropriate commercial license from [EnviPath](https://envipath.org/).
+
+
+
 # BioTransformer's README
 
 ***************************************************************************************************
@@ -6,27 +14,16 @@ This is version 1.1.5 of BioTransformer. BioTransformer is a software tool that 
 
 BioTransformer is offered to the public as a freely acessible software package under the GNU License GPL v2.1. Users are free to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material unfer the condition that they must give appropriate credit, provide links to the license, and indicate if changes were made. Furthermore, the above copyright notice and this permission notice must be included. Use and re-distribution of the these resources, in whole or in part, for commercial purposes requires explicit permission of the authors. We ask that all users of the BioTransformer software tool, the BioTransformer web server, or BioTransformerDB to cite the BioTransformer reference in any resulting publications, and to acknowledge the authors.
 
-<p style="color:red"> BioTransformer's environmental microbial degradation module uses data from the EAWAG's Biodegradation and Biocatalysis Database, which is licensed by <a href=https://envipath.com/license/ target="_blank">EnviPath</a> under the <b>Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (<a href=https://creativecommons.org/licenses/by-nc-sa/4.0/  target="_blank">CC BY-NC-SA 4.0</a>)</b>. Therefore users of the environmental microbial degradation module must cite the paper below.</p>
 
-<p style="color:red">To use the environmental microbial module for commercial purposes, users must request an appropriate commercial license from <a href=https://envipath.org/ target="_blank">EnviPath</a>.<p style="color:red">
+### Cite:
 
-
-Cite: 
-
-<ul>
-	<cite>
-	<li>Djoumbou Feunang Y, Fiamoncini J, de la Fuente AG, Manach C, Greiner R, and Wishart DS; BioTransformer: A Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification; Journal of Cheminformatics; (2019) 11:2; DOI: 10.1186/s13321‐018‐0324‐5</li>
-	<li>enviPath–The environmental contaminant biotransformation pathway resource. J Wicker, T Lorsbach, M Gütlein, E Schmid, D Latino, S Kramer, K Fenner. Nucleic Acids Research, gkv1229 (full text)</li>
-	</cite>
-</ul>
+1. Djoumbou Feunang Y, Fiamoncini J, de la Fuente AG, Manach C, Greiner R, and Wishart DS; BioTransformer: A Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification; Journal of Cheminformatics; (2019) 11:2; DOI: 10.1186/s13321‐018‐0324‐5.
+2. enviPath–The environmental contaminant biotransformation pathway resource. J Wicker, T Lorsbach, M Gütlein, E Schmid, D Latino, S Kramer, K Fenner. Nucleic Acids Research, gkv1229 (full text).
 
 
-<p>To report issues, provide feedback, or ask questions, please send an
-e-mail the following address: djoumbou@ualberta.ca</p>
+### Contact
 
-### Important Note
-We will be slowly moving to one single repository, where all the releases will be provided. Please make sure to check the latest version of BioTransformer main repository at https://bitbucket.org/djoumbou/biotransformer. The biotransformerjar repository at https://bitbucket.org/djoumbou/biotransformerjar will be removed.
-Executable .jar files can be created automatically using Maven, as described in the aforementioned site's documentation.
+To report issues, provide feedback, or ask questions, please send ane-mail the following address: djoumbou@ualberta.ca
 
 ***************************************************************************************************
 
