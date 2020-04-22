@@ -267,7 +267,7 @@ public class BiotransformerExecutable {
 				+ "\n	- DO NOT forget the quotes around the SMILES string or the list of masses"
 				+ "\n"
 				+ "4) Simulate an order sequence of metabolism of Atrazine (\"CCNC1=NC(=NC(=N1)Cl)NC(C)C\"), starting with two steps of Cyp450 oxidation, followed by one step of conjugation."
-				+ "\n java -jar biotransformer-1.1.4.jar -ismi \"CCNC1=NC(=NC(=N1)Cl)NC(C)C\" -osdf ~/atrazine-sequence.sdf -k pred -q \"cyp450:2; phaseII:1\"\n"
+				+ "\n java -jar biotransformer-1.1.6.jar -ismi \"CCNC1=NC(=NC(=N1)Cl)NC(C)C\" -osdf ~/atrazine-sequence.sdf -k pred -q \"cyp450:2; phaseII:1\"\n"
 				+ "\nTo report issues, provide feedback, or ask questions, please send an e-mail the following address: djoumbou@ualberta.ca\n\n"
 				+ "BioTransformer is offered to the public as a freely acessible software package under the GNU License GPL v2.1.Users are free"
 				+ " to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material unfer "

@@ -220,6 +220,17 @@ public class EnvMicroBTransformer extends Biotransformer {
 		}
 	}
 
+	public ArrayList<Biotransformation> applyEnvMicrobialTransformationsChain(IAtomContainerSet targets, boolean preprocess, boolean filter, int nr_of_steps, double scoreThreshold)
+			throws Exception {
+		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
+		
+		for(IAtomContainer target : targets.atomContainers()) {
+			biotransformations.addAll(applyEnvMicrobialTransformationsChain(targets, preprocess, filter, nr_of_steps, scoreThreshold));
+		}
+		
+		return biotransformations;
+	}
+
 	
 	public void simulateEnvMicrobialDegradationAndSaveToSDF(IAtomContainer container, boolean preprocess, boolean filter, int nrOfSteps, Double scoreThreshold, String outputFileName, boolean annotate) throws Exception{
 		ArrayList<Biotransformation> biotransformations = this.applyEnvMicrobialTransformationsChain(container, preprocess, filter, nrOfSteps, scoreThreshold);

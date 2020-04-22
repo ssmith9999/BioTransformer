@@ -75,26 +75,26 @@ public class BiotransformerSequence {
 				if(btransformers.get(step.getKey()) == null) {
 					btransformers.put(step.getKey(), new HumanSuperBioTransformer());
 				}
-				currentBiots = ((HumanSuperBioTransformer) btransformers.get(step.getKey())).predictAllHumanBiotransformationChain(startingCompound, step.getValue(), this.scoreThreshold);
+				currentBiots = ((HumanSuperBioTransformer) btransformers.get(step.getKey())).predictAllHumanBiotransformationChain(currentMetabolites, step.getValue(), this.scoreThreshold);
 			}
 			else if(step.getKey() == bType.CYP450) {
 				if(btransformers.get(step.getKey()) == null) {
 					btransformers.put(step.getKey(), new Cyp450BTransformer(BioSystemName.HUMAN));
 				}
-				currentBiots = ((Cyp450BTransformer) btransformers.get(step.getKey())).predictCyp450BiotransformationChain(startingCompound, true, true, step.getValue(), this.scoreThreshold);			
+				currentBiots = ((Cyp450BTransformer) btransformers.get(step.getKey())).predictCyp450BiotransformationChain(currentMetabolites, true, true, step.getValue(), this.scoreThreshold);			
 			}
 			else if(step.getKey() == bType.ECBASED) {
 				if(btransformers.get(step.getKey()) == null) {
 					btransformers.put(step.getKey(), new ECBasedBTransformer(BioSystemName.HUMAN));
 				}
-				currentBiots = ((ECBasedBTransformer) btransformers.get(step.getKey())).simulateECBasedMetabolismChain(startingCompound, true, true, step.getValue(), this.scoreThreshold);		
+				currentBiots = ((ECBasedBTransformer) btransformers.get(step.getKey())).simulateECBasedMetabolismChain(currentMetabolites, true, true, step.getValue(), this.scoreThreshold);		
 			}
 			else if(step.getKey() == bType.ENV) {
 //				System.out.println("Starting ENV");
 				if(btransformers.get(step.getKey()) == null) {
 					btransformers.put(step.getKey(), new EnvMicroBTransformer());
 				}
-				currentBiots = ((EnvMicroBTransformer) btransformers.get(step.getKey())).applyEnvMicrobialTransformationsChain(startingCompound, true, true, step.getValue(), this.scoreThreshold);
+				currentBiots = ((EnvMicroBTransformer) btransformers.get(step.getKey())).applyEnvMicrobialTransformationsChain(currentMetabolites, true, true, step.getValue(), this.scoreThreshold);
 //				System.out.println("Number of env. biotransformations: " + currentBiots.size());
 
 			}			
@@ -102,13 +102,13 @@ public class BiotransformerSequence {
 				if(btransformers.get(step.getKey()) == null) {
 					btransformers.put(step.getKey(), new HGutBTransformer());
 				}
-				currentBiots = ((HGutBTransformer) btransformers.get(step.getKey())).simulateGutMicrobialMetabolism(startingCompound, true, true, step.getValue(), this.scoreThreshold);						
+				currentBiots = ((HGutBTransformer) btransformers.get(step.getKey())).simulateGutMicrobialMetabolism(currentMetabolites, true, true, step.getValue(), this.scoreThreshold);						
 			}
 			else if(step.getKey() == bType.PHASEII) {
 				if(btransformers.get(step.getKey()) == null) {
 					btransformers.put(step.getKey(), new Phase2BTransformer(BioSystemName.HUMAN));
 				}
-				currentBiots = ((Phase2BTransformer) btransformers.get(step.getKey())).applyPhase2TransformationsChainAndReturnBiotransformations(startingCompound, true, true, true, step.getValue(), this.scoreThreshold);										
+				currentBiots = ((Phase2BTransformer) btransformers.get(step.getKey())).applyPhase2TransformationsChainAndReturnBiotransformations(currentMetabolites, true, true, true, step.getValue(), this.scoreThreshold);										
 			}
 			else if(step.getKey() == bType.SUPERBIO) {
 				throw new IllegalArgumentException("Invalid Argument: SUPERBIO cannot be used within a sequence, as it is already a customized sequence. Valid biotransformers within a sequence are ALLHUMAN, CYP450, ECBASED, ENVMICRO, HGUT, PHASEII.");

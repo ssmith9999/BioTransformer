@@ -1,3 +1,9 @@
+v1.1.6
+======
+
+1) Added more functions in the EnvmicroBtransformer class
+2) Corrected the sequencing orders
+
 v1.1.5
 ======
 
