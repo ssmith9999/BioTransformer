@@ -17,6 +17,7 @@ import java.util.regex.Pattern;
 import org.openscience.cdk.AtomContainerSet;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
+import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
 
@@ -151,5 +152,16 @@ public class Utilities {
 //			return molecules;
 //
 //	}
+
+	public static void addPhysicoChemicalProperties(IAtomContainer molecule) throws CDKException {
+			
+			LinkedHashMap<String, String> properties = ChemStructureExplorer.computePhysicoChemicalProperties(molecule);
+			
+			for(Map.Entry<String, String> prop : properties.entrySet()){
+	//			System.out.println(prop.getValue());
+				molecule.setProperty(prop.getKey(), String.format("%.8s", Double.valueOf(prop.getValue()))   );
+			}
+			
+		}
 
 }

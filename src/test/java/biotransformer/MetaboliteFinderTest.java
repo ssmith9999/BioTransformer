@@ -1,45 +1,79 @@
 package biotransformer;
 
-import java.io.IOException;
+import static org.junit.Assert.assertFalse;
+import static org.junit.Assert.assertTrue;
+
 import java.util.ArrayList;
-import java.util.LinkedHashMap;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
-import org.json.simple.parser.ParseException;
-import org.openscience.cdk.exception.CDKException;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Ignore;
+import org.junit.Test;
 import org.openscience.cdk.interfaces.IAtomContainer;
-import org.openscience.cdk.interfaces.IChemObjectBuilder;
-import org.openscience.cdk.interfaces.IMolecularFormula;
-import org.openscience.cdk.silent.SilentChemObjectBuilder;
-import org.openscience.cdk.tools.manipulator.MolecularFormulaManipulator;
+import org.openscience.cdk.interfaces.IAtomContainerSet;
 
-import biotransformer.fingerprint.ChemStructureFingerprinter;
 import biotransformer.utils.MetaboliteFinder;
 import biotransformer.utils.MetaboliteFinder.FinderOption;
 
-public class MetaboliteFinderTest extends MetaboliteFinder {
 
+
+//@Ignore
+public class MetaboliteFinderTest {
+	static MetaboliteFinder mft;
 	
-	public MetaboliteFinderTest() throws IOException, ParseException, CDKException {
-		// TODO Auto-generated constructor stub
-		super();
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		mft = new MetaboliteFinder();
+	}
+
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
+
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test(timeout=5000)
+	public void testfindSuperbioMetabolitesByMass() throws Exception {
+		IAtomContainer molecule = mft.hsbt.smiParser.parseSmiles("CCCCCC(=O)OCC(O)CO");
+		IAtomContainer metabolite = mft.hsbt.smiParser.parseSmiles(
+					"CCCCCC(=O)OCC(O)COP(O)(O)=O"); // mass = 271.09466 Da.; formula = C9H20O7P.
+		ArrayList<String> masses = new ArrayList<String>();
+		masses.add("271.094");
+
+		IAtomContainerSet metabolites = mft.findSuperbioMetabolites(molecule, masses, 0.01, false, FinderOption.MASS);
+		System.out.println("Results: " + metabolites.getAtomContainerCount());
+
+		
+		assertFalse("A compound of mass ~= 271.094 Da must be identified.", 
+					metabolites.getAtomContainerCount()>1 && Math.abs(
+					Float.valueOf((String) metabolites.getAtomContainer(0).getProperties().get("Major Isotope Mass")) 
+					- Float.valueOf(masses.get(0)) ) < 0.01);
+
 	}
 	
-	public static void main(String[] args) throws Exception{
-		MetaboliteFinderTest mft = new MetaboliteFinderTest();
-		IAtomContainer atc = mft.hsbt.smiParser.parseSmiles("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1");
-		ArrayList<String> masses = new ArrayList<String>();
+	
+	@Test(timeout=5000)
+	public void testfindAllHumanMetabolitesByFormula() throws Exception {
+		IAtomContainer molecule = mft.hsbt.smiParser.parseSmiles("CCCCCC(=O)OCC(O)CO");
+//		IAtomContainer metabolite = mft.hsbt.smiParser.parseSmiles(
+//					"CCCCCC(=O)OCC(O)COP(O)(O)=O"); // mass = 271.09466 Da.; formula = C9H20O7P.
 		ArrayList<String> formulas = new ArrayList<String>();
 
-		masses.add("304.0941");
-		masses.add("342.0946");
-		
-		mft.findSuperbioMetabolites(atc, masses, 0.01, true, "../epicatechin_metabolites_identification_by_mass.sdf", FinderOption.MASS);
-	
-		formulas.add("C11H12O3");
-		mft.findAllHumanMetabolites(atc, formulas, 0.01, 2, false, "../epicatechin_metabolites_identification_by_formula.sdf", FinderOption.FORMULA);
+		formulas.add("C9H20O7P");
+		IAtomContainerSet metabolites = mft.findSuperbioMetabolites(molecule, formulas, 0.01, false, FinderOption.FORMULA);
+		System.out.println("Results: " + metabolites.getAtomContainerCount());
+		assertFalse("A compound of formula C9H20O7P must be identified", 
+				metabolites.getAtomContainerCount()>1 && 
+				metabolites.getAtomContainer(0).getProperties().get("Molecular formula").toString().contentEquals(formulas.get(0)));
+
 		
 	}
-
 }

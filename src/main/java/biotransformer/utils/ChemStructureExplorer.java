@@ -22,7 +22,6 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.List;
-import java.util.Map;
 
 import org.openscience.cdk.AtomContainerSet;
 import org.openscience.cdk.CDKConstants;
@@ -175,13 +174,22 @@ public class ChemStructureExplorer {
 //			atc.setProperty("InChI", gen0.getInchi());
 //			atc.setProperty("InChIKey", gen0.getInchiKey());
 			atc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(atc));
+			
+//			atc.setProperties(physchemprops);
+			
+			
 			for(String p : physchemprops.keySet()) {
 				atc.setProperty(p, physchemprops.get(p));
+//				System.out.println(p + " : " + physchemprops.get(p));
 			}
 //			atc.setProperty("Major Isotope Mass", physchemprops.get("Major Isotope Mass"));
 //			atc.setProperty("ALogP", physchemprops.get("ALogP"));
 
 			results.put("atomContainer", atc);
+//			System.out.println(atc);
+//			System.out.println(atc.getProperties());
+//			System.out.println(atc.getProperties());
+			
 			
 		}catch (CDKException c){
 			results.put("errors", c.getMessage());
@@ -637,9 +645,9 @@ public class ChemStructureExplorer {
 		
 		SmartsPatternCDK smartsPatternValid = new SmartsPatternCDK(constraintsValid);
 		
-
-		
-		
+		String sp_phenols = "[#1,$([#8;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])])]-[#6;R1]=,:1[#6;R1](-[$(C(=O)[O;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])]),$(C([H])=C([H])C(=O)[O;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])]),$(C([H])([H])C(=O)[O;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])]),$(C([H])([H])C([H])([H])C(=O)[O;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])])])=,:[#6;R1](-[#1,$([#8;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])])])[#6;R1](-[#1,$([#8;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])])])=,:[#6;R1](-[#1,$([#8;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])])])[#6;R1]=,:1-[#1,$([#8;R0]-[#1,C,$(S(=O)(=O)[OX2H1,OX1-])])]";
+//		System.out.println("sp_phenols: " + ChemStructureExplorer.findAllOccurences(sp_phenols,molecule).size());
+//		System.out.println("constraintsValid: " + ChemStructureExplorer.findAllOccurences(constraintsValid,molecule).size());
 		
 		/**
 		 * (R1) Marín, L. et al. (2015); Bioavailability of Dietary Polyphenols and Gut Microbiota Metabolism: Antimicrobial Properties; Biomed Res Int. 2015; 2015: 905215.; doi:  10.1155/2015/905215
@@ -694,6 +702,7 @@ public class ChemStructureExplorer {
 //		System.out.println((flavonoidPattern.hasSMARTSPattern(molecule)>0 || isoflavonoidPattern.hasSMARTSPattern(molecule)>0 || anthocyanidinPattern.hasSMARTSPattern(molecule)>0 || otherFlavonoidsPattern.hasSMARTSPattern(molecule)>0));
 //		System.out.println(glycosylMoietyPattern.getUniqueMatchingAtoms().size());
 //		System.out.println(glycosylMoietyPattern.getUniqueMatchingAtoms().size());
+//		System.err.println(smartsPatternValid.hasSMARTSPattern(molecule) > 0);
 		
 		
 		if( (flavonoidPattern.hasSMARTSPattern(molecule)>0 || isoflavonoidPattern.hasSMARTSPattern(molecule)>0 || anthocyanidinPattern.hasSMARTSPattern(molecule)>0 || otherFlavonoidsPattern.hasSMARTSPattern(molecule)>0)  
@@ -707,8 +716,10 @@ public class ChemStructureExplorer {
 //			System.err.println("(flavonoidPattern.hasSMARTSPattern(molecule)>0 || isoflavonoidPattern.hasSMARTSPattern(molecule)>0 || anthocyanidinPattern.hasSMARTSPattern(molecule)>0 || otherFlavonoidsPattern.hasSMARTSPattern(molecule)>0)   && (glycosylMoietyPattern.getUniqueMatchingAtoms().size() + oMethylPattern.getUniqueMatchingAtoms().size() + sulfatedRadicalPattern.getUniqueMatchingAtoms().size() >= 2)");
 		}
 		
+		
 		else if ( (ChemStructureExplorer.findAllOccurences(constraintsInvalid_3,molecule).size() <= 3) && (smartsPatternValid.hasSMARTSPattern(molecule) > 0)) {
 			polyphenol = true;
+//			System.err.println("BLA");
 		}
 		
 		return polyphenol;
@@ -1441,17 +1452,6 @@ public class ChemStructureExplorer {
 //		properties.put("Molecular weight" , weight.toString());
 		return properties;
 		
-		
-	}
-	
-	public static void addPhysicoChemicalProperties(IAtomContainer molecule) throws CDKException {
-		
-		LinkedHashMap<String, String> properties = computePhysicoChemicalProperties(molecule);
-		
-		for(Map.Entry<String, String> prop : properties.entrySet()){
-//			System.out.println(prop.getValue());
-			molecule.setProperty(prop.getKey(), String.format("%.8s", Double.valueOf(prop.getValue()))   );
-		}
 		
 	}
 	

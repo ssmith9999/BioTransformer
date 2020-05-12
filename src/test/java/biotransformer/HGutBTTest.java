@@ -1,67 +1,58 @@
 package biotransformer;
 
-import java.io.IOException;
+import static org.junit.Assert.*;
+
 import java.util.ArrayList;
 
-import org.openscience.cdk.CDKConstants;
-import org.openscience.cdk.DefaultChemObjectBuilder;
-import org.openscience.cdk.exception.CDKException;
+import org.junit.After;
+import org.junit.AfterClass;
+import org.junit.Before;
+import org.junit.BeforeClass;
+import org.junit.Test;
+import org.openscience.cdk.exception.InvalidSmilesException;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
-import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
-import ambit2.smarts.SMIRKSReaction;
-import biotransformer.biomolecule.Enzyme;
+import biotransformer.biosystems.BioSystem.BioSystemName;
+import biotransformer.btransformers.ECBasedBTransformer;
 import biotransformer.btransformers.HGutBTransformer;
 import biotransformer.transformation.Biotransformation;
-import biotransformer.transformation.MReactionSets;
-import biotransformer.transformation.MetabolicReaction;
-import biotransformer.transformation.MRPatterns.ReactionName;
 import biotransformer.utils.ChemStructureExplorer;
-import biotransformer.utils.FileUtilities;
 
-public class HGutBTTest extends HGutBTransformer{
-
-	public HGutBTTest() throws IOException, CDKException{
-		// TODO Auto-generated constructor stub
+public class HGutBTTest {
+	static HGutBTransformer hgbt;
+	
+	@BeforeClass
+	public static void setUpBeforeClass() throws Exception {
+		hgbt = new HGutBTransformer();
 	}
 
-	
-	public static void main(String[] args) throws Exception{
-		HGutBTTest em = new HGutBTTest();
-////		System.out.println(em.getBioSystemName());
-		IAtomContainer mol1 = em.getSmiParser().parseSmiles("OC1CC2=C(O)C=C(O)C=C2OC1C3=CC(O)=C(O)C=C3");
-		mol1.setProperty(CDKConstants.TITLE, "(+/-)-Epicatechin");
-//		IAtomContainer mol2 = em.getSmiParser().parseSmiles("OC1=CC=C(C=C1)C1OC2=CC(O)=CC(O)=C2CC1=O");
-//		mol2.setProperty(CDKConstants.TITLE, "5,7‐dihydroxy‐2‐(4‐hydroxyphenyl)‐2,4‐dihydro‐1‐benzopyran‐3‐one");
-//		IAtomContainer mol3 = em.getSmiParser().parseSmiles("OC1CC2=C(O)C=C(O)C=C2OC1C1=CC=C(O)C=C1");
-//		mol3.setProperty(CDKConstants.TITLE, "3,5,7,4'‐tetrahydroxyflavan");
-		IAtomContainerSet mols = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
+	@AfterClass
+	public static void tearDownAfterClass() throws Exception {
+	}
 
-		mols.addAtomContainer(mol1);
-//		mols.addAtomContainer(mol2);
-//		mols.addAtomContainer(mol3);
-//		
-////		ArrayList<Biotransformation> biotransformations = em.simulateGutMicrobialMetabolism(mol2, true, true, 2, 0.0);
-//		ArrayList<Biotransformation> biotransformations = em.applyGutMicrobialMetabolismHydrolysisAndReductionChain(mols, true, true, 8, 0.5);
-//		IAtomContainerSet acMetabolites = em.extractProductsFromBiotransformations(biotransformations);
-//		
-//		for(IAtomContainer a : acMetabolites.atomContainers()){
-//			System.out.println(em.smiGen.create(a));
-//		}
-//		System.out.println(acMetabolites.getAtomContainerCount());
-//		System.out.println(biotransformations.size());
-////		for(Biotransformation b : biotransformations){
-////			b.display();
-////			System.out.println();
-////		}
-//		em.saveBioTransformationProductsToSdf(biotransformations, "data/test-new-hgut.sdf");
+	@Before
+	public void setUp() throws Exception {
+	}
+
+	@After
+	public void tearDown() throws Exception {
+	}
+
+	@Test
+	public void test() throws Exception {
+		IAtomContainer molecule 	= hgbt.getSmiParser().parseSmiles("Oc1ccc(cc1O)[C@H]3Oc2cc(O)cc(O)c2C[C@@H]3O");
+		IAtomContainer metabolite 	= hgbt.getSmiParser().parseSmiles("OC1=CC=C(C=C1O)CC2OC(=O)CC2");
 		
-		ArrayList<Biotransformation> biotransformations = em.applyGutMicrobialMetabolismHydrolysisAndRedoxChain(mols, true, true, 1, 0.5);
-		em.saveBioTransformationProductsToSdf(biotransformations, "../test-new-hgut.sdf");
-	
-	}	
-	
-
+		ArrayList<Biotransformation> hgbbios = hgbt.simulateGutMicrobialMetabolism(
+				molecule, true, true, 1, 0.5);
+		IAtomContainerSet hgbmets = hgbt.extractProductsFromBiotransformations(hgbbios);
+		
+		assertTrue("There must be at least 1 biotranformation", (hgbbios != null && hgbbios.size()>0));
+		
+		assertTrue("5-[(3,4-dihydroxyphenyl)methyl]oxolan-2-one must be a metabolite.", 
+				ChemStructureExplorer.atomContainerInclusionHolds(hgbmets, metabolite));
+		
+	}
 
 }

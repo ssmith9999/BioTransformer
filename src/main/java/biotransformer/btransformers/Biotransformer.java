@@ -367,7 +367,7 @@ public class Biotransformer {
 			}	
 		}
 
-		ChemStructureExplorer.addPhysicoChemicalProperties(target);
+		Utilities.addPhysicoChemicalProperties(target);
 //		System.out.println("SMILES: " + this.smiGen.create(starget));
 		
 		
@@ -429,7 +429,7 @@ public class Biotransformer {
 							}catch (CDKException c){
 								System.err.println(c.getLocalizedMessage());
 							}
-							ChemStructureExplorer.addPhysicoChemicalProperties(pc);
+							Utilities.addPhysicoChemicalProperties(pc);
 							prod.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 						}
 					}
@@ -482,7 +482,7 @@ public class Biotransformer {
 		target.setProperty("InChI", gen0.getInchi());
 		target.setProperty("InChIKey", gen0.getInchiKey());
 		target.setProperty("SMILES", this.smiGen.create(target));
-		ChemStructureExplorer.addPhysicoChemicalProperties(target);
+		Utilities.addPhysicoChemicalProperties(target);
 		target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 	
 		//			System.out.println(i.name);
@@ -522,7 +522,7 @@ public class Biotransformer {
 					pc.setProperty("InChIKey", gen.getInchiKey());
 					pc.setProperty("SMILES", this.smiGen.create(pc));
 					pc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(pc));
-					ChemStructureExplorer.addPhysicoChemicalProperties(pc);
+					Utilities.addPhysicoChemicalProperties(pc);
 					prod.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 				}
 				
@@ -687,7 +687,7 @@ public class Biotransformer {
 						pc.setProperty("InChI", gen.getInchi());
 						pc.setProperty("InChIKey", gen.getInchiKey());
 						pc.setProperty("Score", score);
-						ChemStructureExplorer.addPhysicoChemicalProperties(pc);
+						Utilities.addPhysicoChemicalProperties(pc);
 						products .addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 					}
 				}
@@ -939,7 +939,7 @@ public class Biotransformer {
 			if(target.getProperty("InChI") == null || ((String) target.getProperty("InChI")).trim().length()==0){
 				target.setProperty("InChI", gen0.getInchi());
 				target.setProperty("InChIKey", gen0.getInchiKey());
-				ChemStructureExplorer.addPhysicoChemicalProperties(target);
+				Utilities.addPhysicoChemicalProperties(target);
 				target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 			}
 			
@@ -1047,7 +1047,7 @@ public class Biotransformer {
 								}catch (CDKException c){
 									System.err.println(c.getLocalizedMessage());
 								}
-								ChemStructureExplorer.addPhysicoChemicalProperties(pc);
+								Utilities.addPhysicoChemicalProperties(pc);
 								prod.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 								prod.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 							}

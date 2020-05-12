@@ -1,3 +1,11 @@
+v1.1.7
+======
+1) PhaseII wasn't being executed properly after adding setOptionsTobType in BiotrnasformerExecutable: Fixed; 
+2) Replaced old Test classes with JUnit test classes, which are executed upon maven building; 
+3) Current version (from Version) is now parsed directly from the POM file; 
+4) Updated SMIRKS pattern for "_1_MONOACYLGLYCEROL_PHOSPHORYLATION" (BTMR0483); 
+5) Moved addPhysicoChemicalProperties() from utils.ChemStructureExplorer to utils.Utilities
+
 v1.1.6
 ======
 

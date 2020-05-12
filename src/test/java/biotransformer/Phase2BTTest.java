@@ -14,21 +14,21 @@ import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
 
 import biotransformer.biosystems.BioSystem.BioSystemName;
-import biotransformer.btransformers.ECBasedBTransformer;
+import biotransformer.btransformers.Phase2BTransformer;
 import biotransformer.transformation.Biotransformation;
 import biotransformer.utils.ChemStructureExplorer;
 
-public class ECBasedBTTest {
-	
-	static ECBasedBTransformer ecbt;
-	
+public class Phase2BTTest {
+	static Phase2BTransformer p2bt;
+
 	@BeforeClass
 	public static void setUpBeforeClass() throws Exception {
-		ecbt = new ECBasedBTransformer(BioSystemName.HUMAN);
+		p2bt = new Phase2BTransformer(BioSystemName.HUMAN);
 	}
 
 	@AfterClass
 	public static void tearDownAfterClass() throws Exception {
+		
 	}
 
 	@Before
@@ -41,17 +41,20 @@ public class ECBasedBTTest {
 
 	@Test
 	public void test() throws Exception {
-		IAtomContainer molecule = ecbt.getSmiParser().parseSmiles("CCCCCC(=O)OCC(COP([O-])(=O)OCC[N+](C)(C)C)OC(=O)CC\\C=C\\CC");
-		IAtomContainer choline = ecbt.getSmiParser().parseSmiles("C[N+](C)(C)CCO");
-		ArrayList<Biotransformation> ecbbios = ecbt.simulateECBasedMetabolismChain(
-				molecule, true, true, 1, 0.5);
-		IAtomContainerSet ecbmets = ecbt.extractProductsFromBiotransformations(ecbbios);		
-
-		assertTrue("There must be at least 1 biotranformation", (ecbbios != null && ecbbios.size()>0));
+		IAtomContainer molecule 	= p2bt.getSmiParser().parseSmiles("Oc1ccc(cc1O)[C@H]3Oc2cc(O)cc(O)c2C[C@@H]3O");
+		IAtomContainer metabolite 	= p2bt.getSmiParser().
+				parseSmiles("O[C@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(OC2OC(C(O)C(O)C2O)C(O)=O)C(O)=C1");
 		
-		assertTrue("Choline must be a metabolite.", 
-				ChemStructureExplorer.atomContainerInclusionHolds(ecbmets, choline));
-
+		ArrayList<Biotransformation> p2bbios = p2bt.applyPhase2Transformations(
+				molecule, true, true, true, 0.5);
+		IAtomContainerSet p2bmets = p2bt.extractProductsFromBiotransformations(p2bbios);
+		
+		assertTrue("There must be at least 1 biotranformation", (p2bbios != null && p2bbios.size()>0));
+		
+		assertTrue("4'-O-glucuronide must be a metabolite.", 
+				ChemStructureExplorer.atomContainerInclusionHolds(p2bmets, metabolite));
+		
+		
 	}
 
 }

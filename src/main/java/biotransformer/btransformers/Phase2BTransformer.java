@@ -373,7 +373,7 @@ public class Phase2BTransformer extends Biotransformer{
 				InChIGenerator gen0 = factory.getInChIGenerator(target);
 				target.setProperty("InChI", gen0.getInchi());
 				target.setProperty("InChIKey", gen0.getInchiKey());
-				ChemStructureExplorer.addPhysicoChemicalProperties(target);
+				Utilities.addPhysicoChemicalProperties(target);
 				target.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(target));
 			}
 			if(target.getProperty("SMILES") == null) {
@@ -413,7 +413,7 @@ public class Phase2BTransformer extends Biotransformer{
 								pc.setProperty("InChIKey", gen.getInchiKey());	
 								pc.setProperty("SMILES", this.smiGen.create(AtomContainerManipulator.removeHydrogens(pc)));
 							}					
-							ChemStructureExplorer.addPhysicoChemicalProperties(pc);
+							Utilities.addPhysicoChemicalProperties(pc);
 							pc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(pc));
 							prod.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 							Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(reaction.name), null, prod, score, this.bSystem.name );
