@@ -6,6 +6,7 @@
 
 package biotransformer.utils;
 
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 //import java.nio.file.Paths;
@@ -15,6 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 
 import org.apache.commons.lang3.StringUtils;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.simple.parser.ParseException;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
@@ -33,6 +36,7 @@ import biotransformer.btransformers.Biotransformer;
 import biotransformer.btransformers.EnvMicroBTransformer;
 import biotransformer.btransformers.Biotransformer.bType;
 import biotransformer.transformation.Biotransformation;
+import exception.BioTransformerException;
 
 //import org.openscience.cdk.inchi.InChIGenerator;
 import org.openscience.cdk.inchi.InChIGeneratorFactory;
@@ -41,15 +45,19 @@ import org.openscience.cdk.inchi.InChIGeneratorFactory;
 
 public class MetaboliteFinder{
 	
-	public HumanSuperBioTransformer hsbt 	= new HumanSuperBioTransformer();
-	public EnvMicroBTransformer ebt 		= new EnvMicroBTransformer();
-	public UniversalBioTransformer ubt 		= new UniversalBioTransformer();
+	public HumanSuperBioTransformer hsbt;
+	public EnvMicroBTransformer ebt;
+	public UniversalBioTransformer ubt;
 	public InChIGeneratorFactory inchiGenFactory = InChIGeneratorFactory.getInstance();
 	protected IChemObjectBuilder 	builder = SilentChemObjectBuilder.getInstance();
 	
 	
-	public MetaboliteFinder() throws IOException, ParseException, CDKException{
+	public MetaboliteFinder() throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException{
 		// TODO Auto-generated constructor stub
+		hsbt 		= new HumanSuperBioTransformer();
+		ebt 		= new EnvMicroBTransformer();
+		ubt 		= new UniversalBioTransformer();
 	
 	}
 	

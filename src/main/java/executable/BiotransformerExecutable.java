@@ -61,6 +61,7 @@ public class BiotransformerExecutable {
 		optionsToBtTypes.put("cyp450", Biotransformer.bType.CYP450);
 		optionsToBtTypes.put("ecbased", Biotransformer.bType.ECBASED);		
 		optionsToBtTypes.put("env", Biotransformer.bType.ENV);
+		optionsToBtTypes.put("envmicro", Biotransformer.bType.ENV);
 		optionsToBtTypes.put("hgut", Biotransformer.bType.HGUT);	
 		optionsToBtTypes.put("phaseii", Biotransformer.bType.PHASEII);
 		optionsToBtTypes.put("phase2", Biotransformer.bType.PHASEII);
@@ -248,7 +249,7 @@ public class BiotransformerExecutable {
 				+ "\t\tBioTransformer's environmental microbial degradation module uses data from the EAWAG's Biodegradation and Biocatalysis Database, which is licensed by EnviPath (https://envipath.com/license/)"
 				+ "under the Creative Commons Attribution-NonCommercial-ShareAlike 4.0 International (CC BY-NC-SA 4.0). Therefore users of the environmental microbial degradation "
 				+ "module must cite the following paper:\n"
-				+ "\tenviPath–The environmental contaminant biotransformation pathway resource. J Wicker, T Lorsbach, M Gütlein, E Schmid, D Latino, S Kramer, K Fenner. Nucleic Acids Research, gkv1229 (full text)."
+				+ "\tenviPath–The environmental contaminant biotransformation pathway resource. J Wicker, T Lorsbach, M Gütlein, E Schmid, D Latino, S Kramer, K Fenner. Nucleic Acids Research, 4;44(D1):D502-8; DOI:10.1093/nar/gkv1229."
 				+ "\n\nTo use the environmental microbial module for commercial purposes, users must request an apropriate license from EnviPath.";
 
 		HelpFormatter formatter = new HelpFormatter();

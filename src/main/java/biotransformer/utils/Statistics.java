@@ -6,6 +6,7 @@
 
 package biotransformer.utils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
@@ -23,18 +24,27 @@ import biotransformer.btransformers.ECBasedBTransformer;
 import biotransformer.btransformers.EnvMicroBTransformer;
 import biotransformer.btransformers.HGutBTransformer;
 import biotransformer.btransformers.Phase2BTransformer;
+import exception.BioTransformerException;
 
 public class Statistics {
 	
-	protected Biotransformer humanBT 		= new Biotransformer(BioSystemName.HUMAN);
-	protected HGutBTransformer hgutBT 		= new HGutBTransformer();
-	protected EnvMicroBTransformer envmBT 	= new EnvMicroBTransformer();
-	protected Cyp450BTransformer hCyp450BT	= new Cyp450BTransformer(BioSystemName.HUMAN);
-	protected Phase2BTransformer phaseII0BT	= new Phase2BTransformer(BioSystemName.HUMAN);
-	protected ECBasedBTransformer ecBase450BT	= new ECBasedBTransformer(BioSystemName.HUMAN);
+	protected Biotransformer humanBT;
+	protected HGutBTransformer hgutBT;
+	protected EnvMicroBTransformer envmBT;
+	protected Cyp450BTransformer hCyp450BT;
+	protected Phase2BTransformer phaseII0BT;
+	protected ECBasedBTransformer ecBase450BT;
 
-	public Statistics() throws JsonParseException, JsonMappingException, ParseException, IOException, CDKException{
+	public Statistics() throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException, CDKException{
 		// TODO Auto-generated constructor stub
+		humanBT 		= new Biotransformer(BioSystemName.HUMAN);
+		hgutBT 		= new HGutBTransformer();
+		envmBT 	= new EnvMicroBTransformer();
+		hCyp450BT	= new Cyp450BTransformer(BioSystemName.HUMAN);
+		phaseII0BT	= new Phase2BTransformer(BioSystemName.HUMAN);
+		ecBase450BT	= new ECBasedBTransformer(BioSystemName.HUMAN);
+		
 		generateStatistics();
 	}
 	

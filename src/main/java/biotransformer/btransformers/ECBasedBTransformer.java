@@ -9,11 +9,14 @@
  */
 package biotransformer.btransformers;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.net.URISyntaxException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.simple.parser.ParseException;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
@@ -36,6 +39,7 @@ import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.FileUtilities;
 import biotransformer.utils.ChemicalClassFinder.ChemicalClassName;
+import exception.BioTransformerException;
 
 /**
  * @author Djoumbou Feunang, Yannick
@@ -51,7 +55,8 @@ public class ECBasedBTransformer extends Biotransformer {
 	 * @bioSName Name of the biosystem to simulate.
 	 * 
 	 */
-	public ECBasedBTransformer(BioSystemName bioSName) throws IOException, ParseException, CDKException {		
+	public ECBasedBTransformer(BioSystemName bioSName) throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException {		
 		// TODO Auto-generated constructor stub
 		super(bioSName);
 		setEnzymesList();
@@ -593,22 +598,22 @@ public class ECBasedBTransformer extends Biotransformer {
 						
 						
 						if(chemClassName == ChemicalClassName.ETHER_LIPID){
-							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.ETHER_LIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "ETHER_LIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 						}
 						if(chemClassName == ChemicalClassName.GLYCEROLIPID){
-							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.GLYCEROLIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "GLYCEROLIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 						}
 						if(chemClassName == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL){
-							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.INOSITOL_PHOSPHATE_METABOLISM, preprocess, filter, 1, scoreThreshold));
+							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "INOSITOL_PHOSPHATE_METABOLISM", preprocess, filter, 1, scoreThreshold));
 						}							
 						if(chemClassName == ChemicalClassName.GLYCEROPHOSPHOLIPID){
-							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.GLYCEROPHOSPHOLIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "GLYCEROPHOSPHOLIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 						}		
 						if(chemClassName == ChemicalClassName.SPHINGOLIPID){
-							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.SPHINGOLIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "SPHINGOLIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 						}
 						if(chemClassName == ChemicalClassName.C24_BILE_ACID || chemClassName == ChemicalClassName.C23_BILE_ACID){
-							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.BILE_ACID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+							biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "BILE_ACID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 						}
 					}		
 
@@ -697,23 +702,23 @@ public class ECBasedBTransformer extends Biotransformer {
 	
 	//				if(ChemicalClassFinder.isEtherLipid(molecule)){
 					if(chemClassName == ChemicalClassName.ETHER_LIPID){
-						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.ETHER_LIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "ETHER_LIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 					}
 					if(chemClassName == ChemicalClassName.GLYCEROLIPID){
-						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.GLYCEROLIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "GLYCEROLIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 					}
 					if(chemClassName == ChemicalClassName.GLYCEROL_3_PHOSPHATE_INOSITOL){
-						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.INOSITOL_PHOSPHATE_METABOLISM, preprocess, filter, 1, scoreThreshold));
+						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "INOSITOL_PHOSPHATE_METABOLISM", preprocess, filter, 1, scoreThreshold));
 					}
 					if(chemClassName == ChemicalClassName.GLYCEROPHOSPHOLIPID){
-						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.GLYCEROPHOSPHOLIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "GLYCEROPHOSPHOLIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 					}		
 					if(chemClassName == ChemicalClassName.SPHINGOLIPID){
 	//					System.out.println(chemClassName + " see?");
-						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.SPHINGOLIPID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "SPHINGOLIPID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 					}
 					if(chemClassName == ChemicalClassName.C24_BILE_ACID || chemClassName == ChemicalClassName.C23_BILE_ACID){
-						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, MPathwayName.BILE_ACID_METABOLISM, preprocess, filter, 1, scoreThreshold));
+						biotransformations.addAll(this.applyPathwaySpecificBiotransformationsChain(molecule, "BILE_ACID_METABOLISM", preprocess, filter, 1, scoreThreshold));
 					}
 				}				
 			}

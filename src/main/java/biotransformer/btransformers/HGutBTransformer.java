@@ -10,6 +10,7 @@
 
 package biotransformer.btransformers;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -17,6 +18,8 @@ import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.simple.parser.ParseException;
 import org.openscience.cdk.CDKConstants;
 import org.openscience.cdk.DefaultChemObjectBuilder;
@@ -43,10 +46,12 @@ import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.Utilities;
+import exception.BioTransformerException;
 
 public class HGutBTransformer extends Biotransformer {
 
-	public HGutBTransformer() throws IOException, CDKException{
+	public HGutBTransformer() throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException{
 		super(BioSystemName.GUTMICRO);
 		setReactionsList();
 	}

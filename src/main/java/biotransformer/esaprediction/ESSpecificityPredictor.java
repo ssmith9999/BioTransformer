@@ -21,7 +21,7 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 import ambit2.smarts.query.SMARTSException;
 import biotransformer.biomolecule.Enzyme;
-import biotransformer.biomolecule.Enzyme.EnzymeName;
+//import biotransformer.biomolecule.Enzyme.EnzymeName;
 import biotransformer.biosystems.BioSystem;
 import biotransformer.transformation.MetabolicReaction;
 import biotransformer.utils.ChemStructureExplorer;
@@ -49,7 +49,7 @@ public class ESSpecificityPredictor {
 	
 	}
 	
-	public boolean isValidCyp450Substrate(IAtomContainer substrate, EnzymeName enz) throws Exception{
+	public boolean isValidCyp450Substrate(IAtomContainer substrate, String enz) throws Exception{
 //		
 //		// ADD testing condition for scenario where an enzyme is not in the biosystem.	
 //		if(!(enz.toString().contains("CYP1A2") || enz.toString().contains("CYP2A6") || enz.toString().contains("CYP2B6")
@@ -100,7 +100,7 @@ public class ESSpecificityPredictor {
 	}
 	
 	
-	public boolean isValidCyp450Substrate(IAtomContainer substrate, EnzymeName enz, ArrayList<ChemicalClassName> chemClasses) throws Exception{
+	public boolean isValidCyp450Substrate(IAtomContainer substrate, String enz, ArrayList<ChemicalClassName> chemClasses) throws Exception{
 		
 		// ADD testing condition for scenario where an enzyme is not in the biosystem.	
 		if(!(enz.toString().contains("CYP1A2") || enz.toString().contains("CYP2A6") || enz.toString().contains("CYP2B6")
@@ -163,13 +163,13 @@ public class ESSpecificityPredictor {
 				"[#6]=,:1[#6]=,:[#6][#6]~2=,:[#6]([#6]=,:1)~[#6,#7]~[#6,#7]~[#6,#7]~1-,=[#6,#7]-,=3-,=[#6,#8,#7,#16]-,=[#6,#8,#7,#16]-,=[#6,#8,#7,#16;A]-,=[#6,#7]-,=3~[#6,#7,#16]~[#6,#7,#16]~[#6,#7]~2~1"
 				, SilentChemObjectBuilder.getInstance());
 		
-		validEC_2_8_2_2 = (!smp.matches(atc)) && (isPotentialSubstrateByReactionPatternMatching(atc, EnzymeName.EC_2_8_2_2));
+		validEC_2_8_2_2 = (!smp.matches(atc)) && (isPotentialSubstrateByReactionPatternMatching(atc, "EC_2_8_2_2"));
 		
 		return validEC_2_8_2_2;
 	}
 	
 	
-	public boolean isValidSubstrate(IAtomContainer substrate, EnzymeName enz) throws Exception {
+	public boolean isValidSubstrate(IAtomContainer substrate, String enz) throws Exception {
 		
 //		boolean validSubstrate = false;
 //		
@@ -202,7 +202,7 @@ public class ESSpecificityPredictor {
 		return isValidSubstrate(substrate, enz, chemClasses);
 	}
 
-	public boolean isValidSubstrate(IAtomContainer substrate, EnzymeName enz, ArrayList<ChemicalClassName> chemClasses) throws Exception {
+	public boolean isValidSubstrate(IAtomContainer substrate, String enz, ArrayList<ChemicalClassName> chemClasses) throws Exception {
 		
 		boolean validSubstrate = false;
 		
@@ -236,7 +236,7 @@ public class ESSpecificityPredictor {
 	
 	
 	
-	public boolean isPotentialSubstrateByReactionPatternMatching(IAtomContainer substrate, EnzymeName enz) throws SMARTSException, CDKException, IOException{
+	public boolean isPotentialSubstrateByReactionPatternMatching(IAtomContainer substrate, String enz) throws SMARTSException, CDKException, IOException{
 		boolean isPotentialSubstrate = false;
 		
 		if(this.bSys.getEnzymeHash().containsKey(enz)){

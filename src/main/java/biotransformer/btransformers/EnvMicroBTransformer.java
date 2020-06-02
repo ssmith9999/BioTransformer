@@ -9,9 +9,12 @@
 
 package biotransformer.btransformers;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.simple.parser.ParseException;
 import org.openscience.cdk.AtomContainerSet;
 import org.openscience.cdk.CDKConstants;
@@ -34,6 +37,7 @@ import biotransformer.transformation.MetabolicReaction;
 import biotransformer.transformation.MRPatterns.ReactionName;
 import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemStructureManipulator;
+import exception.BioTransformerException;
 
 public class EnvMicroBTransformer extends Biotransformer {
 
@@ -44,7 +48,8 @@ public class EnvMicroBTransformer extends Biotransformer {
 	 * 
 	 */
 	
-	public EnvMicroBTransformer() throws IOException, ParseException, CDKException {
+	public EnvMicroBTransformer() throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException {
 		super(BioSystemName.ENVMICRO);
 		setEnzymesList();
 		setReactionsList();
@@ -199,6 +204,11 @@ public class EnvMicroBTransformer extends Biotransformer {
 				ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 				AtomContainerSet startingSet = new AtomContainerSet();
 				startingSet.addAtomContainer(target);
+				
+//				System.out.println("this.enzymesByreactionGroups.get(\"envMicroReactions\")\n");
+//				for ( Enzyme r : this.enzymesByreactionGroups.get("envMicroReactions")) {
+//					System.out.println(r.toString());
+//				}
 		//		biotransformations = applyReactionsChainAndReturnBiotransformations(startingSet, this.reactionsByGroups.get("envMicroReactions"), preprocess, filter, nr_of_steps, scoreThreshold);
 				biotransformations = metabolizeWithEnzymesBreadthFirst(startingSet,
 						this.enzymesByreactionGroups.get("envMicroReactions"), preprocess, filter, nr_of_steps, scoreThreshold);
@@ -346,7 +356,7 @@ public class EnvMicroBTransformer extends Biotransformer {
 								prod.addAtomContainer(pc);
 							}
 							
-							Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(j.name), null, prod, score, this.bSystem.name );
+							Biotransformation bioT = new Biotransformation(subs, j.name, null, prod, score, this.bSystem.name );
 							results.add(bioT);
 						}
 					}	

@@ -283,10 +283,10 @@ public class ChemStructureExplorer {
 				}
 			}
 		}
-		if(match && (!(reaction.getNegativeReactantsSMARTS() == null || reaction.getNegativeReactantsSMARTS().isEmpty()))){
-			for (int i = 0; i < reaction.getNegativeReactantsSMARTS().size(); i++) {
+		if(match && (!(reaction.getExcludedReactantsSMARTS() == null || reaction.getExcludedReactantsSMARTS().isEmpty()))){
+			for (int i = 0; i < reaction.getExcludedReactantsSMARTS().size(); i++) {
 	
-				Pattern smp2 = SmartsPattern.create(reaction.getNegativeReactantsSMARTS().get(i), bldr);
+				Pattern smp2 = SmartsPattern.create(reaction.getExcludedReactantsSMARTS().get(i), bldr);
 				boolean status2 = smp2.matches(molecule);
 				if (status2) {
 					match = false;

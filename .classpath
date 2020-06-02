@@ -27,7 +27,7 @@
 			<attribute name="module" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry kind="lib" path="/home/yandj/Projects/Software/metabolite_id/biotransformer/lib/cypreact.jar"/>
-	<classpathentry kind="lib" path="/home/yandj/Projects/Software/metabolite_id/biotransformer/lib/phaseIIFilter-1.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/cypreact.jar"/>
+	<classpathentry kind="lib" path="lib/phase2filter-1.0.2.jar"/>
 	<classpathentry kind="output" path="target/classes"/>
 </classpath>

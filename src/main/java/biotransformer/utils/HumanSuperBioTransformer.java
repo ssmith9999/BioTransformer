@@ -6,6 +6,7 @@
 
 package biotransformer.utils;
 
+import java.io.FileNotFoundException;
 //import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -15,6 +16,8 @@ import java.util.LinkedHashMap;
 import java.util.Map;
 //import java.util.Set;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 //import org.apache.commons.lang3.StringUtils;
 //import org.codehaus.jackson.JsonParseException;
 //import org.codehaus.jackson.map.JsonMappingException;
@@ -38,16 +41,16 @@ import biotransformer.btransformers.HGutBTransformer;
 import biotransformer.btransformers.Phase2BTransformer;
 import biotransformer.transformation.Biotransformation;
 import biotransformer.transformation.MetabolicReaction;
-import biotransformer.transformation.MetabolicPathway.MPathwayName;
 import biotransformer.utils.ChemicalClassFinder.ChemicalClassName;
-import predicition.P2Filter;
+import exception.BioTransformerException;
+import phase2filter.prediction.P2Filter;
 
 public class HumanSuperBioTransformer {
 	
-	protected ECBasedBTransformer ecb		 		= new ECBasedBTransformer(BioSystemName.HUMAN);
-	protected Cyp450BTransformer cyb 				= new Cyp450BTransformer(BioSystemName.HUMAN);
-	protected HGutBTransformer hgb 					= new HGutBTransformer();
-	protected Phase2BTransformer p2b 				= new Phase2BTransformer(BioSystemName.HUMAN);
+	protected ECBasedBTransformer ecb;
+	protected Cyp450BTransformer cyb;
+	protected HGutBTransformer hgb;
+	protected Phase2BTransformer p2b;
 	protected LinkedHashMap<String, LinkedHashMap<String, String>> compoundDictionary		
 													= new LinkedHashMap<String, LinkedHashMap<String, String>>();
 	
@@ -55,12 +58,21 @@ public class HumanSuperBioTransformer {
 	protected LinkedHashMap<String, MetabolicReaction> combinedReactionsHash							
 													= new LinkedHashMap<String, MetabolicReaction>();
 	
-	public SmilesParser smiParser					= ecb.getSmiParser();
+	public SmilesParser smiParser;
 	public SmilesGenerator smiGen 		= new SmilesGenerator().isomeric();
 	
 	
-	public HumanSuperBioTransformer() throws IOException, ParseException, CDKException {
+	public HumanSuperBioTransformer() throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException {
 
+		ecb		 			= new ECBasedBTransformer(BioSystemName.HUMAN);
+		cyb 				= new Cyp450BTransformer(BioSystemName.HUMAN);
+		hgb 				= new HGutBTransformer();
+		p2b 				= new Phase2BTransformer(BioSystemName.HUMAN);
+		smiParser			= ecb.getSmiParser();
+		
+		
+		
 		for(Map.Entry<String, MetabolicReaction> m : this.ecb.reactionsHash.entrySet()){
 			if(! this.combinedReactionsHash.containsKey(m.getKey())){
 				this.combinedReactionsHash.put(m.getKey(), m.getValue());
@@ -768,24 +780,24 @@ public class HumanSuperBioTransformer {
 			
 			} else {
 				if(ChemicalClassFinder.isEtherLipid(molecule)){
-					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, MPathwayName.ETHER_LIPID_METABOLISM, true, true, scoreThreshold));
+					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, "ETHER_LIPID_METABOLISM", true, true, scoreThreshold));
 				}
 				if(ChemicalClassFinder.isGlyceroLipid(molecule)){
-					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, MPathwayName.GLYCEROLIPID_METABOLISM, true, true, scoreThreshold));
+					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, "GLYCEROLIPID_METABOLISM", true, true, scoreThreshold));
 				}
 				if(ChemicalClassFinder.isGlycerol_3_PhosphateInositol(molecule)){
-					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, MPathwayName.INOSITOL_PHOSPHATE_METABOLISM, true, true, scoreThreshold));
+					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, "INOSITOL_PHOSPHATE_METABOLISM", true, true, scoreThreshold));
 				}								
 				if(ChemicalClassFinder.isGlycerophosphoLipid(molecule)){
-					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, MPathwayName.GLYCEROPHOSPHOLIPID_METABOLISM, true, true, scoreThreshold));
+					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, "GLYCEROPHOSPHOLIPID_METABOLISM", true, true, scoreThreshold));
 				}		
 				if(ChemicalClassFinder.isSphingoLipid(molecule)){
 //					System.out.println("Is Sphingolipid");
-					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, MPathwayName.SPHINGOLIPID_METABOLISM, true, true, scoreThreshold));
+					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, "SPHINGOLIPID_METABOLISM", true, true, scoreThreshold));
 				}
 				if(ChemicalClassFinder.isC24BileAcid(molecule) || ChemicalClassFinder.isC23BileAcid(molecule)){
 //					System.out.println("Is Sphingolipid");
-					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, MPathwayName.BILE_ACID_METABOLISM, true, true, scoreThreshold));
+					biotransformations.addAll(this.ecb.applyPathwaySpecificBiotransformations(molecule, "BILE_ACID_METABOLISM", true, true, scoreThreshold));
 				}
 				
 			}			
@@ -795,7 +807,7 @@ public class HumanSuperBioTransformer {
 		return Utilities.selectUniqueBiotransformations(biotransformations);
 	}
 	
-	public ArrayList<Biotransformation> applyPathwaySpecificBiotransformations(IAtomContainer molecule, MPathwayName pathway, boolean preprocess, boolean filter, double scoreThreshold) throws Exception{
+	public ArrayList<Biotransformation> applyPathwaySpecificBiotransformations(IAtomContainer molecule, String pathway, boolean preprocess, boolean filter, double scoreThreshold) throws Exception{
 		return this.ecb.applyPathwaySpecificBiotransformations(molecule, pathway, preprocess, filter, scoreThreshold);
 	}
 //	public ArrayList<Biotransformation> simulateECBasedMetabolismChain(IAtomContainer molecule, int nrOfSteps, double scoreThreshold) throws Exception{

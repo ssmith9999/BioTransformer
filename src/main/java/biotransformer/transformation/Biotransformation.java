@@ -15,20 +15,20 @@ import org.openscience.cdk.AtomContainerSet;
 import org.openscience.cdk.interfaces.IAtomContainer;
 import org.openscience.cdk.interfaces.IAtomContainerSet;
 
-import biotransformer.biomolecule.Enzyme.EnzymeName;
+//import biotransformer.biomolecule.Enzyme.EnzymeName;
 import biotransformer.biosystems.BioSystem.BioSystemName;
 import biotransformer.transformation.MRPatterns.ReactionName;
 
 public class Biotransformation {
 	private AtomContainerSet substrates =  new AtomContainerSet();
-	private ReactionName reactionType;
-	private ArrayList<EnzymeName> enzymeNames = new ArrayList<EnzymeName>();
+	private String reactionType;
+	private ArrayList<String> enzymeNames = new ArrayList<String>();
 	private AtomContainerSet products =  new AtomContainerSet();
 	private BioSystemName bsysName;
 	private Double score;
 	private String reactionID;
 	
-	public Biotransformation(IAtomContainerSet substrates, ReactionName reactionType, ArrayList<EnzymeName> enzymeNames, 
+	public Biotransformation(IAtomContainerSet substrates, String reactionType, ArrayList<String> enzymeNames, 
 			IAtomContainerSet products, BioSystemName bsysName) {
 		// TODO Auto-generated constructor stub
 		this.substrates.add(substrates);
@@ -43,7 +43,7 @@ public class Biotransformation {
 		this.score = 1.0;
 	}
 	
-	public Biotransformation(IAtomContainerSet substrates, ReactionName reactionType, ArrayList<EnzymeName> enzymeNames, 
+	public Biotransformation(IAtomContainerSet substrates, String reactionType, ArrayList<String> enzymeNames, 
 			IAtomContainerSet products, Double score, BioSystemName bsysName) {
 		// TODO Auto-generated constructor stub		
 		this.substrates.add(substrates);
@@ -56,7 +56,7 @@ public class Biotransformation {
 		this.score = score;
 	}
 
-	public Biotransformation(IAtomContainerSet substrates, ReactionName reactionType, EnzymeName enzymeName, 
+	public Biotransformation(IAtomContainerSet substrates, String reactionType, String enzymeName, 
 			IAtomContainerSet products) {
 		// TODO Auto-generated constructor stub
 		this.substrates.add(substrates);
@@ -69,7 +69,7 @@ public class Biotransformation {
 		this.score = 1.0;
 	}
 	
-//	public Biotransformation(IAtomContainerSet substrates, ReactionName reactionType, EnzymeName enzymeName, 
+//	public Biotransformation(IAtomContainerSet substrates, ReactionName reactionType, String enzymeName, 
 //			IAtomContainerSet products, Double score) {
 //		// TODO Auto-generated constructor stub
 //		
@@ -93,11 +93,11 @@ public class Biotransformation {
 		return this.products;
 	}
 	
-	public ReactionName getReactionType(){
+	public String getReactionType(){
 		return this.reactionType;
 	}
 	
-	public ArrayList<EnzymeName> getEnzymeNames(){
+	public ArrayList<String> getEnzymeNames(){
 		return this.enzymeNames;
 	}
 	
@@ -109,7 +109,7 @@ public class Biotransformation {
 		return this.score;
 	}
 	
-	public void setEnzymeNames(ArrayList<EnzymeName> elsit){
+	public void setEnzymeNames(ArrayList<String> elsit){
 		this.enzymeNames = elsit;
 	}
 	
@@ -132,7 +132,7 @@ public class Biotransformation {
 		System.out.print("Enzyme:   ");
 		if(!this.enzymeNames.isEmpty()){
 			System.out.println(StringUtils.join(this.enzymeNames, "; "));
-//			for(EnzymeName e : this.enzymeNames){
+//			for(String e : this.enzymeNames){
 //				System.out.println(e.toString());
 //			}
 		}

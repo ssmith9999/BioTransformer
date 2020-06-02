@@ -9,7 +9,7 @@ mvn clean
 
 #Adding phaseIIFilter
 echo -e "\n\nAdding Phase II Filter JAR..."
-mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file -Dfile="${root_dir}/lib/phaseIIFilter-1.0.1.jar" -DgroupId=djoumbou -DartifactId=phaseIIFilter -Dversion=1.0.1 -Dpackaging=jar
+mvn org.apache.maven.plugins:maven-install-plugin:3.0.0-M1:install-file -Dfile="${root_dir}/lib/phase2filter-1.0.2.jar" -DgroupId=djoumbou -DartifactId=phase2filter -Dversion=1.0.2 -Dpackaging=jar
 
 
 #Adding Cypreact

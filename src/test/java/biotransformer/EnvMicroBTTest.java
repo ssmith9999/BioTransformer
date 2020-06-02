@@ -17,7 +17,7 @@ import biotransformer.btransformers.EnvMicroBTransformer;
 import biotransformer.transformation.Biotransformation;
 import biotransformer.utils.ChemStructureExplorer;
 
-@Ignore("This test class would be ignore but can later be run if the user includes EnviPath data.")
+//@Ignore("This test class would be ignore but can later be run if the user includes EnviPath data.")
 public class EnvMicroBTTest {
 	static EnvMicroBTransformer envbt;
 	

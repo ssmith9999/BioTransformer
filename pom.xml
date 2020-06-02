@@ -2,9 +2,9 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>djoumbou</groupId>
   <artifactId>biotransformer</artifactId>
-  <version>1.1.7</version>
+  <version>2.0.0</version>
   <name>BioTransformer</name>
-  <description>A Freely Available, Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification</description>
+  <description>An Open Source Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification.</description>
 <repositories>
 	<repository>
 		<id>nexus-idea-snapshots</id>
@@ -80,8 +80,8 @@
   	</dependency>
   	<dependency>
         <groupId>djoumbou</groupId>
-        <artifactId>phaseIIFilter</artifactId>
-        <version>1.0.1</version>
+        <artifactId>phase2filter</artifactId>
+        <version>1.0.2</version>
     </dependency>
   	<dependency>
         <groupId>wishartlab</groupId>
@@ -92,12 +92,14 @@
   
     <build>
     <resources>
+    <!--  
     	<resource>	
     		<directory>src/main/resources/database</directory>
     	</resource>
     	<resource>	
     		<directory>src/main/resources/supportfiles</directory>
     	</resource>
+    	-->
     </resources>
     
     <plugins>

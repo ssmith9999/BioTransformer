@@ -7,6 +7,7 @@
 
 package biotransformer.btransformers;
 
+import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -27,7 +28,6 @@ import org.openscience.cdk.io.iterator.IteratingSDFReader;
 import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 import biotransformer.biomolecule.Enzyme;
-import biotransformer.biomolecule.Enzyme.EnzymeName;
 import biotransformer.biosystems.BioSystem.BioSystemName;
 import biotransformer.btransformers.Biotransformer;
 import biotransformer.transformation.Biotransformation;
@@ -39,12 +39,14 @@ import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.FileUtilities;
 import biotransformer.utils.Utilities;
 import biotransformer.utils.ChemicalClassFinder.ChemicalClassName;
+import exception.BioTransformerException;
 import reactantpredictor.ReactantPred;
 
 
 public class Cyp450BTransformer extends Biotransformer {
 	
-	public Cyp450BTransformer(BioSystemName bioSName) throws JsonParseException, JsonMappingException, IOException, CDKException {
+	public Cyp450BTransformer(BioSystemName bioSName) throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException {
 		super(bioSName);
 		setCyp450EnzymesAndReactionList();
 		
@@ -107,8 +109,8 @@ public class Cyp450BTransformer extends Biotransformer {
 //					
 //				}
 //				else{
-					EnzymeName[] cyp450s =  {EnzymeName.CYP1A2, EnzymeName.CYP2A6, EnzymeName.CYP2B6, EnzymeName.CYP2C8, 
-							EnzymeName.CYP2C9, EnzymeName.CYP2C19, EnzymeName.CYP2D6, EnzymeName.CYP2E1, EnzymeName.CYP3A4};
+					String[] cyp450s =  {"CYP1A2", "CYP2A6", "CYP2B6", "CYP2C8", 
+							"CYP2C9", "CYP2C19", "CYP2D6", "CYP2E1", "CYP3A4"};
 					
 					ArrayList<Enzyme> cyp450Enzymes = new ArrayList<Enzyme>();
 					for(int i = 0; i < cyp450s.length; i++){
@@ -116,7 +118,7 @@ public class Cyp450BTransformer extends Biotransformer {
 					}
 					
 					biotransformations = this.metabolizeWithEnzymes(substrate, cyp450Enzymes, preprocess, filter, threshold);
-	//				for(EnzymeName en : cyp450s) { 
+	//				for(String en : cyp450s) { 
 	////					System.out.println("Predicting metabolism for " + en.name());
 	//					biotransformations.addAll(this.metabolizeWithEnzyme(substrate, en, preprocess, filter, threshold));
 	//				}
@@ -132,7 +134,7 @@ public class Cyp450BTransformer extends Biotransformer {
 	}
 	
 	
-	public ArrayList<Biotransformation> predictCyp450BiotransformationsForSpecificEnzymes(IAtomContainer substrate, ArrayList<EnzymeName> enzymeNames, boolean preprocess, boolean filter, double threshold) throws Exception{
+	public ArrayList<Biotransformation> predictCyp450BiotransformationsForSpecificEnzymes(IAtomContainer substrate, ArrayList<String> enzymeNames, boolean preprocess, boolean filter, double threshold) throws Exception{
 		
 		try{
 			ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();

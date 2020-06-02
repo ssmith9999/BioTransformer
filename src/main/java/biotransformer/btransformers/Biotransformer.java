@@ -65,7 +65,6 @@ import ambit2.smarts.SMIRKSManager;
 import ambit2.smarts.SMIRKSReaction;
 import ambit2.smarts.SmartsConst;
 import biotransformer.biomolecule.Enzyme;
-import biotransformer.biomolecule.Enzyme.EnzymeName;
 import biotransformer.biosystems.BioSystem;
 import biotransformer.biosystems.BioSystem.BioSystemName;
 import biotransformer.esaprediction.ESSpecificityPredictor;
@@ -81,6 +80,7 @@ import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemdbRest;
 import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.ChemicalClassFinder.ChemicalClassName;
+import exception.BioTransformerException;
 import biotransformer.utils.FileUtilities;
 import biotransformer.utils.Utilities;
 //import weka.core.pmml.jaxbbindings.Targets;
@@ -120,7 +120,8 @@ public class Biotransformer {
 	public ObjectMapper mapper = new ObjectMapper();
 	protected ESSpecificityPredictor esspredictor;
 		
-	public Biotransformer(BioSystemName bioSName) throws JsonParseException, JsonMappingException, IOException, CDKException{
+	public Biotransformer(BioSystemName bioSName) throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException{
 		
 		this.mapper.configure(Feature.ALLOW_COMMENTS, true);
 		this.mapper.configure(Feature.ALLOW_BACKSLASH_ESCAPING_ANY_CHARACTER, true);
@@ -142,15 +143,16 @@ public class Biotransformer {
 		
 	}
 	
-	private void setReactionsGroups(){
+	private void setReactionsGroups() throws JsonParseException, JsonMappingException, FileNotFoundException, IOException{
 		reactionsByGroups.put("standardizationReactions", MReactionSets.standardizationReactions);
-		for(MetabolicReaction mr : MReactionSets.standardizationReactions) {
+		MReactionSets msets = new MReactionSets();
+		for(MetabolicReaction mr : msets.standardizationReactions) {
 			this.reactionsHash.put(mr.name, mr);
 		}
 	}
 	
 	private void setReactionsFilter(){
-		this.mRFilter = new MReactionsFilter(this.bSystem.name);
+		this.mRFilter = new MReactionsFilter(this.bSystem);
 	}
 	
 	public BioSystemName getBioSystemName(){
@@ -396,6 +398,17 @@ public class Biotransformer {
 			filteredReactions = new ArrayList<MetabolicReaction>(this.mRFilter.filterReactions(matchedReactions).values());
 //			System.out.println("Number of reactions after filtering :::: " + filteredReactions.size());
 		}
+
+//		for(MetabolicReaction m : matchedReactions) {
+//			System.out.println(m.getReactionName());
+//		}
+//		System.out.println("matchedReactions : " + matchedReactions.size());
+//		
+//		for(MetabolicReaction f : filteredReactions) {
+//			System.out.println(f.getReactionName());
+//		}
+//		System.out.println("filteredReactions : " + filteredReactions.size());
+		
 //		System.out.println("After filtering: " + this.smiGen.create(starget));
 		for(MetabolicReaction j : filteredReactions){
 //			System.out.println(j.name);
@@ -437,7 +450,7 @@ public class Biotransformer {
 					ArrayList<Enzyme> enzList = new ArrayList<Enzyme>();
 //					j.display();
 					
-					Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(j.name), null, prod, score, this.getBioSystemName());
+					Biotransformation bioT = new Biotransformation(subs, j.name, null, prod, score, this.getBioSystemName());
 					results.add(bioT);
 				}
 			}	
@@ -526,7 +539,7 @@ public class Biotransformer {
 					prod.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 				}
 				
-				Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(reaction.name), null, prod, score, this.getBioSystemName() );
+				Biotransformation bioT = new Biotransformation(subs, reaction.name, null, prod, score, this.getBioSystemName() );
 				results.add(bioT);
 			}
 		}	
@@ -656,12 +669,23 @@ public class Biotransformer {
 				matchedReactions.add(i);
 			}
 		}
-
+		
+		
 		if(filter == false){
 			filteredReactions = matchedReactions;	
 		} else{
 			filteredReactions = new ArrayList<MetabolicReaction>(this.mRFilter.filterReactions(matchedReactions).values());
 		}
+		
+//		for(MetabolicReaction m : matchedReactions) {
+//			System.out.println(m.getReactionName());
+//		}
+//		System.out.println("matchedReactions : " + matchedReactions.size());
+//		
+//		for(MetabolicReaction f : filteredReactions) {
+//			System.out.println(f.getReactionName());
+//		}
+//		System.out.println("filteredReactions : " + filteredReactions.size());
 		
 //		System.out.println("Applying " + filteredReactions.size() + " out of " + matchedReactions.size() + " reactions");
 		
@@ -766,7 +790,7 @@ public class Biotransformer {
 
 	}	
 
-	public ArrayList<Biotransformation> metabolizeWithEnzyme(IAtomContainer substrate, EnzymeName enz, boolean preprocess, boolean filter, double threshold) throws Exception {
+	public ArrayList<Biotransformation> metabolizeWithEnzyme(IAtomContainer substrate, String enz, boolean preprocess, boolean filter, double threshold) throws Exception {
 		IAtomContainer clonedSubs = substrate.clone();
 		
 //		if(preprocess){
@@ -806,21 +830,21 @@ public class Biotransformer {
 		}
 		
 //		System.out.println(this.smiGen.create(clonedSub));
-		if(this.bSystem.getEnzymeHash().containsKey(EnzymeName.valueOf(enzyme.getName()))){
+		if(this.bSystem.getEnzymeHash().containsKey(enzyme.getName())){
 			ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 			ArrayList<ChemicalClassName> chemClasses = ChemicalClassFinder.AssignChemicalClasses(clonedSub);
 //			System.err.println("chemClasses :"+ chemClasses);	
-			if(this.esspredictor.isValidSubstrate( clonedSub, EnzymeName.valueOf(enzyme.getName()), chemClasses)){
+			if(this.esspredictor.isValidSubstrate( clonedSub, enzyme.getName(), chemClasses)){
 //				System.out.println(enzyme.getName());
 				biotransformations = this.applyReactionsAndReturnBiotransformations(substrate, enzyme.getReactionSet(), preprocess, filter, threshold);
 //				System.out.println(biotransformations.size());
 				for(Biotransformation bt : biotransformations){
 					if(bt.getEnzymeNames() == null || bt.getEnzymeNames().isEmpty()){
-						ArrayList<EnzymeName> elist = new ArrayList<EnzymeName>();
-						elist.add(EnzymeName.valueOf(enzyme.getName()));
+						ArrayList<String> elist = new ArrayList<String>();
+						elist.add(String.valueOf(enzyme.getName()));
 						bt.setEnzymeNames(elist);
 					} else{
-						bt.getEnzymeNames().add(EnzymeName.valueOf(enzyme.getName()));
+						bt.getEnzymeNames().add(enzyme.getName());
 					}
 				}
 			}			
@@ -854,19 +878,19 @@ public class Biotransformer {
 			}
 		}
 
-//		if(this.bSystem.getEnzymeHash().containsKey(EnzymeName.valueOf(enzyme.getName()))){
+//		if(this.bSystem.getEnzymeHash().containsKey(enzyme.getName())){
 //			ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
-//			if(this.esspredictor.isValidSubstrate(substrate, EnzymeName.valueOf(enzyme.getName()))){
+//			if(this.esspredictor.isValidSubstrate(substrate, enzyme.getName())){
 ////				System.out.println("metabolite of: " + enzyme.getName());
 //				
 //				biotransformations = this.applyReactionsChainAndReturnBiotransformations(clonedSub, enzyme.getReactionSet(), preprocess, filter, nrOfSteps,threshold);
 //				for(Biotransformation bt : biotransformations){
 //					if(bt.getEnzymeNames() == null || bt.getEnzymeNames().isEmpty()){
-//						ArrayList<EnzymeName> elist = new ArrayList<EnzymeName>();
-//						elist.add(EnzymeName.valueOf(enzyme.getName()));
+//						ArrayList<String> elist = new ArrayList<String>();
+//						elist.add(enzyme.getName());
 //						bt.setEnzymeNames(elist);
 //					} else{
-//						bt.getEnzymeNames().add(EnzymeName.valueOf(enzyme.getName()));
+//						bt.getEnzymeNames().add(enzyme.getName());
 //					}
 //				}
 //			}			
@@ -900,7 +924,7 @@ public class Biotransformer {
 //	
 //	}
 	
-	public boolean isValidSubstrate(IAtomContainer target, EnzymeName enzymeName) throws Exception{		
+	public boolean isValidSubstrate(IAtomContainer target, String enzymeName) throws Exception{		
 		return esspredictor.isValidSubstrate(target, enzymeName);		
 	}
 	
@@ -910,8 +934,8 @@ public class Biotransformer {
 			ArrayList<Enzyme> enzymes, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
 			ArrayList<Biotransformation> results = new ArrayList<Biotransformation>();
 			ArrayList<Enzyme> metabolizingEnzymes = new ArrayList<Enzyme>();
-			LinkedHashMap<ReactionName, ArrayList<EnzymeName>> reactToEnzymes = new LinkedHashMap<ReactionName, ArrayList<EnzymeName>>();
-			LinkedHashMap<ReactionName, MetabolicReaction> reactions = new LinkedHashMap<ReactionName, MetabolicReaction>();
+			LinkedHashMap<String, ArrayList<String>> reactToEnzymes = new LinkedHashMap<String, ArrayList<String>>();
+			LinkedHashMap<String, MetabolicReaction> reactions = new LinkedHashMap<String, MetabolicReaction>();
 			ArrayList<MetabolicReaction> matchedReactions = new ArrayList<MetabolicReaction>();
 //			IAtomContainer starget = ChemStructureManipulator.standardizeMoleculeWithCopy(target, preprocess);
 			IAtomContainer starget = target.clone();
@@ -956,7 +980,7 @@ public class Biotransformer {
 //			System.err.println("chemClasses :"+ chemClasses);
 			
 			for(Enzyme enz : enzymes){
-				if(esspredictor.isValidSubstrate(starget, EnzymeName.valueOf(enz.getName()), chemClasses)){
+				if(esspredictor.isValidSubstrate(starget, enz.getName(), chemClasses)){
 					metabolizingEnzymes.add(enz);
 //					System.out.println(enz.getName());
 				}
@@ -971,19 +995,20 @@ public class Biotransformer {
 					
 					if(ChemStructureExplorer.compoundMatchesReactionConstraints(m, starget)){
 //						System.out.println(m.getReactionName());
-						if(reactToEnzymes.get( ReactionName.valueOf(m.getReactionName()) ) == null){
-							reactToEnzymes.put(ReactionName.valueOf(m.getReactionName()), new ArrayList<EnzymeName>());
-							reactToEnzymes.get(ReactionName.valueOf(m.getReactionName())).add(EnzymeName.valueOf(enzy.getName()));
+						if(reactToEnzymes.get( m.getReactionName() ) == null){
+							reactToEnzymes.put(m.getReactionName(), new ArrayList<String>());
+							reactToEnzymes.get(m.getReactionName()).add(enzy.getName());
 						}
 						else{
-							reactToEnzymes.get(ReactionName.valueOf(m.getReactionName())).add(EnzymeName.valueOf(enzy.getName()));
+							reactToEnzymes.get(m.getReactionName()).add(enzy.getName());
 						}
-						reactions.put(ReactionName.valueOf(m.getReactionName()), m);	
+						reactions.put(m.getReactionName(), m);	
 						matchedReactions.add(m);
 					}					
 				}			
 			}
 				
+		
 			ArrayList<MetabolicReaction> filteredReactions = new ArrayList<MetabolicReaction>();
 		
 			if(filter == false){
@@ -993,22 +1018,22 @@ public class Biotransformer {
 //				System.out.println(a);
 				filteredReactions = new ArrayList<MetabolicReaction>(this.mRFilter.filterReactions(matchedReactions).values());
 			}
-
-//			System.out.println("Number of matching reactions for " + metabolizingEnzymes.size() + " metabolizing enzymes: " + matchedReactions.size());
-//			
-//			for(MetabolicReaction rn : matchedReactions){
-//				System.out.println(rn.name);
+			
+//			for(MetabolicReaction m : matchedReactions) {
+//				System.out.println(m.getReactionName());
 //			}
+//			System.out.println("matchedReactions : " + matchedReactions.size());
 //			
-//			System.out.println("Number of reactions after filtering: " + filteredReactions.size());		
+//			for(MetabolicReaction f : filteredReactions) {
+//				System.out.println(f.getReactionName());
+//			}
+//			System.out.println("filteredReactions : " + filteredReactions.size());
 			
-//			for(MetabolicReaction frn : filteredReactions){
-//				System.err.println(frn == null);
-//			}			
-			
-			
+//			System.out.println("Number of matching reactions for " + metabolizingEnzymes.size() + " metabolizing enzymes: " + matchedReactions.size());
+
+						
 			for(MetabolicReaction j : filteredReactions){
-//				System.out.println(j.name);
+//				System.out.println(j.toString());
 				
 				IAtomContainer n = this.smiParser.parseSmiles(this.smiGen.create(starget));
 				IAtomContainerSet partialSet = this.generateAllMetabolitesFromAtomContainer(n, j, true);
@@ -1055,7 +1080,7 @@ public class Biotransformer {
 						}
 										
 						ArrayList<Enzyme> enzList = new ArrayList<Enzyme>();
-						Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(j.name), reactToEnzymes.get(ReactionName.valueOf(j.name)), prod, score, this.getBioSystemName());
+						Biotransformation bioT = new Biotransformation(subs, j.name, reactToEnzymes.get(j.name), prod, score, this.getBioSystemName());
 //						bioT.display();
 						results.add(bioT);
 					}
@@ -1077,9 +1102,9 @@ public class Biotransformer {
 	}
 	
 //	public ArrayList<Biotransformation> metabolizeWithEnzymes(IAtomContainer target,
-//		ArrayList<EnzymeName> enzymeNames, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
+//		ArrayList<String> enzymeNames, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
 //		ArrayList<Biotransformation> results = new ArrayList<Biotransformation>();
-//		for(EnzymeName enz : enzymeNames){
+//		for(String enz : enzymeNames){
 //			results.addAll(metabolizeWithEnzyme(target, enz, preprocess, filter, scoreThreshold) );		
 //		}
 //		return results;
@@ -1213,7 +1238,7 @@ public class Biotransformer {
 					prods.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
 				}
 				
-				Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(reaction.name), null, prods, score, this.getBioSystemName() );
+				Biotransformation bioT = new Biotransformation(subs, reaction.name, null, prods, score, this.getBioSystemName() );
 				results.add(bioT);
 			}
 		}
@@ -1241,6 +1266,7 @@ public class Biotransformer {
 				matchedReactions.add(i);
 			}
 		}		
+		
 		if(filter == false){
 			filteredReactions = matchedReactions;		
 		} else{
@@ -1248,6 +1274,15 @@ public class Biotransformer {
 //			System.out.println("Number of reactions after filtering: " + filteredReactions.size());
 		}
 		
+		for(MetabolicReaction m : matchedReactions) {
+			System.out.println(m.getReactionName());
+		}
+		System.out.println("matchedReactions : " + matchedReactions.size());
+		
+		for(MetabolicReaction f : filteredReactions) {
+			System.out.println(f.getReactionName());
+		}
+		System.out.println("filteredReactions : " + filteredReactions.size());
 
 		for(MetabolicReaction mreact : reactions) {
 			
@@ -1509,7 +1544,7 @@ public class Biotransformer {
 			//					r.add(b.getReactionType().toString() + " (" + StringUtils.join(b.getEnzymeNames(), ", ") + ")");
 						ArrayList<String> enzymes = new ArrayList<String>();
 										
-						for(EnzymeName en : b.getEnzymeNames()){
+						for(String en : b.getEnzymeNames()){
 			//						System.out.println(en);
 							if(en.toString().contains("EC_")){
 								enzymes.add(en.toString().replace("EC_", "EC ").replaceAll("_", ".")) ;
@@ -1723,7 +1758,7 @@ public class Biotransformer {
 	}
 
 	public ArrayList<Biotransformation> applyPathwaySpecificBiotransformationChain(IAtomContainer target,
-			MPathwayName pathwayName, boolean preprocess, boolean filter, int nr_of_steps) throws Exception{
+			String pathwayName, boolean preprocess, boolean filter, int nr_of_steps) throws Exception{
 		
 		return applyPathwaySpecificBiotransformationsChain(target, pathwayName, preprocess, filter,  nr_of_steps, 0.0);
 
@@ -1771,7 +1806,7 @@ public class Biotransformer {
 	/**
 	 * Predicts the metabolism of a compound for a specific pathway, and returns metabolites with a minimal given score threshold.
 	 * @param target - An AtomContainer that represent a chemical compound
-	 * @param pathwayName - the name of a MetabolicPathway object. It must belong to the MPathwayName enum.
+	 * @param pathwayName - the name of a MetabolicPathway object.
 	 * @param preprocess - specifies whether the compounds must be pre-processed.
 	 * @param filter - specifies whether the reactions should be filtered, according to priority rules.
 	 * @param scoreThreshold - the minimal score that a metabolite must have to be returned.
@@ -1780,7 +1815,7 @@ public class Biotransformer {
 	 *  			  : Throws an Exception
 	 */
 	public ArrayList<Biotransformation> applyPathwaySpecificBiotransformations(IAtomContainer target,
-	MPathwayName pathwayName, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
+	String pathwayName, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		
 		
@@ -1800,7 +1835,7 @@ public class Biotransformer {
 	/**
 	 * Predicts the metabolism of a compound for a specific pathway, and returns metabolites with a minimal given score threshold.
 	 * @param targets - A set of chemical compounds
-	 * @param pathwayName - the name of a MetabolicPathway object. It must belong to the MPathwayName enum.
+	 * @param pathwayName - the name of a MetabolicPathway object.
 	 * @param preprocess - specifies whether the compounds must be pre-processed.
 	 * @param filter - specifies whether the reactions should be filtered, according to priority rules.
 	 * @param scoreThreshold - the minimal score that a metabolite must have to be returned.
@@ -1810,7 +1845,7 @@ public class Biotransformer {
 	 */	
 	
 	public ArrayList<Biotransformation> applyPathwaySpecificBiotransformations(IAtomContainerSet targets,
-	MPathwayName pathwayName, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
+	String pathwayName, boolean preprocess, boolean filter, Double scoreThreshold) throws Exception{
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		IAtomContainerSet readyTargets = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
 		
@@ -1841,7 +1876,7 @@ public class Biotransformer {
 	
 	
 	public ArrayList<Biotransformation> applyPathwaySpecificBiotransformationsChain(IAtomContainerSet targets,
-			MPathwayName pathwayName, boolean preprocess, boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
+			String pathwayName, boolean preprocess, boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
 		
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		IAtomContainerSet containers = targets;
@@ -1872,7 +1907,7 @@ public class Biotransformer {
 			
 	
 	public ArrayList<Biotransformation> applyPathwaySpecificBiotransformationsChain(IAtomContainer target,
-			MPathwayName pathwayName, boolean preprocess, boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
+			String pathwayName, boolean preprocess, boolean filter, int nr_of_steps, Double scoreThreshold) throws Exception{
 		ArrayList<Biotransformation> biotransformations = new ArrayList<Biotransformation>();
 		IAtomContainerSet targets = DefaultChemObjectBuilder.getInstance().newInstance(IAtomContainerSet.class);
 		targets.addAtomContainer(target);

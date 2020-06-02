@@ -26,8 +26,8 @@ import biotransformer.biomolecule.Enzyme;
 public class MetabolicPathway {
 	
 	private String  name;
-	private ArrayList<Enzyme.EnzymeName> enzymeList;
-	private LinkedHashMap<Enzyme.EnzymeName,Enzyme> enzymes;
+	private ArrayList<String> enzymeList;
+	private LinkedHashMap<String,Enzyme> enzymes;
 	private BioSystem bSystem;
 	
 	
@@ -51,12 +51,12 @@ public class MetabolicPathway {
 //	}
 	
 	public MetabolicPathway(MPathwayName pathwayName, BioSystem bsys) {
-		// TODO Auto-generated constructor stub
-		
-		
-		
+		// TODO Auto-generated constructor stub	
 	}	
-	
+
+	public MetabolicPathway(String pathwayName, BioSystem bsys) {
+		// TODO Auto-generated constructor stub	
+	}
 	
 	public void filterEnzymesAndReactions(){
 	//	takes the pathway's list of enzymes from the database, and remove the ones that do not occur in the current biosystem,

@@ -29,7 +29,6 @@ import org.openscience.cdk.silent.SilentChemObjectBuilder;
 
 import ambit2.smarts.SMIRKSReaction;
 import biotransformer.biomolecule.Enzyme;
-import biotransformer.biomolecule.Enzyme.EnzymeName;
 import biotransformer.transformation.MRPatterns;
 import biotransformer.transformation.MRPatterns.ReactionName;
 import ambit2.smarts.SMIRKSManager;
@@ -38,7 +37,7 @@ import ambit2.smarts.SMIRKSManager;
 /**
  * The first reactantsSMARTS is the main one, for which indices might be
  * retrieved to apply position-specific transformations. The subsequent SMARTS
- * (negativeReactantsSMARTS) will be checked just to match further constraints.
+ * (excludedReactantsSMARTS) will be checked just to match further constraints.
  * For instance, long-chain fatty acids must NOT match the pattern of
  * very-long-chain fatty acids. This combination of SMARTS patterns could be
  * replaced in favor of MARKUSH formats. Because we are using CDK, we rather
@@ -52,7 +51,7 @@ public class MetabolicReaction {
 	public String				commonName;
 	public String				reactionsBTMRID;
 	private ArrayList<String>	reactantsSMARTS			= new ArrayList<String>();
-	private ArrayList<String>	negativeReactantsSMARTS	= new ArrayList<String>();
+	private ArrayList<String>	excludedReactantsSMARTS	= new ArrayList<String>();
 	private String				productsSMARTS;
 	private String				reactionSMIRKS;
 	private String				reactionSMIRKS_text;
@@ -61,92 +60,111 @@ public class MetabolicReaction {
 	private ArrayList<Enzyme>	catalyzingEnzymes 		= new ArrayList<Enzyme>();
 
 	public static void main (String[] args){
-		MetabolicReaction m = new MetabolicReaction(ReactionName.AZIDE_STANDARDIZATION);
-		m.display();
-	}
-	
-	
-	
-	
-	public MetabolicReaction(ReactionName r_name) {
-		SMIRKSManager smrkMan = new SMIRKSManager(SilentChemObjectBuilder.getInstance());
-		this.name = r_name.toString();
-		this.reactionSMIRKS = MRPatterns.setOfSMIRKS.get(name);
-
-		for (String smarts : MRPatterns.setOfReactantSMARTS.get(name)) {
-			if (!(smarts.trim().isEmpty())) {
-				this.reactantsSMARTS.add(smarts);
-			}
-		}
-
-		if (!(MRPatterns.setOfNetgativeReactantSMARTS.get(r_name.toString()) == null)) {
-			for (String n_smarts : MRPatterns.setOfNetgativeReactantSMARTS.get(name)) {
-				if (!(n_smarts.trim().isEmpty())) {
-					this.negativeReactantsSMARTS.add(n_smarts);
-				}
-			}
-		}
-		this.smirksReaction = smrkMan.parse(reactionSMIRKS);
 
 	}
+	
+	
+//	public MetabolicReaction(String r_name) {
+//		SMIRKSManager smrkMan = new SMIRKSManager(SilentChemObjectBuilder.getInstance());
+//		this.name = r_name.toString();
+//		this.reactionSMIRKS = MRPatterns.setOfSMIRKS.get(name);
+//
+//		for (String smarts : MRPatterns.setOfReactantSMARTS.get(name)) {
+//			if (!(smarts.trim().isEmpty())) {
+//				this.reactantsSMARTS.add(smarts);
+//			}
+//		}
+//
+//		if (!(MRPatterns.setOfExcludedReactantSMARTS.get(r_name.toString()) == null)) {
+//			for (String n_smarts : MRPatterns.setOfExcludedReactantSMARTS.get(name)) {
+//				if (!(n_smarts.trim().isEmpty())) {
+//					this.excludedReactantsSMARTS.add(n_smarts);
+//				}
+//			}
+//		}
+//		this.smirksReaction = smrkMan.parse(reactionSMIRKS);
+//
+//	}
+//	
+//	public MetabolicReaction(ReactionName r_name) {
+//		SMIRKSManager smrkMan = new SMIRKSManager(SilentChemObjectBuilder.getInstance());
+//		this.name = r_name.toString();
+//		this.reactionSMIRKS = MRPatterns.setOfSMIRKS.get(name);
+//
+//		for (String smarts : MRPatterns.setOfReactantSMARTS.get(name)) {
+//			if (!(smarts.trim().isEmpty())) {
+//				this.reactantsSMARTS.add(smarts);
+//			}
+//		}
+//
+//		if (!(MRPatterns.setOfExcludedReactantSMARTS.get(r_name.toString()) == null)) {
+//			for (String n_smarts : MRPatterns.setOfExcludedReactantSMARTS.get(name)) {
+//				if (!(n_smarts.trim().isEmpty())) {
+//					this.excludedReactantsSMARTS.add(n_smarts);
+//				}
+//			}
+//		}
+//		this.smirksReaction = smrkMan.parse(reactionSMIRKS);
+//
+//	}
 
 	
 	
-	public MetabolicReaction(ReactionName r_name, String commmonName, String reactionsBTMRID, String reactionSMIRKS, ArrayList<String> reactantsSMARTS, ArrayList<String> negativeReactantsSMARTS, SMIRKSManager smrkMan) {
+	public MetabolicReaction(String r_name, String commmonName, String reactionsBTMRID, String reactionSMIRKS, ArrayList<String> reactantsSMARTS, ArrayList<String> excludedReactantsSMARTS, SMIRKSManager smrkMan) {
 		this.name = r_name.toString();
 		this.commonName = commmonName;
 		this.reactionsBTMRID = reactionsBTMRID;
 		this.reactionSMIRKS = reactionSMIRKS;
 		this.reactantsSMARTS = reactantsSMARTS;
-		this.negativeReactantsSMARTS = negativeReactantsSMARTS;
+		this.excludedReactantsSMARTS = excludedReactantsSMARTS;
 		this.smirksReaction = smrkMan.parse(reactionSMIRKS);
 	}
 
 	
-	public MetabolicReaction(ReactionName r_name, String commmonName, String reactionSMIRKS, ArrayList<String> reactantsSMARTS, ArrayList<String> negativeReactantsSMARTS, SMIRKSManager smrkMan) {
+	public MetabolicReaction(String r_name, String commmonName, String reactionSMIRKS, ArrayList<String> reactantsSMARTS, ArrayList<String> excludedReactantsSMARTS, SMIRKSManager smrkMan) {
 		this.name = r_name.toString();
 		this.commonName = commmonName;
 		this.reactionSMIRKS = reactionSMIRKS;
 		this.reactantsSMARTS = reactantsSMARTS;
-		this.negativeReactantsSMARTS = negativeReactantsSMARTS;
+		this.excludedReactantsSMARTS = excludedReactantsSMARTS;
 		this.smirksReaction = smrkMan.parse(reactionSMIRKS);
 	}
 	
-	public MetabolicReaction(ReactionName r_name, String reactionSMIRKS, ArrayList<String> reactantsSMARTS, ArrayList<String> negativeReactantsSMARTS, SMIRKSManager smrkMan) {
+	public MetabolicReaction(ReactionName r_name, String reactionSMIRKS, ArrayList<String> reactantsSMARTS, ArrayList<String> excludedReactantsSMARTS, SMIRKSManager smrkMan) {
 		this.name = r_name.toString();
 		this.reactionSMIRKS = reactionSMIRKS;
 		this.reactantsSMARTS = reactantsSMARTS;
-		this.negativeReactantsSMARTS = negativeReactantsSMARTS;
+		this.excludedReactantsSMARTS = excludedReactantsSMARTS;
 		this.smirksReaction = smrkMan.parse(reactionSMIRKS);
 	}
 	
-	public MetabolicReaction(String smirks) {
-		SMIRKSManager smrkMan = new SMIRKSManager(SilentChemObjectBuilder.getInstance());
-		reactionSMIRKS = smirks;
-		smirksReaction = smrkMan.parse(reactionSMIRKS);
-	}
+//	public MetabolicReaction(String smirks) {
+//		SMIRKSManager smrkMan = new SMIRKSManager(SilentChemObjectBuilder.getInstance());
+//		reactionSMIRKS = smirks;
+//		smirksReaction = smrkMan.parse(reactionSMIRKS);
+//	}
 
-	public MetabolicReaction(ReactionName r_name, SMIRKSManager smrkMan) {
-		name = r_name.toString();
-		reactionSMIRKS = MRPatterns.setOfSMIRKS.get(r_name.toString());
-
-		for (String smarts : MRPatterns.setOfReactantSMARTS.get(r_name.toString())) {
-			if (!(smarts.trim().isEmpty())) {
-				reactantsSMARTS.add(smarts);
-			}
-		}
-
-		if (!(MRPatterns.setOfNetgativeReactantSMARTS.get(r_name.toString()) == null)) {
-			for (String n_smarts : MRPatterns.setOfNetgativeReactantSMARTS.get(r_name.toString())) {
-				if (!(n_smarts.trim().isEmpty())) {
-					negativeReactantsSMARTS.add(n_smarts);
-				}
-			}
-		}
-
-		smirksReaction = smrkMan.parse(reactionSMIRKS);
-
-	}
+//	public MetabolicReaction(ReactionName r_name, SMIRKSManager smrkMan) {
+//		name = r_name.toString();
+//		reactionSMIRKS = MRPatterns.setOfSMIRKS.get(r_name.toString());
+//
+//		for (String smarts : MRPatterns.setOfReactantSMARTS.get(r_name.toString())) {
+//			if (!(smarts.trim().isEmpty())) {
+//				reactantsSMARTS.add(smarts);
+//			}
+//		}
+//
+//		if (!(MRPatterns.setOfExcludedReactantSMARTS.get(r_name.toString()) == null)) {
+//			for (String n_smarts : MRPatterns.setOfExcludedReactantSMARTS.get(r_name.toString())) {
+//				if (!(n_smarts.trim().isEmpty())) {
+//					excludedReactantsSMARTS.add(n_smarts);
+//				}
+//			}
+//		}
+//
+//		smirksReaction = smrkMan.parse(reactionSMIRKS);
+//
+//	}
 
 	public MetabolicReaction(String smirks, SMIRKSManager smrkMan) {
 		reactionSMIRKS = smirks;
@@ -157,8 +175,8 @@ public class MetabolicReaction {
 		return this.reactantsSMARTS;
 	}
 
-	public ArrayList<String> getNegativeReactantsSMARTS() {
-		return this.negativeReactantsSMARTS;
+	public ArrayList<String> getExcludedReactantsSMARTS() {
+		return this.excludedReactantsSMARTS;
 	}	
 	
 	public String getBTRMID(){
@@ -204,19 +222,23 @@ public class MetabolicReaction {
 		return description;
 	}
 	
-	public void display(){
-		System.out.println(String.format("%-20s\t%-25s","Name:",this.name));
-		System.out.println(String.format("%-30s\t%-35s","Common name:",this.commonName));
-		System.out.println(String.format("%-20s\t%-150s","SMIRKS:",this.reactionSMIRKS));
+	@Override
+	public String toString(){
+		String representation = "";
+		representation += String.format("%-20s\t%-25s\n","Name:", this.name);
+		representation += String.format("%-30s\t%-35s\n","Common name:", this.commonName);
+		representation += String.format("%-20s\t%-300s\n","SMIRKS:", this.reactionSMIRKS);
+		representation += String.format("%-20s", "reactantsSMARTS:") + this.reactantsSMARTS + "\n";
+		representation += String.format("%-30s", "excludedReactantsSMARTS:") + this.excludedReactantsSMARTS + "\n";
 		if(this.reactionsBTMRID !=null){
-			System.out.println(String.format("%-20s\t%-25s","btmrID:",this.reactionsBTMRID));
+			representation += String.format("%-20s\t%-25s\n","btmrID:", this.reactionsBTMRID);
 		}
 //		System.out.print(String.format("%-20s\t","Catalyzing enzymes:"));		
 //		for(Enzyme enz : this.catalyzingEnzymes){
 //			System.out.print(String.format("%-7s, ",enz.getName()));
 //		}		
 		
-		System.out.print("\n");
+		return representation;
 	}
 	
 	

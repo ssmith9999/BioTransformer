@@ -10,7 +10,7 @@ To use the environmental microbial module for commercial purposes, users must re
 
 ***************************************************************************************************
 
-This is version 1.1.7 of BioTransformer. BioTransformer is a software tool that predicts small molecule metabolism in mammals, their gut microbiota, as well as the soil/aquatic microbiota. BioTransformer also assists scientists in metabolite identification, based on the metabolism prediction. Please make sure to download the folders database and supportfiles, and save them in the same folder as the .jar file.
+This is version 1.1.8 of BioTransformer. BioTransformer is a software tool that predicts small molecule metabolism in mammals, their gut microbiota, as well as the soil/aquatic microbiota. BioTransformer also assists scientists in metabolite identification, based on the metabolism prediction. Please make sure to download the folders database and supportfiles, and save them in the same folder as the .jar file.
 
 BioTransformer is offered to the public as a freely acessible software package under the GNU GPL, version 2 license. Users are free to copy and redistribute the material in any medium or format. Moreover, they could modify, and build upon the material unfer the condition that they must give appropriate credit, provide links to the license, and indicate if changes were made. Furthermore, the above copyright notice and this permission notice must be included. Use and re-distribution of the these resources, in whole or in part, for commercial purposes requires explicit permission of the authors. We ask that all users of the BioTransformer software tool, the BioTransformer web server, or BioTransformerDB to cite the BioTransformer reference in any resulting publications, and to acknowledge the authors.
 
@@ -18,7 +18,7 @@ BioTransformer is offered to the public as a freely acessible software package u
 ### Cite:
 
 1. Djoumbou Feunang Y, Fiamoncini J, de la Fuente AG, Manach C, Greiner R, and Wishart DS; BioTransformer: A Comprehensive Computational Tool for Small Molecule Metabolism Prediction and Metabolite Identification; Journal of Cheminformatics; (2019) 11:2; DOI: 10.1186/s13321‐018‐0324‐5.
-2. enviPath–The environmental contaminant biotransformation pathway resource. J Wicker, T Lorsbach, M Gütlein, E Schmid, D Latino, S Kramer, K Fenner. Nucleic Acids Research, gkv1229 (full text).
+2. enviPath–The environmental contaminant biotransformation pathway resource. J Wicker, T Lorsbach, M Gütlein, E Schmid, D Latino, S Kramer, K Fenner. Nucleic Acids Research, 4;44(D1):D502-8; DOI:10.1093/nar/gkv1229.
 
 
 ### Contact
@@ -28,10 +28,10 @@ To report issues, provide feedback, or ask questions, please send ane-mail the f
 ***************************************************************************************************
 
 Usage:
-java -jar biotransformer-1.1.7.jar -k <BioTransformer Task> -b <BioTransformer Option> [-ismi, -imol, or -isdf <Input file>] 
+java -jar biotransformer-1.1.8.jar -k <BioTransformer Task> -b <BioTransformer Option> [-ismi, -imol, or -isdf <Input file>] 
        [-imol, or -isdf <Output>] [-s <Number of steps>] [-a <Annotate>] [-m <Masses>] [-r <Masses>] [-f <Formulas>] [-q <Sequence>]
 
-This is the version 1.1.7 of BioTransformer. BioTransformer is a software
+This is the version 1.1.8 of BioTransformer. BioTransformer is a software
 tool that predicts small molecule metabolism in mammals, their gut
 microbiota, as well as the soil/aquatic microbiota. BioTransformer also assists scientists in metabolite identification, based on the metabolism prediction.
 
@@ -103,23 +103,23 @@ Examples:
 
 1) To predict the biotransformation of a molecule from an SDF input using the human super transformer (option superbio) and annotate the metabolites with names and database IDs (from PubChem), run
 
-      java -jar biotransformer-1.1.7.jar -k pred -b superbio -isdf -i #{input file name} -osdf #{output file} -a.
+      java -jar biotransformer-1.1.8.jar -k pred -b superbio -isdf -i #{input file name} -osdf #{output file} -a.
 
 2) To predict the 2-step biotransformation of Thymol (a monoterpene) using the human super transformer (option allHuman) using the SMILES input and saving to a CSV file, run
 
-      java -jar biotransformer-1.1.7.jar  -k pred -b allHuman -ismi "CC(C)C1=CC=C(C)C=C1O" -ocsv #{replace with output file name} -s 2
+      java -jar biotransformer-1.1.8.jar  -k pred -b allHuman -ismi "CC(C)C1=CC=C(C)C=C1O" -ocsv #{replace with output file name} -s 2
 
 Currently, the outputfile is SDF per default.
 
 3) Identify all human metabolites (max depth = 2) of Epicatechin ("O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1") with masses 292.0946 Da and 304.0946 Da, with a mass tolerance of 0.01 Da. Provide an annotation (Common name, synonyms, and PubChem CID), when available.
 
-      java -jar biotransformer-1.1.7.jar  -k cid -b allHuman -ismi "O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1" -osdf #{replace with output file name} -s 2 -m "292.0946;304.0946" -t 0.01 -a
+      java -jar biotransformer-1.1.8.jar  -k cid -b allHuman -ismi "O[C@@H]1CC2=C(O)C=C(O)C=C2O[C@@H]1C1=CC=C(O)C(O)=C1" -osdf #{replace with output file name} -s 2 -m "292.0946;304.0946" -t 0.01 -a
     
     - DO NOT forget the quotes around the SMILES string or the list of masses.
 
 4) Simulate an order sequence of metabolism of Atrazine ("CCNC1=NC(=NC(=N1)Cl)NC(C)C"), starting with two steps of Cyp450 oxidation, followed by one step of conjugation.
 
-	java -jar biotransformer-1.1.7.jar -ismi "CCNC1=NC(=NC(=N1)Cl)NC(C)C" -osdf ~/atrazine-sequence.sdf -k pred -q "cyp450:2; phaseII:1"
+	java -jar biotransformer-1.1.8.jar -ismi "CCNC1=NC(=NC(=N1)Cl)NC(C)C" -osdf ~/atrazine-sequence.sdf -k pred -q "cyp450:2; phaseII:1"
 To report issues, provide feedback, or ask questions, please send an
 e-mail the following address: djoumbou@ualberta.ca
 

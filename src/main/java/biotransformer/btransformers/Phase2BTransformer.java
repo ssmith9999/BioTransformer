@@ -12,7 +12,11 @@ import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.LinkedHashMap;
 
+import org.codehaus.jackson.JsonGenerationException;
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.simple.parser.ParseException;
 import org.openscience.cdk.AtomContainerSet;
 import org.openscience.cdk.CDKConstants;
@@ -27,7 +31,6 @@ import org.openscience.cdk.tools.manipulator.AtomContainerManipulator;
 
 import ambit2.smarts.query.SMARTSException;
 import biotransformer.biomolecule.Enzyme;
-import biotransformer.biomolecule.Enzyme.EnzymeName;
 import biotransformer.biosystems.BioSystem.BioSystemName;
 import biotransformer.esaprediction.ESSpecificityPredictor;
 import biotransformer.transformation.Biotransformation;
@@ -37,7 +40,8 @@ import biotransformer.utils.ChemStructureExplorer;
 import biotransformer.utils.ChemStructureManipulator;
 import biotransformer.utils.ChemicalClassFinder;
 import biotransformer.utils.Utilities;
-import predicition.P2Filter;
+import exception.BioTransformerException;
+import phase2filter.prediction.P2Filter;;
 
 /**
  * @author Yannick Djoumbou Feunang
@@ -53,13 +57,17 @@ public class Phase2BTransformer extends Biotransformer{
 	 */
 	P2Filter p2Filter = null;
 	
-	public Phase2BTransformer(BioSystemName bioSName) throws IOException, ParseException, CDKException {
+	public Phase2BTransformer(BioSystemName bioSName) throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException {
 		super(bioSName);
 		setPhase2EnzymesAndReactionList();
 		if(this.getBioSystemName() == BioSystemName.HUMAN){
-			this.p2Filter = new P2Filter();
+//			this.p2Filter = new P2Filter();
+			this.p2Filter = new P2Filter((LinkedHashMap<String, Object>) this.bSystem.mlmodels.get("P2Filter"));
+//			System.out.println("this.p2Filter : " + this.p2Filter.properties);
 		}
-//		System.out.println(this.enzymesByreactionGroups);
+		
+//		printStatistics();
 		// TODO Auto-generated constructor stub
 	}
 	
@@ -67,8 +75,11 @@ public class Phase2BTransformer extends Biotransformer{
 	 * Create a list of Phase 2 enzymes for the corresponding biosystem, and group reactions into 
 	 * different conjugation types (i.e. glucuronidation, sulfonation, methylation, acetylation, and glutathione
 	 * transfer).
+	 * @throws IOException 
+	 * @throws JsonMappingException 
+	 * @throws JsonGenerationException 
 	 */
-	private void setPhase2EnzymesAndReactionList(){
+	private void setPhase2EnzymesAndReactionList() throws JsonGenerationException, JsonMappingException, IOException{
 		
 		this.enzymesByreactionGroups.put("Glucuronidation", new ArrayList<Enzyme>());
 		this.enzymesByreactionGroups.put("Sulfonation", new ArrayList<Enzyme>());
@@ -77,15 +88,18 @@ public class Phase2BTransformer extends Biotransformer{
 		this.enzymesByreactionGroups.put("Glutathione Transfer", new ArrayList<Enzyme>());
 		this.enzymesByreactionGroups.put("Glycine Transfer", new ArrayList<Enzyme>());
 
-		
-		
+			
 		this.reactionsByGroups.put("Glucuronidation", new ArrayList<MetabolicReaction>());
 		this.reactionsByGroups.put("Sulfonation", new ArrayList<MetabolicReaction>());
 		this.reactionsByGroups.put("Acetylation", new ArrayList<MetabolicReaction>());
 		this.reactionsByGroups.put("Methylation", new ArrayList<MetabolicReaction>());
 		this.reactionsByGroups.put("Glutathione Transfer", new ArrayList<MetabolicReaction>());
 		this.reactionsByGroups.put("Glycine Transfer", new ArrayList<MetabolicReaction>());
-		 
+		
+//		System.out.println(mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+//				this.reactionsByGroups));
+//		System.out.println(this.bSystem.getEnzymesList());		
+		
 		if(this.bSystem.name == BioSystemName.HUMAN){
 			for(Enzyme enz : this.bSystem.getEnzymesList()){
 				if(enz.getName().contentEquals("EC_2_4_1_17")){				
@@ -101,6 +115,10 @@ public class Phase2BTransformer extends Biotransformer{
 					this.enzymesByreactionGroups.get("Sulfonation").add(enz);
 //					this.reactionsByGroups.put("Sulfonation", enz.getReactionSet());
 					this.reactionsByGroups.get("Sulfonation").addAll(enz.getReactionSet());
+					
+//					System.err.println("\n\n-------------------------------------" + enz.getName() +"\n"+ enz.getReactionSet());
+//					System.out.println( "Sulfonation\n\n" + 
+//							this.reactionsByGroups.get("Sulfonation"));
 				}
 				else if(enz.getName().contentEquals("EC_2_1_1_6") || enz.getName().contentEquals("EC_2_1_1_9") || 
 						enz.getName().contentEquals("EC_2_1_1_67") ||enz.getName().contentEquals("EC_2_1_1_96")){
@@ -108,19 +126,24 @@ public class Phase2BTransformer extends Biotransformer{
 					this.enzymesByreactionGroups.get("Methylation").add(enz);
 					this.reactionsByGroups.get("Methylation").addAll(enz.getReactionSet());
 //					methylations.addAll(enz.getReactionSet());
-					
+//					System.err.println("\n\n-------------------------------------" + enz.getName() +"\n"+ enz.getReactionSet());
+
 				}
 				else if(enz.getName().contentEquals("ACETYLTRANSFERASE")  || enz.getName().contentEquals("EC_2_3_1_5")){
 					this.enzymesList.add(enz);
 					this.enzymesByreactionGroups.get("Acetylation").add(enz);
 //					this.reactionsByGroups.put("Acetylation", enz.getReactionSet());
 					this.reactionsByGroups.get("Acetylation").addAll(enz.getReactionSet());
+//					System.err.println("\n\n-------------------------------------" + enz.getName() +"\n"+ enz.getReactionSet());
+
 				}
 				else if(enz.getName().contentEquals("EC_2_5_1_18")){
 					this.enzymesList.add(enz);
 					this.enzymesByreactionGroups.get("Glutathione Transfer").add(enz);
 //					this.reactionsByGroups.put("Glutathione Transfer", enz.getReactionSet());
 					this.reactionsByGroups.get("Glutathione Transfer").addAll(enz.getReactionSet());
+//					System.err.println("\n\n-------------------------------------" + enz.getName() +"\n"+ enz.getReactionSet());
+
 				}
 				
 				else if(enz.getName().contentEquals("EC_2_3_1_13")){
@@ -128,10 +151,35 @@ public class Phase2BTransformer extends Biotransformer{
 					this.enzymesByreactionGroups.get("Glycine Transfer").add(enz);
 //					this.reactionsByGroups.put("Glycine Transfer", enz.getReactionSet());
 					this.reactionsByGroups.get("Glycine Transfer").addAll(enz.getReactionSet());
+					
+//					System.err.println(enz.getReactionSet().getClass());				
+//					System.err.println("\n\n-------------------------------------" + enz.getName() +"\n"+ enz.getReactionSet());
+//					System.out.println(
+//							this.reactionsByGroups.get("Glycine Transfer"));
 				}
 
 			}
-						
+////			System.out.println("standardizationReactions : " + mapper.writerWithDefaultPrettyPrinter().writeValueAsString(
+////					this.reactionsByGroups.get("standardizationReactions")));
+//			System.out.println("Glucuronidation : " + 
+//					this.reactionsByGroups.get("Glucuronidation"));
+//
+//			System.out.println("\n--------------------------------------\nSulfonation : " + 
+//					this.reactionsByGroups.get("Sulfonation"));
+//
+//			System.out.println("\n--------------------------------------\nMethylation : " + 
+//					this.reactionsByGroups.get("Methylation"));
+//
+//			System.out.println("\n--------------------------------------\nAcetylation : " + 
+//					this.reactionsByGroups.get("Acetylation"));
+//
+//			System.out.println("\n--------------------------------------\nGlutathione Transfer : " + 
+//					this.reactionsByGroups.get("Glutathione Transfer"));
+//
+//			System.out.println("\n--------------------------------------\nGlycine Transfer : " + 
+//					this.reactionsByGroups.get("Glycine Transfer"));
+//			
+			
 		}else if (this.bSystem.name == BioSystemName.GUTMICRO){
 			for(Enzyme enz : this.bSystem.getEnzymesList()){
 				if(enz.getName().contains("UDP_GLUCURONOSYLTRANSFERASE")){				
@@ -153,13 +201,18 @@ public class Phase2BTransformer extends Biotransformer{
 				}
 			}
 		}
-
+//		System.out.println(this.reactionsByGroups);
+		
 		for(String key : this.reactionsByGroups.keySet()){
-			for(MetabolicReaction mr : this.reactionsByGroups.get(key)){
-				if(! this.reactionsHash.containsKey(mr.getReactionName())){
-					this.reactionsHash.put(mr.getReactionName(), mr);
-				}
+//			System.out.println(key);
+			if( this.reactionsByGroups.get(key) != null) {
+				for(MetabolicReaction mr : this.reactionsByGroups.get(key)){
+					if(! this.reactionsHash.containsKey(mr.getReactionName())){
+						this.reactionsHash.put(mr.getReactionName(), mr);
+					}
+				}				
 			}
+
 		}
 	}
 
@@ -416,7 +469,7 @@ public class Phase2BTransformer extends Biotransformer{
 							Utilities.addPhysicoChemicalProperties(pc);
 							pc.setProperty("Molecular formula", ChemStructureExplorer.getMolecularFormula(pc));
 							prod.addAtomContainer(AtomContainerManipulator.removeHydrogens(pc));
-							Biotransformation bioT = new Biotransformation(subs, ReactionName.valueOf(reaction.name), null, prod, score, this.bSystem.name );
+							Biotransformation bioT = new Biotransformation(subs, reaction.name, null, prod, score, this.bSystem.name );
 							results.add(bioT);
 							
 						}
@@ -568,7 +621,7 @@ public class Phase2BTransformer extends Biotransformer{
 			else
 			{
 				for(Enzyme e : this.enzymesList){
-					if(ess.isValidSubstrate(substrate, EnzymeName.valueOf(e.getName()))){
+					if(ess.isValidSubstrate(substrate, e.getName())){
 						phaseII = true;
 						break;
 					}
@@ -588,7 +641,9 @@ public class Phase2BTransformer extends Biotransformer{
 		boolean phaseII = false;
 		
 		if(this.getBioSystemName() == BioSystemName.HUMAN){
-			phaseII = p2Filter.filter(substrate).get(0) == "T";
+			phaseII = p2Filter.filter(
+					substrate 
+					).get(0) == "T";
 			
 		}
 		else{
@@ -606,7 +661,7 @@ public class Phase2BTransformer extends Biotransformer{
 			{
 				for(Enzyme e : this.enzymesList){
 //					System.out.println(e.getName());
-					if(ess.isValidSubstrate(substrate, EnzymeName.valueOf(e.getName()))){
+					if(ess.isValidSubstrate(substrate, e.getName())){
 						phaseII = true;
 						break;
 					}
@@ -701,6 +756,6 @@ public class Phase2BTransformer extends Biotransformer{
 				+ this.reactionsByGroups.get("Glycine Transfer").size()
 				
 				));
-		System.out.println("Humber of enzyme-biotransformation rules associations: " + count);
+		System.out.println("Number of enzyme-biotransformation rules associations: " + count);
 	}
 }

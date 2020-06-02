@@ -1,10 +1,13 @@
 package biotransformer.utils;
 
+import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
+import org.codehaus.jackson.JsonParseException;
+import org.codehaus.jackson.map.JsonMappingException;
 import org.json.simple.parser.ParseException;
 import org.openscience.cdk.exception.CDKException;
 import org.openscience.cdk.interfaces.IAtomContainer;
@@ -20,14 +23,15 @@ import biotransformer.btransformers.HGutBTransformer;
 import biotransformer.btransformers.Phase2BTransformer;
 import biotransformer.transformation.Biotransformation;
 import biotransformer.transformation.MetabolicReaction;
-import predicition.P2Filter;
+import exception.BioTransformerException;
+import phase2filter.prediction.P2Filter;
 
 public class UniversalBioTransformer {
-	protected ECBasedBTransformer ecb		 		= new ECBasedBTransformer(BioSystemName.HUMAN);
-	protected Cyp450BTransformer cyb 				= new Cyp450BTransformer(BioSystemName.HUMAN);
-	protected HGutBTransformer hgb 					= new HGutBTransformer();
-	protected Phase2BTransformer p2b 				= new Phase2BTransformer(BioSystemName.HUMAN);
-	protected EnvMicroBTransformer emb 				= new EnvMicroBTransformer();
+	protected ECBasedBTransformer ecb;
+	protected Cyp450BTransformer cyb;
+	protected HGutBTransformer hgb;
+	protected Phase2BTransformer p2b;
+	protected EnvMicroBTransformer emb;
 	protected LinkedHashMap<String, LinkedHashMap<String, String>> compoundDictionary		
 													= new LinkedHashMap<String, LinkedHashMap<String, String>>();
 	
@@ -35,12 +39,20 @@ public class UniversalBioTransformer {
 	protected LinkedHashMap<String, MetabolicReaction> combinedReactionsHash							
 													= new LinkedHashMap<String, MetabolicReaction>();
 	
-	public SmilesParser smiParser					= ecb.getSmiParser();
+	public SmilesParser smiParser;
 	public SmilesGenerator smiGen 		= new SmilesGenerator().isomeric();
 	
 	
-	public UniversalBioTransformer() throws IOException, ParseException, CDKException {
+	public UniversalBioTransformer() throws JsonParseException, JsonMappingException, 
+	FileNotFoundException, IOException, BioTransformerException, CDKException {
 
+		ecb			= new ECBasedBTransformer(BioSystemName.HUMAN);
+		cyb 		= new Cyp450BTransformer(BioSystemName.HUMAN);
+		hgb 		= new HGutBTransformer();
+		p2b 		= new Phase2BTransformer(BioSystemName.HUMAN);
+		emb 		= new EnvMicroBTransformer();
+		smiParser	= ecb.getSmiParser();
+		
 		for(Map.Entry<String, MetabolicReaction> m : this.ecb.reactionsHash.entrySet()){
 			if(! this.combinedReactionsHash.containsKey(m.getKey())){
 				this.combinedReactionsHash.put(m.getKey(), m.getValue());

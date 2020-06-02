@@ -1,5 +1,6 @@
 .settings
 /.classpath
+*.jar
 *.project
 *.xml
 *.txt
