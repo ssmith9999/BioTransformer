@@ -5799,8 +5799,172 @@
                 }
               ],
                 "btenz_id" : "BTE0328"
+        },
+                           "EC_4_4_1_13" : {
+            "acceptedName" : "Cysteine-S-conjugate beta-lyase",
+             "description" : "The enzyme cleaves a carbon-sulfur bond, releasing a thiol and an unstable enamine product that tautomerizes to an imine form, which undergoes a hydrolytic deamination to form pyruvate and ammonia. The latter reaction, which can occur spontaneously, can also be catalysed by EC 3.5.99.10",
+              "biosystems" : {
+                "HUMAN" : {
+                           "uniprot_ids" : ["Q16773","Q6YP21"],
+                    "cellular_locations" : []
+                },
+                "GUTMICRO" : {
+                           "uniprot_ids" : ["P53101", "P06721", "P43623","A2RM21"],
+                    "cellular_locations" : []
+                }
+            },
+              "references" : [
+                      {
+                    "Title" : "ENZYME entry: EC 4.4.1.13",
+                     "PMID" : "",
+                    "PMCID" : "",
+                     "ISBN" : "",
+                     "ISSN" : "",
+                      "DOI" : "",
+                      "URL" : "https://enzyme.expasy.org/EC/4.4.1.13"
+                }
+              ],
+                "btenz_id" : "BTE0329"
+        },
+
+                                   "EC_3_4_11_2" : {
+            "acceptedName" : "Membrane alanyl aminopeptidase",
+             "description" : "Release of an N-terminal amino acid, XaaYaa- from a peptide, amide or arylamide. Xaa is preferably Ala, but may be most amino acids including Pro (slow action). When a terminal hydrophobic residue is followed by a prolyl residue, the two may be released as an intact Xaa-Pro dipeptide.",
+              "biosystems" : {
+                "HUMAN" : {
+                           "uniprot_ids" : ["P15144"],
+                    "cellular_locations" : []
+                },
+                "GUTMICRO" : {
+                           "uniprot_ids" : ["Q9CIQ1", "P04825", "P37896", "P0C2T8", "Q48656"],
+                    "cellular_locations" : []
+                }
+            },
+              "references" : [
+                      {
+                    "Title" : "ENZYME entry: EC 3.4.11.2",
+                     "PMID" : "",
+                    "PMCID" : "",
+                     "ISBN" : "",
+                     "ISSN" : "",
+                      "DOI" : "",
+                      "URL" : "https://enzyme.expasy.org/EC/3.4.11.2"
+                }
+              ],
+                "btenz_id" : "BTE0330"
+        },
+
+
+                                   "EC_2_3_2_2" : {
+            "acceptedName" : "Gamma-glutamyltransferase",
+             "description" : "",
+              "biosystems" : {
+                "HUMAN" : {
+                           "uniprot_ids" : ["P36269", "Q9UJ14"],
+                    "cellular_locations" : []
+                },
+                "GUTMICRO" : {
+                           "uniprot_ids" : ["Q05902", "P18956"],
+                    "cellular_locations" : []
+                }
+            },
+              "references" : [
+                      {
+                    "Title" : "IUBMB Enzyme Nomenclature: glutamyl transpeptidase",
+                     "PMID" : "",
+                    "PMCID" : "",
+                     "ISBN" : "",
+                     "ISSN" : "",
+                      "DOI" : "",
+                      "URL" : "https://www.qmul.ac.uk/sbcs/iubmb/enzyme/EC2/3/2/2.html"
+                }
+              ],
+                "btenz_id" : "BTE0331"
+        },
+
+                                   "EC_3_4_3_5" : {
+            "acceptedName" : "cysteinyl-glycine dipeptidase",
+             "description" : "",
+              "biosystems" : {
+                "HUMAN" : {
+                           "uniprot_ids" : [],
+                    "cellular_locations" : []
+                },
+                "GUTMICRO" : {
+                           "uniprot_ids" : [],
+                    "cellular_locations" : []
+                }
+            },
+              "references" : [
+                      {
+                    "Title" : "",
+                     "PMID" : "",
+                    "PMCID" : "",
+                     "ISBN" : "",
+                     "ISSN" : "",
+                      "DOI" : "",
+                      "URL" : ""
+                }
+                     , {
+                    "Title" : "A.J.L. Cooper (2010); Enzymes Involved in Processing Glutathione Conjugates",
+                     "PMID" : "",
+                    "PMCID" : "PMC7173439",
+                     "ISBN" : "",
+                     "ISSN" : "",
+                      "DOI" : "10.1016/B978-0-08-046884-6.00417-6",
+                      "URL" : ""
+                }
+              ],
+                "btenz_id" : "BTE0332"
+        },
+
+                                   "EC_3_4_11_1" : {
+            "acceptedName" : "Leucyl aminopeptidase",
+             "description" : "",
+              "biosystems" : {
+                "HUMAN" : {
+                           "uniprot_ids" : ["P28838"],
+                    "cellular_locations" : []
+                },
+                "GUTMICRO" : {
+                           "uniprot_ids" : ["P68767"],
+                    "cellular_locations" : []
+                }
+            },
+              "references" : [
+                      {
+                    "Title" : "ENZYME entry: EC 3.4.11.1",
+                     "PMID" : "",
+                    "PMCID" : "",
+                     "ISBN" : "",
+                     "ISSN" : "",
+                      "DOI" : "",
+                      "URL" : "https://enzyme.expasy.org/EC/3.4.11.1"
+                }
+              ],
+                "btenz_id" : "BTE0333"
+        },
+                                           "UNSPECIFIED_MICROBIAL_BILE_ACID_AMINO_ACID_N_ACYLTRANSFERASE" : {
+            "acceptedName" : "Uspecified microbial bile acid:amino acid N-acetyltransferase",
+             "description" : "",
+              "biosystems" : {
+                "GUTMICRO" : {
+                           "uniprot_ids" : [],
+                    "cellular_locations" : []
+                }
+            },
+              "references" : [
+                      {
+                    "Title" : "Global chemical effects of the microbiome include new bile-acid conjugations",
+                     "PMID" : "",
+                    "PMCID" : "",
+                     "ISBN" : "",
+                     "ISSN" : "",
+                      "DOI" : "10.1038/s41586-020-2047-9",
+                      "URL" : ""
+                }
+              ],
+                "btenz_id" : "BTE0334"
         }
-
-
   }
 }

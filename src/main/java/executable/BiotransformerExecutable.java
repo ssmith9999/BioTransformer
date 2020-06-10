@@ -77,7 +77,6 @@ public class BiotransformerExecutable {
 				.desc("The task to be permed: pred for prediction, or cid for compound identification ")
 				.build();
 		
-		
 		final Option biotransformerOption = Option.builder("b")
 				.required(false)
 				.hasArg(true)
