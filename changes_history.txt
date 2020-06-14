@@ -1,4 +1,8 @@
-v2.2.0  (Major)
+v2.0.1
+========
+1) Cleaned code, and database.
+
+v2.0.0  (Major)
 ===============
 1) Decoupled the knowledge base from the source code. Users can now include their own versions of the different tables (in .json files). Each of the covered biosystem must have at least the following files: biosystemEnzymes.json, biosystemsReactionORatios.json, biosystems.json, enzymeReactions.json, enzymes.json, metabolicReactions.json, pathways.json, reactionPrecedenceRules.json, sChemCategoryPathways.json. The content can be different from the default tables, but each file must have the same syntax.
 2) Added a configuration file that describes among others, the location to the database and models. (the cypreact model destination cannot be moved at this moment. This will change soon).
